@@ -4,7 +4,10 @@
 
 - JupyterHub
 - Minio
+- IDE online. VSCode?
 - Gitea?
+- MlFlow
+- Bayesian Optimization
 - Metrics:
     - Make mandatory / easy to use for DataScientists
     - Supserset ?
