@@ -1,0 +1,7 @@
+stages:
+  - semantic-release
+  - publish
+
+include:
+  - local: autologin/.gitlab-ci.yml
+

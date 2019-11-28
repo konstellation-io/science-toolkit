@@ -1,0 +1,33 @@
+release-autologin:
+  stage: semantic-release
+  image: node:12
+  before_script:
+    - npm install --prefix autologin
+  script:
+    - cd autologin && npx semantic-release -e semantic-release-monorepo
+  only:
+    refs:
+      - master
+    changes:
+      - autologin/**/*
+
+publish-autologin-image:
+    stage: publish
+    image: docker:18-git
+    services:
+      - docker:18-dind
+    tags:
+        - dind
+    variables:
+        IMAGE_PROJECT_NAME: "autologin"
+    before_script:
+        - apk add bash git coreutils --update
+        - TAG=${CI_COMMIT_TAG#"autologin-v"}
+    script:
+        - docker build -t $CI_REGISTRY_IMAGE/$IMAGE_PROJECT_NAME:$TAG ./autologin
+        - docker tag $CI_REGISTRY_IMAGE/$IMAGE_PROJECT_NAME:$TAG $CI_REGISTRY_IMAGE/$IMAGE_PROJECT_NAME:latest
+        - docker push $CI_REGISTRY_IMAGE/$IMAGE_PROJECT_NAME:$TAG
+        - docker push $CI_REGISTRY_IMAGE/$IMAGE_PROJECT_NAME:latest
+    only:
+      - /^autologin-v\d*.\d*.\d*$/
+
