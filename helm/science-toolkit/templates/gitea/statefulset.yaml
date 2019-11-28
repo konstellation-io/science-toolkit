@@ -1,0 +1,41 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: gitea
+  labels:
+    app:  gitea
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gitea
+    spec:
+      containers:
+        - name: gitea
+          image: {{ .Values.gitea.image.repository }}:{{ .Values.gitea.image.tag }}
+          imagePullPolicy: {{ .Values.gitea.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: gitea-config
+          volumeMounts:
+            - name: gitea-pvc
+              mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.gitea.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 60
+  volumeClaimTemplates:
+    - metadata:
+        name: gitea-pvc
+        labels:
+          app: gitea
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.gitea.storage.storageClassName }}
+        resources:
+          requests:
+            storage:  {{ .Values.gitea.storage.size }}

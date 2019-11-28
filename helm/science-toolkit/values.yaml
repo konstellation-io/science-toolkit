@@ -1,0 +1,17 @@
+gitea:
+  image:
+    repository: gitea/gitea
+    tag: 1.10.0
+    pullPolicy: IfNotPresent
+  service:
+    port: 3000
+  host: gitea.local
+  storage:
+    size: 10Gi
+    storageClassName: standard
+postgres:
+  dbName: gitea
+  dbPassword: test
+  storage:
+    size: 10Gi
+    storageClassName: standard

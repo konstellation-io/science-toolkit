@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitea-config
+  labels:
+    app:  gitea-config
+data:
+  DB_TYPE: postgres
+  DB_HOST: postgres:5432
+  DB_USER: postgres
+  DB_NAME: {{ .Values.postgres.dbName }}
+  DB_PASSWD: {{ .Values.postgres.dbPassword }}
