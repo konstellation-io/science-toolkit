@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gitea
+  labels:
+    app:  gitea
+spec:
+  rules:
+    - host: {{ .Values.gitea.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: gitea
+              servicePort: {{ .Values.gitea.service.port }}
