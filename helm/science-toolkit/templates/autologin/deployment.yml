@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autologin
+spec:
+  selector:
+    matchLabels:
+      app: autologin
+  template:
+    metadata:
+      labels:
+        app: autologin
+    spec:
+      containers:
+        - name: autologin
+          image: {{ .Values.autologin.image.repository }}:{{ .Values.autologin.image.tag }}
+          imagePullPolicy: {{ .Values.autologin.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: autologin-configmap
+
+          ports:
+            - containerPort: 3000
