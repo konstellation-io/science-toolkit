@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: autologin
+  labels:
+    app: autologin  
+spec:
+  clusterIP: None
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: autologin

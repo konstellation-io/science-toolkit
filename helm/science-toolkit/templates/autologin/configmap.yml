@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-autologin
+  labels:
+    app: autologin
+data:
+
+  MINIO_LOGIN_URL: "http://minio/minio/login"
+  GITEA_LOGIN_URL: "http://gitea:3000/user/login"
+  JUPYTER_LOGIN_URL: "http://proxy-public/hub/login"
+
+
+  # Temporal credentials until moved to a DB
+  AUTOLOGIN_USERNAME: {{ .Values.autologin.username }}
+  AUTOLOGIN_PASSWORD: {{ .Values.autologin.username }}
+
+  MINIO_ACCESS_KEY: "minio"
+  MINIO_SECRET_KEY: "minio123"
+
+  GITEA_USERNAME: {{ .Values.gitea.username }}
+  GITEA_PASSWORD: {{ .Values.gitea.password }}
+
+  JUPYTER_USERNAME: {{ .Values.jupyter.username }}
+  JUPYTER_PASSWORD: {{ .Values.jupyter.username }}

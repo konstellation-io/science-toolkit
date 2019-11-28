@@ -1,14 +1,30 @@
+hostname: toolkit.local
+
+autologin: 
+  username: test
+  password: test123
+  image:
+    repository: autologin
+    tag: latest
+    pullPolicy: IfNotPresent
+
+jupyter:
+  username: test
+  password: test
+  
 gitea:
+  username: test
+  password: gitea123
   image:
     repository: gitea/gitea
     tag: 1.10.0
     pullPolicy: IfNotPresent
   service:
     port: 3000
-  host: gitea.local
   storage:
     size: 10Gi
     storageClassName: standard
+
 postgres:
   dbName: gitea
   dbPassword: test
