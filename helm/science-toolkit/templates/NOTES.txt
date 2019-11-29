@@ -1,1 +1,7 @@
 The Science Toolkit have been deployed successfully!!!
+
+*IMPORTANT*: You need to update the content of `.Values.gitea.oauth2.clientID` and `.Values.gitea.oauth2.secret`
+and relauch the helm installation as follow.
+
+
+helm upgrade --install sci-toolkit --namespace sci-toolkit helm/science-toolkit 

@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: drone
+  labels:
+    app:  drone
+spec:
+  rules:
+    - host: drone.{{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: drone
+              servicePort: http

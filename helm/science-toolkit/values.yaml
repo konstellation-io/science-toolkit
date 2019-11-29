@@ -1,4 +1,4 @@
-hostname: toolkit.local
+domain: toolkit.local
 
 autologin: 
   username: test
@@ -19,11 +19,12 @@ gitea:
     repository: gitea/gitea
     tag: 1.10.0
     pullPolicy: IfNotPresent
-  service:
-    port: 3000
   storage:
     size: 10Gi
     storageClassName: standard
+  oauth2:
+    clientID: MTgwZjc5N2UtODA0OS00MWZhLWFiMGMtZGUzYmRmMmI1NDA2
+    secret: clB6S3ZyUlo5LWJkZ3FSanVoVjRCSXZVdW1oVnFaTGZXbUppMWdteE43az0=
 
 postgres:
   dbName: gitea
@@ -31,3 +32,20 @@ postgres:
   storage:
     size: 10Gi
     storageClassName: standard
+
+drone:
+  image:
+    repository: drone/drone
+    tag: 1.6.2
+    pullPolicy: IfNotPresent
+  storage:
+    size: 10Gi
+    storageClassName: standard
+  rpcSecret: runner-shared-secret
+
+droneRunner:
+  image:
+    repository: drone/drone-runner-kube
+    tag: latest
+    pullPolicy: IfNotPresent
+  namespace: sci-toolkit

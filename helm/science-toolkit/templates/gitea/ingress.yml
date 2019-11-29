@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gitea
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+
+spec:
+  rules:
+
+    - host: gitea.{{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: gitea
+              servicePort: http
+          - path: /listener
+            backend:
+              serviceName: autologin
+              servicePort: http
