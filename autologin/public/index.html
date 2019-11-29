@@ -1,0 +1,40 @@
+<html>
+  <head>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
+		<style>
+			.ifr {
+				width:0;height:0;border:0; border:none;
+			}
+		</style>
+	</head>
+  <body>
+		<div id="app">
+       <input type="text" name="username" v-model="input.username" placeholder="Username" />
+       <input type="password" name="password" v-model="input.password" placeholder="Password" />
+
+      <button @click="login"> login <i class="fa fa-sign-in"></i> </button>
+      <button @click="logout"> logout <i class="fa fa-sign-out"></i> </button>
+
+      <br />
+
+      <button @click="componentLogin('minio')"> minio login </button>
+      <button @click="componentLogin('gitea')"> gitea login </button>
+      <button @click="componentLogin('jupyter')"> jupyter login </button>
+
+      <ul>
+        <li v-for="(service, name, index) in services">
+          <i v-if="service.loggedIn" class="fas fa-check">&nbsp;</i>
+          <i v-else="service.loggedIn" class="">&nbsp;</i>
+          {{ name }}
+          <span v-if="service.loggedIn">
+            <a :target="name" :href="service.url.origin">open</a>
+          </span>
+          <iframe :id="name" class="ifr" :src="service.src" ></iframe>
+        </li>
+      </ul>
+
+    </div>
+  </body>
+  <script type="text/javascript" src="app.js"></script>
+</html>
