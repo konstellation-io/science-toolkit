@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: drone-config
+  labels:
+    app:  drone-config
+data:
+  DRONE_GITEA_SERVER: http://gitea.{{ .Values.domain }}/
+  DRONE_GIT_ALWAYS_AUTH: "false"
+  DRONE_RUNNER_CAPACITY: "2"
+  DRONE_SERVER_PROTO: http
+  DRONE_SERVER_HOST: drone.{{ .Values.domain }}
+  DRONE_TLS_AUTOCERT: "false"
+  DRONE_RPC_HOST: drone.{{ .Values.domain }}
+  DRONE_RPC_PROTO: http
+  DRONE_RPC_SECRET: {{ .Values.drone.rpcSecret }}
+  DRONE_NAMESPACE_DEFAULT: {{ .Values.droneRunner.namespace }}

@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: drone
+  labels:
+    app:  drone
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drone
+    spec:
+      containers:
+        - name: drone
+          image: {{ .Values.drone.image.repository }}:{{ .Values.drone.image.tag }}
+          imagePullPolicy: {{ .Values.drone.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: drone-config
+            - secretRef:
+                name: drone-secret
+          volumeMounts:
+            - name: drone-pvc
+              mountPath: /var/lib/drone
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 60
+  volumeClaimTemplates:
+    - metadata:
+        name: drone-pvc
+        labels:
+          app: drone
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.drone.storage.storageClassName }}
+        resources:
+          requests:
+            storage:  {{ .Values.drone.storage.size }}

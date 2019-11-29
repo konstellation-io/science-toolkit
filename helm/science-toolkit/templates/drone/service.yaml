@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gitea
+  name: drone
   labels:
-    app: gitea
+    app: drone
 spec:
   clusterIP: None
   ports:
     - name: http
       port: 80
-      targetPort: 3000
+      targetPort: 80
       protocol: TCP
-    - name: ssh
-      port: 2222
-      targetPort: 22
+    - name: runner
+      port: 9000
+      targetPort: 9000
       protocol: TCP
   selector:
-    app: gitea
+    app: drone
