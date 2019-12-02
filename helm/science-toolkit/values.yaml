@@ -4,7 +4,7 @@ autologin:
   username: test
   password: test123
   image:
-    repository: autologin
+    repository: terminus7/sci-toolkit-autologin
     tag: latest
     pullPolicy: IfNotPresent
 
@@ -23,8 +23,8 @@ gitea:
     size: 10Gi
     storageClassName: standard
   oauth2:
-    clientID: MTgwZjc5N2UtODA0OS00MWZhLWFiMGMtZGUzYmRmMmI1NDA2
-    secret: clB6S3ZyUlo5LWJkZ3FSanVoVjRCSXZVdW1oVnFaTGZXbUppMWdteE43az0=
+    clientID: Y2hhbmdlLWNsaWVudC1pZA==
+    secret: Y2hhbmdlLXNlY3JldA==
 
 postgres:
   dbName: gitea
@@ -49,3 +49,16 @@ droneRunner:
     tag: latest
     pullPolicy: IfNotPresent
   namespace: sci-toolkit
+
+minio:
+  accessKey: minio
+  secretKey: minio123
+  persistence:
+    storageClass: standard
+    existingClaim: received-data-claim
+    accessMode: ReadWriteMany
+
+sharedVolume:
+  name: received-data
+  storageClassName: standard
+  path: /sci-toolkit/received-data
