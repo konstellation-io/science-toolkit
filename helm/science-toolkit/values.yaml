@@ -64,4 +64,4 @@ sharedVolume:
   path: /sci-toolkit/received-data
 
 vscode:
-  password: 123456
+  password: "123456"

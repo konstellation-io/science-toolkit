@@ -7,13 +7,14 @@ metadata:
 data:
 
   MINIO_LOGIN_URL: "http://{{ .Release.Name }}-minio:9000/minio/login"
+  VSCODE_LOGIN_URL: "http://vscode:8080/login"
   GITEA_LOGIN_URL: "http://gitea:3000/user/login"
   JUPYTER_LOGIN_URL: "http://proxy-public/hub/login"
 
 
   # Temporal credentials until moved to a DB
   AUTOLOGIN_USERNAME: {{ .Values.autologin.username }}
-  AUTOLOGIN_PASSWORD: {{ .Values.autologin.username }}
+  AUTOLOGIN_PASSWORD: {{ .Values.autologin.password }}
 
   MINIO_ACCESS_KEY: "minio"
   MINIO_SECRET_KEY: "minio123"
@@ -22,4 +23,6 @@ data:
   GITEA_PASSWORD: {{ .Values.gitea.password }}
 
   JUPYTER_USERNAME: {{ .Values.jupyter.username }}
-  JUPYTER_PASSWORD: {{ .Values.jupyter.username }}
+  JUPYTER_PASSWORD: {{ .Values.jupyter.password }}
+
+  VSCODE_PASSWORD: "{{ .Values.vscode.password }}"

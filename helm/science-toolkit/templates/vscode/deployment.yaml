@@ -23,4 +23,4 @@ spec:
             value: "{{ .Values.vscode.password }}"
         ports:
         - containerPort: 8080
-          name: https
+          name: http

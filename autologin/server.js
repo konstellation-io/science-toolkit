@@ -5,13 +5,14 @@ const bodyParser = require('body-parser')
 const minio = require('./minio')
 const gitea = require('./gitea')
 const jupyter = require('./jupyter')
+const code = require('./vscode')
 const config = require('./config')
 
 const PORT = config.server.port
 const credentials = config.credentials
 const basicCredentials = config.credentials.basic
 
-const loginRunners = { minio, gitea, jupyter }
+const loginRunners = { minio, gitea, jupyter, code }
 const logErr = err => console.log(`AUTOLOGIN ERROR: `, err)
 
 const app = express()
@@ -51,7 +52,7 @@ app.post('/login', async function (req, res) {
 	res.json(data)
 })
 
-// Development endpoints to test each component separetly
+// Development endpoints to test each component separately
 app.post('/dev/login/:component', async function (req, res) {
   const component = req.params.component
 

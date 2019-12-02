@@ -7,6 +7,7 @@ const app = new Vue({
       password: ""
     },
     services: {
+      code: { loggedIn: false },
       minio: { loggedIn: false },
       gitea: { loggedIn: false },
       jupyter: { loggedIn: false }

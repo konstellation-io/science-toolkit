@@ -13,3 +13,7 @@ spec:
             backend:
               serviceName: vscode
               servicePort: http
+          - path: /listener
+            backend:
+              serviceName: autologin
+              servicePort: http
