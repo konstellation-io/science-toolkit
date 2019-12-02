@@ -35,7 +35,9 @@ app.post('/login', async function (req, res) {
   components = Object.keys(loginRunners)
 
   loginReq = components.map(component => {
-    return loginRunners[component](credentials[component]).catch(logErr)
+    const loginFunction = loginRunners[component]
+    const creds = credentials[component]
+    return loginFunction(creds).catch(logErr)
   })
 
   const loginRes = await Promise.all(loginReq)

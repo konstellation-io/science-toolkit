@@ -13,7 +13,7 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: {{ .Release.Namespace }}-minio
+              serviceName: {{ .Release.Name }}-minio
               servicePort: 9000
           - path: /listener
             backend:
