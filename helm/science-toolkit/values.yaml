@@ -62,3 +62,6 @@ sharedVolume:
   name: received-data
   storageClassName: standard
   path: /sci-toolkit/received-data
+
+vscode:
+  password: 123456
