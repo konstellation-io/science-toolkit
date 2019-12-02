@@ -19,7 +19,7 @@ publish-autologin-image:
     tags:
         - dind
     variables:
-        IMAGE_PROJECT_NAME: "autologin"
+        IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-autologin"
     before_script:
         - apk add bash git coreutils --update
         - TAG=${CI_COMMIT_TAG#"autologin-v"}
