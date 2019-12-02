@@ -21,8 +21,8 @@ module.exports = async ({ url = DEFAULT_URL, accessKey, secretKey }) => {
     await secretKeyField.dispose()
 
     await page.waitFor(1000)
-    await page.waitForSelector('.login > .l-wrap > form > .lw-btn > .fas')
-    await page.click('button.lw-btn > .fas')
+    await page.waitForSelector('.login > .l-wrap > form > .lw-btn > .fa')
+    await page.click('button.lw-btn > .fa')
     await page.waitForNavigation()
 
     const data = await page.evaluate(() => {

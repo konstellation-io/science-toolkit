@@ -7,6 +7,7 @@ This folder hold the Helm code to deploy the Science Toolkit on top of a Kuberne
 In order check the chart definition run the following command.
 
 ```bash
+helm dependencies update ./science-toolkit
 helm upgrade --install  debug  --namespace sci-toolkit --dry-run --debug helm/science-toolkit  > debug.yml
 ```
 With the above command you can check the helm/debug.yml content and check how each kubernetes yaml definition have been fulfill by helm.
@@ -17,6 +18,7 @@ With the above command you can check the helm/debug.yml content and check how ea
 minikube -p sci-toolkit start --kubernetes-version=1.15.6
 helm init
 kubectl create ns sci-toolkit
+helm dependencies update ./science-toolkit
 helm upgrade --install sci-toolkit --namespace sci-toolkit ./science-toolkit
 ```
 
