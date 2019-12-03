@@ -64,7 +64,7 @@ deploy-helm-dell:
     - kubectl create ns science-toolkit --dry-run -o yaml | kubectl apply -f -
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
     - helm init --client-only --wait
-    - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz 
+    - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz science-toolkit-$CHART_VERSION.tgz
     - helm upgrade
       --wait
       --recreate-pods
