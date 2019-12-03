@@ -38,4 +38,3 @@ module.exports = async ({ url = DEFAULT_URL, accessKey, secretKey }) => {
     return data
   })
 }
-
