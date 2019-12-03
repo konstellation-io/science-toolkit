@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  labels:
+    app: vscode
+  name: vscode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vscode
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: vscode
+    spec:
+      containers:
+      - image: codercom/code-server:v2
+        name: vscode
+        imagePullPolicy: Always
+        env:
+          - name: PASSWORD
+            value: "{{ .Values.vscode.password }}"
+        volumeMounts:
+          - name: vscode-pvc
+            mountPath: /home/coder/.local/share/code-server
+          - name: {{ .Values.sharedVolume.name }}
+            mountPath: /home/coder/shared-data
+        ports:
+          - containerPort: 8080
+            name: http
+      volumes:
+      - name: {{ .Values.sharedVolume.name }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.sharedVolume.name }}-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: vscode-pvc
+        labels:
+          app: vscode
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.vscode.storage.storageClassName }}
+        resources:
+          requests:
+            storage:  {{ .Values.vscode.storage.size }}
