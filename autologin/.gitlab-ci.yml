@@ -12,23 +12,23 @@ release-autologin:
       - autologin/**/*
 
 publish-autologin-image:
-    stage: publish
-    image: docker:18-git
-    services:
-      - docker:18-dind
-    tags:
-        - dind
-    variables:
-        IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-autologin"
-    before_script:
-        - apk add bash git coreutils --update
-        - TAG=${CI_COMMIT_TAG#"autologin-v"}
-        - docker login -u $DOCKER_USER -p $DOCKER_PASS
-    script:
-        - docker build -t $IMAGE_PROJECT_NAME:$TAG ./autologin
-        - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
-        - docker push $IMAGE_PROJECT_NAME:$TAG
-        - docker push $IMAGE_PROJECT_NAME:latest
-    only:
-      - /^autologin-v\d*.\d*.\d*$/
+  stage: publish
+  image: docker:18-git
+  services:
+    - docker:18-dind
+  tags:
+    - dind
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-autologin"
+  before_script:
+    - apk add bash git coreutils --update
+    - TAG=${CI_COMMIT_TAG#"autologin-v"}
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  script:
+    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./autologin
+    - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
+    - docker push $IMAGE_PROJECT_NAME:$TAG
+    - docker push $IMAGE_PROJECT_NAME:latest
+  only:
+    - /^autologin-v\d*.\d*.\d*$/
 
