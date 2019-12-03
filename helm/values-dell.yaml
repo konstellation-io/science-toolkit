@@ -17,5 +17,5 @@ minio:
 
 sharedVolume:
   name: received-data-toolkit
-  storageClassName: standard
+  storageClassName: microk8s-hostpath
   path: /sci-toolkit/received-data-toolkit
