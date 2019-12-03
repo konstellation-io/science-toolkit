@@ -42,6 +42,7 @@ generate-helm-chart:
     - chmod +x /usr/local/bin/helm
     - helm init --client-only --wait
     - export AUTOLOGIN_TAG=$(./scripts/git_latest_tag.sh "autologin")
+    - export VSCODE_TAG=$(./scripts/git_latest_tag.sh "vscode")
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}

@@ -16,9 +16,9 @@ spec:
         app: vscode
     spec:
       containers:
-      - image: codercom/code-server:v2
-        name: vscode
-        imagePullPolicy: Always
+      - name: vscode
+        image: {{ .Values.vscode.image.repository }}:{{ .Values.vscode.image.tag }}
+        imagePullPolicy: {{ .Values.vscode.image.pullPolicy }}
         env:
           - name: PASSWORD
             value: "{{ .Values.vscode.password }}"

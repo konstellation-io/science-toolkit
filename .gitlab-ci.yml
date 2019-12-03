@@ -8,4 +8,5 @@ stages:
 include:
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
   - local: autologin/.gitlab-ci.yml
+  - local: vscode/.gitlab-ci.yml
   - local: helm/.gitlab-ci.yml
