@@ -4,6 +4,7 @@ stages:
   - build
   - semantic-release-helm
   - deploy
+
 include:
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
   - local: autologin/.gitlab-ci.yml
