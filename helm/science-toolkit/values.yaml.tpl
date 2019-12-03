@@ -75,9 +75,7 @@ jupyterhub:
   cull:
     timeout: 259200
   ingress:
-    enabled: true
-    hosts:
-      - hub.local
+    enabled: false
   singleuser:
     defaultUrl: "/lab"
     cloudMetadata:
