@@ -5,7 +5,7 @@ autologin:
   password: test123
   image:
     repository: terminus7/sci-toolkit-autologin
-    tag: latest
+    tag: ${AUTOLOGIN_TAG}
     pullPolicy: IfNotPresent
 
 gitea:

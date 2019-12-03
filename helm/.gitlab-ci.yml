@@ -1,0 +1,75 @@
+release-helm-chart:
+  stage: semantic-release
+  image: node:10
+  before_script:
+    - npm install -g semantic-release semantic-release/gitlab
+  script:
+    - semantic-release -t helm-chart-v\${version}
+  only:
+    refs:
+      - master
+    changes:
+      - helm/**/*
+
+release-helm-after-image:
+  stage: semantic-release-helm
+  image: node:10
+  before_script:
+    - npm install -g semantic-release semantic-release/gitlab
+  script:
+    - semantic-release -t helm-chart-v\${version} -b $CI_COMMIT_TAG
+  only:
+    - tags
+  except:
+    - /^helm-chart-v\d*.\d*.\d*$/
+
+generate-helm-chart:
+  stage: build
+  image: docker:18-git
+  services:
+    - docker:18-dind
+  variables:
+    HELM_VERSION: v2.14.3
+  before_script:
+    - export DOCKER_COMMAND="docker run
+      -v $CI_PROJECT_DIR:/app
+      -w /app
+      -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
+    - apk add --update bash gettext coreutils
+    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+    - chmod +x /usr/local/bin/helm
+    - helm init --client-only --wait
+    - export AUTOLOGIN_TAG=$(./scripts/git_latest_tag.sh "autologin")
+    - ./scripts/replace_env_path.sh
+  script:
+    - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
+    - helm dep update helm/science-toolkit
+    - helm package helm/science-toolkit --version $CHART_VERSION
+    - $DOCKER_COMMAND mesosphere/aws-cli s3 cp science-toolkit-$CHART_VERSION.tgz s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz
+  only:
+    refs:
+      - /^helm-chart-v\d*.\d*.\d*$/
+
+deploy-helm-dell:
+  stage: deploy
+  tags:
+    - konstellation
+  environment:
+    name: int
+  image: google/cloud-sdk:266.0.0
+  script:
+    - kubectl create ns science-toolkit --dry-run -o yaml | kubectl apply -f -
+    - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
+    - helm init --client-only --wait
+    - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz 
+    - helm upgrade
+      --wait
+      --recreate-pods
+      --install science-toolkit
+      --namespace science-toolkit
+      science-toolkit-$CHART_VERSION.tgz
+  only:
+    refs:
+      - /^helm-chart-v\d*.\d*.\d*$/
