@@ -45,6 +45,7 @@ generate-helm-chart:
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
+    - helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
     - helm dep update helm/science-toolkit
     - helm package helm/science-toolkit --version $CHART_VERSION
     - $DOCKER_COMMAND mesosphere/aws-cli s3 cp science-toolkit-$CHART_VERSION.tgz s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz
