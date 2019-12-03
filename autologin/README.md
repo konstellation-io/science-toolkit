@@ -35,3 +35,10 @@ The process goes as follow:
 7. each ID are sent to an iframe that shares domain with the component it belongs to
 
 8. once the ID is set on that domain the user is logged in that component
+
+## Components to login 
+
+* Gitea
+* VSCode
+* JupyterHub
+* Minio
