@@ -3,7 +3,7 @@ gitea:
     size: 10Gi
     storageClassName: microk8s-hostpath
 
-ostgres:
+postgres:
   storage:
     size: 10Gi
     storageClassName: microk8s-hostpath
