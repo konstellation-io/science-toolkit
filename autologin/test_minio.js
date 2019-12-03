@@ -1,7 +1,8 @@
+const config = require('./config')
 const minio = require('./minio')
 
-minio({
-  accessKey: 'minio',
-  secretKey: 'minio123'
-})
+const creds = config.credentials.minio
 
+minio({
+  ...creds
+})

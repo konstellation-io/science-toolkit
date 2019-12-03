@@ -3,7 +3,7 @@ const config = require('./config')
 
 const DEFAULT_URL = config.services.code
 
-module.exports = async ({ url = DEFAULT_URL, password }) => {
+module.exports = ({ url = DEFAULT_URL, password }) => {
   if (!password) {
     console.log('NO CREDENTIALS')
     return {}
@@ -15,7 +15,7 @@ module.exports = async ({ url = DEFAULT_URL, password }) => {
     await usernameField.type(password)
     await usernameField.dispose()
 
-    await page.waitFor(500)
+    await page.waitFor(1000)
     await Promise.all([
       page.click('form.login-form > .button'),
       page.waitForNavigation()
@@ -27,4 +27,3 @@ module.exports = async ({ url = DEFAULT_URL, password }) => {
     return cookie
   })
 }
-

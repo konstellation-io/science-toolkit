@@ -20,9 +20,6 @@ app.use(bodyParser.json())
 app.use(express.static('public'))
 
 app.post('/login', async function (req, res) {
-  const user = req.body.username
-  const pass = req.body.password
-
   // TODO: Validate with a user list from DB
   if (req.body.username !== basicCredentials.user || req.body.password !== basicCredentials.pass) {
     console.error('Unauthorized access')
@@ -70,4 +67,3 @@ app.post('/dev/login/:component', async function (req, res) {
 app.listen(PORT, function () {
   console.log(`App listening on port ${PORT}!`)
 })
-

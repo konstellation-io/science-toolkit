@@ -1,7 +1,7 @@
+const config = require('./config')
 const gitea = require('./gitea')
 
+const creds = config.credentials.gitea
 gitea({
-  user: 'test',
-  pass: 'gitea123'
+  ...creds
 })
-

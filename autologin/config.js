@@ -25,7 +25,7 @@ module.exports = {
     },
     gitea: {
       user: process.env.GITEA_USERNAME || 'test',
-      pass: process.env.GITEA_PASSWORD || 'gitea123'
+      pass: process.env.GITEA_PASSWORD || 'Test.123'
     },
     jupyter: {
       user: process.env.JUPYTER_USERNAME || 'test',

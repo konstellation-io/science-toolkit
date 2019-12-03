@@ -14,9 +14,12 @@ module.exports = async (url, loginFunction) => {
 
   try {
     console.log(`Opening ${url}`)
-    page = await browser.newPage()
+    const page = await browser.newPage()
     await page.goto(url)
-    return await loginFunction(page)
+    const creds = await loginFunction(page)
+    console.log(`Login for ${url} done.`)
+
+    return creds
   } catch (err) {
     console.error(`Error running loginFunction: `, err)
     return {}
@@ -25,4 +28,3 @@ module.exports = async (url, loginFunction) => {
     await browser.close()
   }
 }
-

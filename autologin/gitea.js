@@ -3,7 +3,7 @@ const config = require('./config')
 
 const DEFAULT_URL = config.services.gitea
 
-module.exports = async ({ url = DEFAULT_URL, user, pass }) => {
+module.exports = ({ url = DEFAULT_URL, user, pass }) => {
   if (!user || !pass) {
     console.log('NO CREDENTIALS')
     return {}
@@ -24,7 +24,7 @@ module.exports = async ({ url = DEFAULT_URL, user, pass }) => {
     await rememberCheck.click()
     await rememberCheck.dispose()
 
-    await page.waitFor(500)
+    await page.waitFor(1000)
     await Promise.all([
       page.click('form.form button'),
       page.waitForNavigation()

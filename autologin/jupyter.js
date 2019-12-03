@@ -3,7 +3,7 @@ const config = require('./config')
 
 const DEFAULT_URL = config.services.jupyter
 
-module.exports = async ({ url = DEFAULT_URL, user, pass }) => {
+module.exports = ({ url = DEFAULT_URL, user, pass }) => {
   if (!user || !pass) {
     console.log('NO CREDENTIALS')
     return {}
@@ -20,7 +20,7 @@ module.exports = async ({ url = DEFAULT_URL, user, pass }) => {
     await passwordField.type(pass)
     await passwordField.dispose()
 
-    await page.waitFor(100)
+    await page.waitFor(1000)
     await Promise.all([
       page.click('input#login_submit'),
       page.waitForNavigation()
