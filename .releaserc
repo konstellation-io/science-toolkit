@@ -2,7 +2,7 @@
   "verifyConditions": [
     {
       "path": "@semantic-release/gitlab",
-      "gitlabUrl": "https://gitlab.com",
+      "gitlabUrl": "https://gitlab.intelygenz.com",
       "gitlabApiPathPrefix": "/api/v4"
     }
   ],
@@ -36,7 +36,7 @@
   "publish": [
     {
       "path": "@semantic-release/gitlab",
-      "gitlabUrl": "https://gitlab.com",
+      "gitlabUrl": "https://gitlab.intelygenz.com",
       "gitlabApiPathPrefix": "/api/v4"
     }
   ],
