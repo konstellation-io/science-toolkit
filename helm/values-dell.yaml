@@ -1,0 +1,21 @@
+jupyterhub:
+  singleuser:
+    storage:
+      extraVolumes:
+        - name: received-data-toolkit
+          persistentVolumeClaim:
+            claimName: received-data-toolkit-claim
+      extraVolumeMounts:
+        - mountPath: /home/jovyan/projects
+          name: received-data-toolkit
+
+minio:
+  persistence:
+    storageClass: standard
+    existingClaim: received-data-toolkit-claim
+    accessMode: ReadWriteMany
+
+sharedVolume:
+  name: received-data-toolkit
+  storageClassName: standard
+  path: /sci-toolkit/received-data-toolkit
