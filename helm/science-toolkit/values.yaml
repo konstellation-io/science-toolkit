@@ -65,3 +65,6 @@ sharedVolume:
 
 vscode:
   password: "123456"
+  storage:
+    size: 10Gi
+    storageClassName: standard
