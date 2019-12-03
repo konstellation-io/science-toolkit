@@ -70,6 +70,7 @@ deploy-helm-dell:
       --recreate-pods
       --install science-toolkit
       --namespace science-toolkit
+      --values helm/values-dell.yaml
       science-toolkit-$CHART_VERSION.tgz
   only:
     refs:
