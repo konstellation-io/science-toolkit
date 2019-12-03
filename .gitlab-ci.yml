@@ -3,6 +3,7 @@ stages:
   - publish
   - semantic-release-helm
   - publish-gitlab-release
+  - build
   - deploy
 include:
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
