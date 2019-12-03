@@ -1,0 +1,45 @@
+{
+  "verifyConditions": [
+    {
+      "path": "@semantic-release/gitlab",
+      "gitlabUrl": "https://gitlab.com",
+      "gitlabApiPathPrefix": "/api/v4"
+    }
+  ],
+  "analyzeCommits": {
+    "format": "angular",
+    "preset": "angular",
+    "releaseRules": [
+        {
+            "type": "fix",
+            "release": "patch"
+        },
+        {
+            "type": "feat",
+            "release": "patch"
+        },
+        {
+            "type": "perf",
+            "release": "patch"
+        },
+        {
+        "type": "helm-minor",
+        "release": "minor"
+        },
+        {
+        "type": "helm-major",
+        "release": "major"
+        }
+    ]
+  },
+  "prepare": [],
+  "publish": [
+    {
+      "path": "@semantic-release/gitlab",
+      "gitlabUrl": "https://gitlab.com",
+      "gitlabApiPathPrefix": "/api/v4"
+    }
+  ],
+  "success": false,
+  "fail": false
+}
