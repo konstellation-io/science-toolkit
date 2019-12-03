@@ -22,7 +22,7 @@ data:
   GITEA_USERNAME: {{ .Values.gitea.username }}
   GITEA_PASSWORD: {{ .Values.gitea.password }}
 
-  JUPYTER_USERNAME: {{ .Values.jupyter.username }}
-  JUPYTER_PASSWORD: {{ .Values.jupyter.password }}
+  JUPYTER_USERNAME: {{ .Values.jupyterhub.credentials.username }}
+  JUPYTER_PASSWORD: {{ .Values.jupyterhub.credentials.password }}
 
   VSCODE_PASSWORD: "{{ .Values.vscode.password }}"

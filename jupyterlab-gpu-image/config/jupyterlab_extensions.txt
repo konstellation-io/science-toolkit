@@ -1,0 +1,11 @@
+@bokeh/jupyter_bokeh
+@hadim/jupyter-archive
+@jupyter-widgets/jupyterlab-manager
+@jupyterlab/git
+@jupyterlab/toc
+@lckr/jupyterlab_variableinspector
+@telamonian/theme-darcula
+jupyter-matplotlib
+jupyterlab-dash@0.1.0-alpha.3
+jupyterlab-jupytext
+jupyterlab_tensorboard

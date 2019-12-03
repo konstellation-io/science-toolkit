@@ -3,7 +3,7 @@ module.exports = {
     port: process.env.PORT || 3000
   },
   browser: {
-    headless: process.env.HEADLESS_BROWSER === "0" ? false : true,
+    headless: process.env.HEADLESS_BROWSER !== "0",
   },
   services: {
     code: process.env.VSCODE_LOGIN_URL || 'http://vscode:8080/login',
