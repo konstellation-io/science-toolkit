@@ -48,11 +48,6 @@ generate-helm-chart:
     - helm dep update helm/science-toolkit
     - helm package helm/science-toolkit --version $CHART_VERSION
     - $DOCKER_COMMAND mesosphere/aws-cli s3 cp science-toolkit-$CHART_VERSION.tgz s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz
-  artifacts:
-    expire_in: 3 hours
-    when: on_success
-    paths:
-      - science-toolkit-*.tgz
   only:
     refs:
       - /^helm-chart-v\d*.\d*.\d*$/
