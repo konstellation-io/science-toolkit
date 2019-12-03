@@ -61,6 +61,8 @@ helm upgrade --install sci-toolkit --namespace sci-toolkit ./science-toolkit
 
 ### VSCode
 
-| Parameter         | Description                 | Default  |
-| ----------------- | --------------------------- | -------- |
-| `vscode.password` | Default password for vscode | `123456` |
+| Parameter                        | Description                                                | Default    |
+| -------------------------------- | ---------------------------------------------------------- | ---------- |
+| `vscode.password`                | Default password for vscode                                | `123456`   |
+| `vscode.volume.size`             | Size for the vscode config volume                          | `10Gi`     |
+| `vscode.volume.storageClassName` | The Kubernetes Storage Class Name whe to create the volume | `standard` |
