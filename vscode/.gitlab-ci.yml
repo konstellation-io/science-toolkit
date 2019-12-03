@@ -1,0 +1,33 @@
+release-autologin:
+  stage: semantic-release
+  image: node:12
+  before_script:
+    - npm install --prefix vscode
+  script:
+    - cd vscode && npx semantic-release -e semantic-release-monorepo
+  only:
+    refs:
+      - master
+    changes:
+      - vscode/**/*
+
+publish-vscode-image:
+  stage: publish
+  image: docker:18-git
+  services:
+    - docker:18-dind
+  tags:
+    - dind
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode"
+  before_script:
+    - apk add bash git coreutils --update
+    - TAG=${CI_COMMIT_TAG#"vscode-v"}
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  script:
+    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./vscode
+    - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
+    - docker push $IMAGE_PROJECT_NAME:$TAG
+    - docker push $IMAGE_PROJECT_NAME:latest
+  only:
+    - /^vscode-v\d*.\d*.\d*$/
