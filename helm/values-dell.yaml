@@ -1,3 +1,23 @@
+gitea:
+  storage:
+    size: 10Gi
+    storageClassName: microk8s-hostpath
+
+ostgres:
+  storage:
+    size: 10Gi
+    storageClassName: microk8s-hostpath
+
+drone:
+  storage:
+    size: 10Gi
+    storageClassName: microk8s-hostpath
+
+vscode:
+  storage:
+    size: 10Gi
+    storageClassName: microk8s-hostpath
+
 jupyterhub:
   singleuser:
     storage:
