@@ -1,41 +1,91 @@
 <html>
-  <head>
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
-		<style>
-			.ifr {
-				width:0;height:0;border:0; border:none;
-			}
-		</style>
-	</head>
-  <body>
-		<div id="app">
-       <input type="text" name="username" v-model="input.username" placeholder="Username" />
-       <input type="password" name="password" v-model="input.password" placeholder="Password" />
 
-      <button @click="login"> login <i class="fa fa-sign-in"></i> </button>
-      <button @click="logout"> logout <i class="fa fa-sign-out"></i> </button>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
+  <style>
+    .ifr {
+      width: 0;
+      height: 0;
+      border: 0;
+      border: none;
+    }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
+</head>
 
-      <br />
+<body>
+  <div id="app">
+    <input type="text" name="username" v-model="input.username" placeholder="Username" />
+    <input type="password" name="password" v-model="input.password" placeholder="Password" />
 
-      <button @click="componentLogin('minio')"> minio login </button>
-      <button @click="componentLogin('gitea')"> gitea login </button>
-      <button @click="componentLogin('jupyter')"> jupyter login </button>
-      <button @click="componentLogin('code')"> vscode login </button>
+    <button @click="login"> login <i class="fa fa-sign-in"></i> </button>
+    <button @click="logout"> logout <i class="fa fa-sign-out"></i> </button>
 
-      <ul>
-        <li v-for="(service, name, index) in services">
-          <i v-if="service.loggedIn" class="fas fa-check">&nbsp;</i>
-          <i v-else="service.loggedIn" class="">&nbsp;</i>
-          {{ name }}
-          <span v-if="service.loggedIn">
-            <a :target="name" :href="service.url.origin">open</a>
-          </span>
-          <iframe :id="name" class="ifr" :src="service.src" ></iframe>
-        </li>
-      </ul>
+    <br />
 
-    </div>
-  </body>
-  <script type="text/javascript" src="app.js"></script>
+    <button @click="componentLogin('minio')"> minio login </button>
+    <button @click="componentLogin('gitea')"> gitea login </button>
+    <button @click="componentLogin('jupyter')"> jupyter login </button>
+    <button @click="componentLogin('code')"> vscode login </button>
+
+    <form novalidate class="md-layout" @submit.prevent="validateUser">
+      <md-card class="md-layout-item md-size-70 md-small-size-90"
+        style="margin:auto; padding: 30px;text-align-last: center;">
+        <md-card-header>
+          <span style="text-align: center;" class="md-display-3">Science Toolkit</span>
+        </md-card-header>
+
+        <md-card-content>
+          <md-field>
+            <label for="user">User</label>
+            <md-input type="user" name="user" id="user" autocomplete="user" />
+          </md-field>
+          <md-field>
+            <label for="password">Password</label>
+            <md-input type="password" name="password" id="password" autocomplete="password" />
+          </md-field>
+        </md-card-content>
+
+
+        <md-button class="md-raised md-primary">Login</md-button>
+        <md-button class="md-raised md-accent">Logout</md-button>
+
+        <md-divider style="margin-top: 30px;"></md-divider>
+
+        <div class="md-layout md-gutter" style="padding-top: 30px;max-height: 160px;">
+          <div v-for="(service, name, index) in services" class="md-layout-item">
+            <md-card style="text-align: center;">
+              <md-card-media class="md-layout md-size-50">
+                <img :src="service.img" class="logo" alt="People">
+              </md-card-media>
+              <i v-if="service.loggedIn" class="fas fa-check">&nbsp;</i>
+              <i v-else="service.loggedIn" class="">&nbsp;</i>
+              {{ name }}
+              <span v-if="service.loggedIn">
+                <a :target="name" :href="service.url.origin">open</a>
+              </span>
+            </md-card>
+            <iframe :id="name" class="ifr" :src="service.src"></iframe>
+          </div>
+        </div>
+
+      </md-card>
+
+    </form>
+
+
+  </div>
+</body>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-material"></script>
+<script type="text/javascript" src="app.js"></script>
+
 </html>
+<style lang="scss">
+  .logo {
+    height: 120px !important;
+  }
+</style>
