@@ -70,7 +70,7 @@
 
               <md-card-actions>
                 <md-button :disabled="!service.loggedIn" class="md-icon-button md-primary"
-                  @click="openComponent(service)">
+                  @click="openComponent(name, service)">
                   <md-icon>logout</md-icon>
                 </md-button>
 
@@ -83,7 +83,7 @@
 
             </md-card>
 
-            <iframe :id="name" class="ifr" :src="service.src"></iframe>
+            <iframe :id="name" class="ifr" :src="service.iframeSrc"></iframe>
           </div>
         </div>
         </md-card>

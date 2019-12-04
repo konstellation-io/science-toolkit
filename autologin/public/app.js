@@ -12,23 +12,28 @@ const app = new Vue({
     services: {
       code: {
         loggedIn: false,
-        img: "/img/vscode.png"
+        img: "/img/vscode.png",
+        iframe: true
       },
       minio: {
         loggedIn: false,
-        img: "/img/minio.png"
+        img: "/img/minio.png",
+        iframe: true
       },
       gitea: {
         loggedIn: false,
-        img: "/img/gitea.png"
+        img: "/img/gitea.png",
+        iframe: true
       },
       jupyter: {
         loggedIn: false,
-        img: "/img/jupyter.png"
+        img: "/img/jupyter.png",
+        iframe: true
       },
       drone: {
         loggedIn: false,
-        img: "/img/drone.png"
+        img: "/img/drone.png",
+        iframe: false
       }
     }
   },
@@ -56,6 +61,11 @@ const app = new Vue({
         const creds = data[component]
         console.log('LOGIN: ', component, creds)
         this.setCredentials(component, creds)
+        // Jupyterhub needs to open with extra path same as the cookie path
+        if (component === 'jupyter') {
+          const userCookie = creds.filter(key => key.name.match(/^jupyterhub-user/))[0]
+          this.services.jupyter.extraPath = userCookie.path
+        }
       })
     },
 
@@ -65,11 +75,15 @@ const app = new Vue({
         document.querySelector(`#${component}`).contentWindow.postMessage({ type: 'logout' }, target.url.origin)
       })
 
+      // remove extra path for Jupyter
+      this.services.jupyter.extraPath = ''
+
     },
 
-    openComponent: function (service) {
-      console.log('SERVICE', service)
-      window.open(service.url.origin, '_blank')
+    openComponent: function (name, service) {
+      const url = `${service.url.origin}${service.extraPath || ''}`
+      console.log(`Opening service ${name}: ${url}`)
+      window.open(url, name)
     },
 
     componentLogin: async function (component) {
@@ -81,11 +95,14 @@ const app = new Vue({
     },
 
     setIframeURL: function (component) {
+      if (!this.services[component].iframe) {
+        return
+      }
       const url = new URL(this.baseURL)
       url.host = this.baseURL.host.replace(/^[^.]*\./, `${component}.`)
       url.pathname = "/listener/credentials.html"
       this.services[component].url = url
-      this.services[component].src = url.href
+      this.services[component].iframeSrc = url.href
     },
 
     setCredentials: function (component, credentials) {
@@ -100,6 +117,7 @@ const app = new Vue({
       if (component && this.services[component]) {
         this.services[component].loggedIn = loggedIn
 
+        // Drone shares login with gitea by OAuth token
         if (component === 'gitea') {
           this.services['drone'].loggedIn = loggedIn
         }
@@ -108,4 +126,3 @@ const app = new Vue({
 
   }
 })
-
