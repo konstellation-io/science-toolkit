@@ -66,6 +66,7 @@ deploy-helm-dell:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
     - helm init --client-only --wait
     - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz science-toolkit-$CHART_VERSION.tgz
+    - ./scripts/replace_env_path.sh
     - helm upgrade
       --wait
       --recreate-pods
