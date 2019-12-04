@@ -72,6 +72,7 @@ deploy-helm-dell:
       --install science-toolkit
       --namespace science-toolkit
       --values helm/values-dell.yaml
+      --timeout 600
       science-toolkit-$CHART_VERSION.tgz
   only:
     refs:
