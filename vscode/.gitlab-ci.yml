@@ -1,4 +1,4 @@
-release-autologin:
+release-vscode:
   stage: semantic-release
   image: node:12
   before_script:
