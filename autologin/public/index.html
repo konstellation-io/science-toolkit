@@ -18,10 +18,7 @@
 
 <body>
   <div id="app">
-    <input type="text" name="username" v-model="input.username" placeholder="Username" />
-    <input type="password" name="password" v-model="input.password" placeholder="Password" />
 
-    <button @click="login"> login <i class="fa fa-sign-in"></i> </button>
     <button @click="logout"> logout <i class="fa fa-sign-out"></i> </button>
 
     <br />
@@ -40,33 +37,37 @@
 
         <md-card-content>
           <md-field>
-            <label for="user">User</label>
-            <md-input type="user" name="user" id="user" autocomplete="user" />
+            <label for="username">Username</label>
+            <md-input type="username" name="username" id="username" autocomplete="username" v-model="input.username" />
           </md-field>
           <md-field>
             <label for="password">Password</label>
-            <md-input type="password" name="password" id="password" autocomplete="password" />
+            <md-input type="password" name="password" id="password" autocomplete="password" v-model="input.password" />
           </md-field>
         </md-card-content>
 
 
-        <md-button class="md-raised md-primary">Login</md-button>
-        <md-button class="md-raised md-accent">Logout</md-button>
+        <md-button @click="login" class="md-raised md-primary">Login</md-button>
+        <md-button @click="logout" class="md-raised md-accent">Logout</md-button>
 
-        <md-divider style="margin-top: 30px;"></md-divider>
-
-        <div class="md-layout md-gutter" style="padding-top: 30px;max-height: 160px;">
-          <div v-for="(service, name, index) in services" class="md-layout-item">
+        <div class="md-layout md-gutter">
+          <div v-for="(service, name, index) in services" class="md-layout-item md-small-size-50">
             <md-card style="text-align: center;">
-              <md-card-media class="md-layout md-size-50">
-                <img :src="service.img" class="logo" alt="People">
+              <md-card-media>
+                <img :class="{ logoDisabled: !service.loggedIn }" :src="service.img" class="logo" alt="People">
               </md-card-media>
-              <i v-if="service.loggedIn" class="fas fa-check">&nbsp;</i>
-              <i v-else="service.loggedIn" class="">&nbsp;</i>
               {{ name }}
-              <span v-if="service.loggedIn">
-                <a :target="name" :href="service.url.origin">open</a>
-              </span>
+              <md-card-actions v-if="!service.loggedIn">
+
+                <md-button class="md-icon-button" @click="openComponent(name)">
+                  <md-icon>external-link</md-icon>
+                </md-button>
+
+                <md-button class="md-icon-button">
+                  <md-icon>sync</md-icon>
+                </md-button>
+
+              </md-card-actions>
             </md-card>
             <iframe :id="name" class="ifr" :src="service.src"></iframe>
           </div>
@@ -87,5 +88,9 @@
 <style lang="scss">
   .logo {
     height: 120px !important;
+  }
+
+  .logoDisabled {
+    filter: grayscale(100%);
   }
 </style>

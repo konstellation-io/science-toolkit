@@ -24,6 +24,10 @@ const app = new Vue({
       jupyter: {
         loggedIn: false,
         img: "https://jrogel.com/wp-content/uploads/2015/08/Jupyter.jpg"
+      },
+      drone: {
+        loggedIn: false,
+        img: "https://pbs.twimg.com/profile_images/1106628286107381761/R_wMcCqN_400x400.png"
       }
     }
   },
