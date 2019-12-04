@@ -15,6 +15,6 @@ data:
   DRONE_RPC_PROTO: http
   DRONE_RPC_SECRET: {{ .Values.drone.rpcSecret }}
   DRONE_NAMESPACE_DEFAULT: {{ .Release.Namespace }}
-  DRONE_LOGS_DEBUG: true
-  DRONE_DEBUG: true
-  DRONE_TRACE: true
+  DRONE_LOGS_DEBUG: "true"
+  DRONE_DEBUG: "true"
+  DRONE_TRACE: "true"
