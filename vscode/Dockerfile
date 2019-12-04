@@ -1,6 +1,6 @@
 FROM codercom/code-server:v2
 
-COPY extensions /home/coder/.local/share/code-server/extensions
+COPY extensions /extensions
 USER root
 
-ENTRYPOINT ["dumb-init", "code-server", "--host", "0.0.0.0","--extensions-dir","/home/coder/.local/share/code-server/extensions"]
+ENTRYPOINT ["dumb-init", "code-server", "--host", "0.0.0.0","--extensions-dir","/extensions"]
