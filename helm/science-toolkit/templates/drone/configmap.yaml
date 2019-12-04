@@ -14,4 +14,4 @@ data:
   DRONE_RPC_HOST: drone.{{ .Values.domain }}
   DRONE_RPC_PROTO: http
   DRONE_RPC_SECRET: {{ .Values.drone.rpcSecret }}
-  DRONE_NAMESPACE_DEFAULT: {{ .Values.droneRunner.namespace }}
+  DRONE_NAMESPACE_DEFAULT: {{ .Release.Namespace }}
