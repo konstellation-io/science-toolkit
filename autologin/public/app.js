@@ -95,13 +95,13 @@ const app = new Vue({
     },
 
     setIframeURL: function (component) {
-      if (!this.services[component].iframe) {
-        return
-      }
       const url = new URL(this.baseURL)
       url.host = this.baseURL.host.replace(/^[^.]*\./, `${component}.`)
       url.pathname = "/listener/credentials.html"
       this.services[component].url = url
+      if (!this.services[component].iframe) {
+        return
+      }
       this.services[component].iframeSrc = url.href
     },
 
