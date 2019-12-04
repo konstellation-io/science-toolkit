@@ -24,9 +24,9 @@ spec:
             value: "{{ .Values.vscode.password }}"
         volumeMounts:
           - name: vscode-pvc
-            mountPath: /home/coder/.local/share/code-server
+            mountPath: /root/projects
           - name: {{ .Values.sharedVolume.name }}
-            mountPath: /home/coder/shared-data
+            mountPath: /root/shared-data
         ports:
           - containerPort: 8080
             name: http
