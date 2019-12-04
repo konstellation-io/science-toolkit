@@ -11,9 +11,7 @@
       border: none;
     }
 
-    .compList .md-card {
-      width: 320px;
-      margin: 4px;
+    .compList {
       padding: 10px;
       display: inline-block;
       vertical-align: top;
@@ -29,68 +27,76 @@
   <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
 </head>
 
-<body>
-<div id="app"  class="md-layout">
-  <form novalidate>
-
-    <md-card class="md-layout-item md-gutter">
-      <md-card-header>
+<body style="background: white;">
+  <div id="app">
+    <form novalidate>
+      <md-content class="md-layout-item md-gutter" style="padding: 30px">
         <span class="md-display-3">Science Toolkit</span>
-      </md-card-header>
 
-      <md-card-content>
-        <md-field>
-          <label for="username">Username</label>
-          <md-input type="username" name="username" id="username" autocomplete="username" v-model="input.username"/>
-        </md-field>
-        <md-field>
-          <label for="password">Password</label>
-          <md-input type="password" name="password" id="password" autocomplete="password" v-model="input.password"/>
-        </md-field>
-      </md-card-content>
-
-
-      <md-card-actions>
-        <md-button @click="login" class="md-raised md-primary">Login</md-button>
-        <md-button @click="logout" class="md-raised md-accent">Logout</md-button>
-      </md-card-actions>
-
-    </md-card>
-
-    <div class="md-layout-item compList">
-      <div v-for="(service, name, index) in services" class="md-gutter md-layout-item md-small-size-50">
-        <md-card>
-          <md-card-header>
-            <div class="md-title">{{ name }}</div>
-          </md-card-header>
-
-          <md-card-media md-big style="min-height: 180px;">
-            <img :class="{ logoDisabled: !service.loggedIn }" :src="service.img">
-          </md-card-media>
-
+        <md-card class="md-layout-item md-size-50 md-alignment-top-center">
+          <md-card-content>
+            <md-field>
+              <label for="username">Username</label>
+              <md-input type="username" name="username" id="username" autocomplete="username"
+                v-model="input.username" />
+            </md-field>
+            <md-field>
+              <label for="password">Password</label>
+              <md-input type="password" name="password" id="password" autocomplete="password"
+                v-model="input.password" />
+            </md-field>
+          </md-card-content>
           <md-card-actions>
-
-            <md-button class="md-icon-button md-primary" @click="openComponent(service)">
-              <md-icon>home</md-icon>
+            <md-progress-spinner md-diameter="35" md-stroke="3" style="margin-right: 20px;" v-show="isLoading"
+              md-mode="indeterminate">
+            </md-progress-spinner>
+            <md-button @click="login" class="md-raised md-primary">Login
             </md-button>
-
-            <!--
-            <md-button class="md-icon-button md-accent" @click="componentLogin(name)">
-              <md-icon>sync</md-icon>
-            </md-button>
-            -->
+            <md-button @click="logout" class="md-raised md-accent">Logout</md-button>
           </md-card-actions>
         </md-card>
 
-        <iframe :id="name" class="ifr" :src="service.src"></iframe>
-      </div>
-    </div>
 
-  </form>
+        <div class="md-layout md-gutter" style="margin-top: 20px;">
+          <div v-for="(service, name, index) in services" class="md-gutter md-layout-item md-small-size-50">
+            <md-card class="compList" :disabled="!service.loggedIn">
+              <md-card-header>
+                <div class="md-title">{{ name }}</div>
+              </md-card-header>
 
-</div>
+              <md-card-media md-big style="min-height: 180px;">
+                <img :class="{ logoDisabled: !service.loggedIn }" :src="service.img">
+              </md-card-media>
 
-<script type="text/javascript" src="app.js"></script>
+              <md-card-actions>
+                <md-button :disabled="!service.loggedIn" class="md-icon-button md-primary"
+                  @click="openComponent(service)">
+                  <md-icon>logout</md-icon>
+                </md-button>
+
+                <!--
+                        <md-button class="md-icon-button md-accent" @click="componentLogin(name)">
+                          <md-icon>sync</md-icon>
+                        </md-button>
+                        -->
+              </md-card-actions>
+
+            </md-card>
+
+            <iframe :id="name" class="ifr" :src="service.src"></iframe>
+          </div>
+        </div>
+        </md-card>
+
+
+
+
+    </form>
+
+  </div>
+
+  <script type="text/javascript" src="app.js"></script>
 
 </body>
+
 </html>

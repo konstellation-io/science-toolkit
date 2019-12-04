@@ -4,6 +4,7 @@ const app = new Vue({
   el: '#app',
   data: {
     baseURL: '',
+    isLoading: false,
     input: {
       username: "",
       password: ""
@@ -41,6 +42,7 @@ const app = new Vue({
   methods: {
 
     login: async function (event) {
+      this.isLoading = true
       const response = await fetch('/login', {
         headers: {
           'Content-Type': 'application/json'
@@ -49,7 +51,7 @@ const app = new Vue({
         body: JSON.stringify(this.input)
       })
       const data = await response.json()
-
+      this.isLoading = false
       Object.keys(data).map(component => {
         const creds = data[component]
         console.log('LOGIN: ', component, creds)
@@ -65,7 +67,7 @@ const app = new Vue({
 
     },
 
-    openComponent: function(service) {
+    openComponent: function (service) {
       console.log('SERVICE', service)
       window.open(service.url.origin, '_blank')
     },
