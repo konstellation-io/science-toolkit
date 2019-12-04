@@ -22,7 +22,7 @@ spec:
                 name: drone-secret
           volumeMounts:
             - name: drone-pvc
-              mountPath: /var/lib/drone
+              mountPath: /data
           livenessProbe:
             httpGet:
               path: /
