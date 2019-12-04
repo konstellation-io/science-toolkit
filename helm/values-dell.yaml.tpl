@@ -4,6 +4,9 @@ gitea:
   storage:
     size: 10Gi
     storageClassName: microk8s-hostpath
+  oauth2:
+    clientID: ${GITEA_CLIENT_ID}
+    secret: ${GITEA_SECRET}
 
 postgres:
   storage:
