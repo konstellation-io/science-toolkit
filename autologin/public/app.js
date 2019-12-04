@@ -4,6 +4,7 @@ const app = new Vue({
   el: '#app',
   data: {
     baseURL: '',
+    isLoading: false,
     input: {
       username: "",
       password: ""
@@ -11,19 +12,23 @@ const app = new Vue({
     services: {
       code: {
         loggedIn: false,
-        img: "https://cdn.dribbble.com/users/698/screenshots/3168520/vs-code-icon.png"
+        img: "/img/vscode.png"
       },
       minio: {
         loggedIn: false,
-        img: "https://img.stackshare.io/service/4485/gTawkyAA.png"
+        img: "/img/minio.png"
       },
       gitea: {
         loggedIn: false,
-        img: "https://pbs.twimg.com/profile_images/892636838397042692/hOlfLnly_400x400.jpg"
+        img: "/img/gitea.png"
       },
       jupyter: {
         loggedIn: false,
-        img: "https://jrogel.com/wp-content/uploads/2015/08/Jupyter.jpg"
+        img: "/img/jupyter.png"
+      },
+      drone: {
+        loggedIn: false,
+        img: "/img/drone.png"
       }
     }
   },
@@ -37,6 +42,7 @@ const app = new Vue({
   methods: {
 
     login: async function (event) {
+      this.isLoading = true
       const response = await fetch('/login', {
         headers: {
           'Content-Type': 'application/json'
@@ -45,7 +51,7 @@ const app = new Vue({
         body: JSON.stringify(this.input)
       })
       const data = await response.json()
-
+      this.isLoading = false
       Object.keys(data).map(component => {
         const creds = data[component]
         console.log('LOGIN: ', component, creds)
@@ -59,6 +65,11 @@ const app = new Vue({
         document.querySelector(`#${component}`).contentWindow.postMessage({ type: 'logout' }, target.url.origin)
       })
 
+    },
+
+    openComponent: function (service) {
+      console.log('SERVICE', service)
+      window.open(service.url.origin, '_blank')
     },
 
     componentLogin: async function (component) {
@@ -88,6 +99,10 @@ const app = new Vue({
       const { component, loggedIn } = event.data
       if (component && this.services[component]) {
         this.services[component].loggedIn = loggedIn
+
+        if (component === 'gitea') {
+          this.services['drone'].loggedIn = loggedIn
+        }
       }
     }
 

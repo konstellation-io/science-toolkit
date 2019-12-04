@@ -3,7 +3,7 @@ const config = require('./config')
 
 const DEFAULT_URL = config.services.minio
 
-module.exports = async ({ url = DEFAULT_URL, accessKey, secretKey }) => {
+module.exports = ({ url = DEFAULT_URL, accessKey, secretKey }) => {
   if (!accessKey || !secretKey) {
     console.log('NO CREDENTIALS')
     return {}
