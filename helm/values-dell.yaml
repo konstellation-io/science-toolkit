@@ -1,3 +1,5 @@
+domain: toolkit.konstellation.io
+
 gitea:
   storage:
     size: 10Gi
