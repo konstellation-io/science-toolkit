@@ -40,4 +40,3 @@ module.exports = ({ url = DEFAULT_URL, user, pass }) => {
     return cookies
   })
 }
-

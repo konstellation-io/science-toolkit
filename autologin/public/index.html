@@ -1,9 +1,8 @@
 <html>
 
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
-    integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue-material"></script>
   <style>
     .ifr {
       width: 0;
@@ -11,86 +10,87 @@
       border: 0;
       border: none;
     }
+
+    .compList .md-card {
+      width: 320px;
+      margin: 4px;
+      padding: 10px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .logoDisabled {
+      filter: grayscale(100%);
+    }
   </style>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
   <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
   <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
 </head>
 
 <body>
-  <div id="app">
+<div id="app"  class="md-layout">
+  <form novalidate>
 
-    <button @click="logout"> logout <i class="fa fa-sign-out"></i> </button>
+    <md-card class="md-layout-item md-gutter">
+      <md-card-header>
+        <span class="md-display-3">Science Toolkit</span>
+      </md-card-header>
 
-    <br />
-
-    <button @click="componentLogin('minio')"> minio login </button>
-    <button @click="componentLogin('gitea')"> gitea login </button>
-    <button @click="componentLogin('jupyter')"> jupyter login </button>
-    <button @click="componentLogin('code')"> vscode login </button>
-
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
-      <md-card class="md-layout-item md-size-70 md-small-size-90"
-        style="margin:auto; padding: 30px;text-align-last: center;">
-        <md-card-header>
-          <span style="text-align: center;" class="md-display-3">Science Toolkit</span>
-        </md-card-header>
-
-        <md-card-content>
-          <md-field>
-            <label for="username">Username</label>
-            <md-input type="username" name="username" id="username" autocomplete="username" v-model="input.username" />
-          </md-field>
-          <md-field>
-            <label for="password">Password</label>
-            <md-input type="password" name="password" id="password" autocomplete="password" v-model="input.password" />
-          </md-field>
-        </md-card-content>
+      <md-card-content>
+        <md-field>
+          <label for="username">Username</label>
+          <md-input type="username" name="username" id="username" autocomplete="username" v-model="input.username"/>
+        </md-field>
+        <md-field>
+          <label for="password">Password</label>
+          <md-input type="password" name="password" id="password" autocomplete="password" v-model="input.password"/>
+        </md-field>
+      </md-card-content>
 
 
+      <md-card-actions>
         <md-button @click="login" class="md-raised md-primary">Login</md-button>
         <md-button @click="logout" class="md-raised md-accent">Logout</md-button>
+      </md-card-actions>
 
-        <div class="md-layout md-gutter">
-          <div v-for="(service, name, index) in services" class="md-layout-item md-small-size-50">
-            <md-card style="text-align: center;">
-              <md-card-media>
-                <img :class="{ logoDisabled: !service.loggedIn }" :src="service.img" class="logo" alt="People">
-              </md-card-media>
-              {{ name }}
-              <md-card-actions v-if="!service.loggedIn">
+    </md-card>
 
-                <md-button class="md-icon-button" @click="openComponent(name)">
-                  <md-icon>external-link</md-icon>
-                </md-button>
+    <div class="md-layout-item compList">
+      <div v-for="(service, name, index) in services" class="md-gutter md-layout-item md-small-size-50">
+        <md-card>
+          <md-card-header>
+            <div class="md-title">{{ name }}</div>
+          </md-card-header>
 
-                <md-button class="md-icon-button">
-                  <md-icon>sync</md-icon>
-                </md-button>
+          <md-card-media md-big style="min-height: 180px;">
+            <img :class="{ logoDisabled: !service.loggedIn }" :src="service.img">
+          </md-card-media>
 
-              </md-card-actions>
-            </md-card>
-            <iframe :id="name" class="ifr" :src="service.src"></iframe>
-          </div>
-        </div>
+          <md-card-actions>
 
-      </md-card>
+            <md-button class="md-icon-button md-primary" @click="openComponent(service)">
+              <md-icon>home</md-icon>
+            </md-button>
 
-    </form>
+            <!--
+            <md-button class="md-icon-button md-accent" @click="componentLogin(name)">
+              <md-icon>sync</md-icon>
+            </md-button>
+            -->
+          </md-card-actions>
+        </md-card>
 
+        <iframe :id="name" class="ifr" :src="service.src"></iframe>
+      </div>
+    </div>
 
-  </div>
-</body>
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/vue-material"></script>
+  </form>
+
+</div>
+
 <script type="text/javascript" src="app.js"></script>
 
+</body>
 </html>
-<style lang="scss">
-  .logo {
-    height: 120px !important;
-  }
-
-  .logoDisabled {
-    filter: grayscale(100%);
-  }
-</style>

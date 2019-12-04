@@ -11,23 +11,23 @@ const app = new Vue({
     services: {
       code: {
         loggedIn: false,
-        img: "https://cdn.dribbble.com/users/698/screenshots/3168520/vs-code-icon.png"
+        img: "/img/vscode.png"
       },
       minio: {
         loggedIn: false,
-        img: "https://img.stackshare.io/service/4485/gTawkyAA.png"
+        img: "/img/minio.png"
       },
       gitea: {
         loggedIn: false,
-        img: "https://pbs.twimg.com/profile_images/892636838397042692/hOlfLnly_400x400.jpg"
+        img: "/img/gitea.png"
       },
       jupyter: {
         loggedIn: false,
-        img: "https://jrogel.com/wp-content/uploads/2015/08/Jupyter.jpg"
+        img: "/img/jupyter.png"
       },
       drone: {
         loggedIn: false,
-        img: "https://pbs.twimg.com/profile_images/1106628286107381761/R_wMcCqN_400x400.png"
+        img: "/img/drone.png"
       }
     }
   },
@@ -65,6 +65,11 @@ const app = new Vue({
 
     },
 
+    openComponent: function(service) {
+      console.log('SERVICE', service)
+      window.open(service.url.origin, '_blank')
+    },
+
     componentLogin: async function (component) {
       const response = await fetch(`/dev/login/${component}`, { method: 'POST' })
       const data = await response.json()
@@ -92,6 +97,10 @@ const app = new Vue({
       const { component, loggedIn } = event.data
       if (component && this.services[component]) {
         this.services[component].loggedIn = loggedIn
+
+        if (component === 'gitea') {
+          this.services['drone'].loggedIn = loggedIn
+        }
       }
     }
 
