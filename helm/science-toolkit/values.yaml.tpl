@@ -72,6 +72,8 @@ jupyterhub:
       c.Spawner.cmd = ['jupyter-labhub']
   proxy:
     secretToken: "3bcee88b0a1aea302b9757fd9dcc8579469f86bac91229ee5dd0262f4b3d274d"
+    service:
+      type: ClusterIP
   cull:
     timeout: 259200
   ingress:
