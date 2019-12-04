@@ -10,7 +10,7 @@ autologin:
 
 gitea:
   username: test
-  password: gitea123
+  password: Test.123
   image:
     repository: gitea/gitea
     tag: 1.10.0
