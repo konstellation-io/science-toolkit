@@ -34,5 +34,4 @@ mlflow:
   volume:
     size: 10Gi
   s3: 
-    url: http://{{ .Release.Name }}-minio:9000
     bucket: mlflow-artifacts

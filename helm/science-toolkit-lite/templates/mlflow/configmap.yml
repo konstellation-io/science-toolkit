@@ -5,7 +5,5 @@ metadata:
   labels:
     app:  {{ .Values.mlflow.name }}-config
 data:
-  MLFLOW_S3_ENDPOINT_URL: {{ .Values.mlflow.s3.url }}
+  MLFLOW_S3_ENDPOINT_URL: http://{{.Release.Name }}-minio:9000
   ARTIFACTS_BUCKET: {{ .Values.mlflow.s3.bucket }}
-  AWS_ACCESS_KEY_ID: {{ .Values.minio.accessKey}}
-  AWS_SECRET_ACCESS_KEY: {{ .Values.minio.secretKey}}
