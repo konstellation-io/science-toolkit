@@ -1,4 +1,4 @@
-domain: toolkit.konstellation.io
+domain: toolkit-lite.konstellation.io
 
 sharedVolume:
   name: received-data-toolkit-lite
