@@ -7,3 +7,5 @@ metadata:
 data:
   MLFLOW_S3_ENDPOINT_URL: {{ .Values.mlflow.s3.url }}
   ARTIFACTS_BUCKET: {{ .Values.mlflow.s3.bucket }}
+  AWS_ACCESS_KEY_ID: {{ .Values.minio.accessKey}}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.minio.secretKey}}
