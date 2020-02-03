@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.mlflow.name }}
+  labels:
+    app:  {{ .Values.mlflow.name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mlflow.name }}
+    spec:
+      containers:
+        - name: {{ .Values.mlflow.name }}
+          image: {{ .Values.mlflow.image.repository }}:{{ .Values.mlflow.image.tag }}
+          imagePullPolicy: {{ .Values.mlflow.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.mlflow.name }}-config
+            - secretRef:
+                name: {{ .Values.mlflow.name }}-secret
+          volumeMounts:
+            - name: mlflow-tracking
+              mountPath: /mlflow/tracking
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.mlflow.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 60
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets  }}
+      - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      volumes:
+        - name: mlflow-tracking
+          persistentVolumeClaim:
+            claimName: {{ .Values.mlflow.name }}-claim

@@ -1,0 +1,9 @@
+dependencies:
+- name: jupyterhub
+  repository: https://jupyterhub.github.io/helm-chart/
+  version: 0.8.2
+- name: minio
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 2.5.16
+digest: sha256:9ad65658407d96dcac46007e15b707f3f8bb9bedef59d6f5fa76acf63e3e1f0c
+generated: "2019-12-03T13:30:06.819054489+01:00"

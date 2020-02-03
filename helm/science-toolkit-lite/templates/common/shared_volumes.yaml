@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.sharedVolume.name }}
+spec:
+  capacity:
+    storage: 1Gi
+  # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  storageClassName: {{ .Values.sharedVolume.storageClassName }}
+  hostPath:
+    path: {{ .Values.sharedVolume.path }}
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.sharedVolume.name }}-claim
+spec:
+  storageClassName: {{ .Values.sharedVolume.storageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

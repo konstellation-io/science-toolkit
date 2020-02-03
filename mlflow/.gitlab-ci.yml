@@ -1,0 +1,36 @@
+release-mlflow-image:
+  stage: semantic-release-image
+  image: node:10
+  before_script:
+    - npm install --prefix mlflow
+  script:
+    - cd mlflow && npx semantic-release -e semantic-release-monorepo
+  only:
+    changes:
+      - mlflow/**/*
+    refs:
+      - master
+
+publish_mlflow_docker_image:
+  stage: publish
+  image: docker:18-git
+  services:
+    - docker:18-dind
+  tags:
+    - dind
+  variables:
+    PROJECT_GROUP: "terminus7"
+    IMAGE_PROJECT_NAME: "mlflow"
+  before_script:
+    - apk add bash git coreutils --update
+    - docker login -u $DOCKER_CLOUD_USER -p $DOCKER_CLOUD_PASS docker.io
+  script:
+    - cd mlflow
+    - export TAG=${CI_COMMIT_TAG#mlflow-v}
+    - docker build -t $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG -t $PROJECT_GROUP/$IMAGE_PROJECT_NAME:latest .
+    - docker push $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG 
+    - docker push $PROJECT_GROUP/$IMAGE_PROJECT_NAME:latest 
+  after_script:
+    - docker rmi $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG 
+  only:
+    - /^mlflow-v\d*.\d*.\d*$/

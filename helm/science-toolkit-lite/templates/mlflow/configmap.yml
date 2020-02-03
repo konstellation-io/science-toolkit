@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.mlflow.name }}-config
+  labels:
+    app:  {{ .Values.mlflow.name }}-config
+data:
+  MLFLOW_S3_ENDPOINT_URL: {{ .Values.mlflow.s3.url }}
+  ARTIFACTS_BUCKET: {{ .Values.mlflow.s3.bucket }}
