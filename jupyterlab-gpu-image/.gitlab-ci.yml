@@ -27,9 +27,9 @@ publish_docker_image:
   script:
     - cd jupyterlab-gpu-image
     - export TAG=${CI_COMMIT_TAG#jupyterlab-gpu-image-v}
-    - docker build -t $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG-test .
-    - docker push $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG-test
+    - docker build -t $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG .
+    - docker push $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG
   after_script:
-    - docker rmi $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG-test
+    - docker rmi $PROJECT_GROUP/$IMAGE_PROJECT_NAME:$TAG
   only:
     - /^jupyterlab-gpu-image-v\d*.\d*.\d*$/
