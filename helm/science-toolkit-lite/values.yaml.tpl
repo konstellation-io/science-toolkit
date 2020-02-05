@@ -28,7 +28,7 @@ jupyterhub:
       enabled: true
     image:
       name: terminus7/jupyterlab-gpu
-      tag: 1.4.0-test
+      tag: 1.0.0
     storage:
       extraVolumes:
         - name: received-data
