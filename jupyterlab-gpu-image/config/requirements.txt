@@ -39,3 +39,5 @@ gensim==3.8.1
 xlrd==1.2.0
 nltk==3.4.5
 tables==3.5.2
+networkx==2.4
+mlflow==1.3.0
