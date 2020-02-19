@@ -3,7 +3,8 @@ domain: toolkit.local
 sharedVolume:
   name: received-data-lite
   storageClassName: standard
-  path: /sci-toolkit-lite/received-data-lite
+  path: /sci-toolkit-data/received-data-lite
+  size: 1Gi
 
 jupyterhub:
   credentials:
@@ -30,6 +31,7 @@ jupyterhub:
       name: terminus7/jupyterlab-gpu
       tag: 1.0.0
     storage:
+      capacity: 2Gi
       extraVolumes:
         - name: received-data
           persistentVolumeClaim:
