@@ -4,10 +4,12 @@ sharedVolume:
   name: received-data-toolkit-lite
   storageClassName: microk8s-hostpath
   path: /sci-toolkit-lite/received-data-toolkit-lite
+  size: 100Gi
 
 jupyterhub:
   singleuser:
     storage:
+      capacity: 10Gi
       extraVolumes:
         - name: received-data-toolkit-lite
           persistentVolumeClaim:
