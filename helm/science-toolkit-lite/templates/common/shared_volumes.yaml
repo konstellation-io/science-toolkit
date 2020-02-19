@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.sharedVolume.name }}
 spec:
   capacity:
-    storage: 1Gi
+    storage: {{ .Values.sharedVolume.size }}
   # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
   volumeMode: Filesystem
   accessModes:
