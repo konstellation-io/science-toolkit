@@ -5,6 +5,7 @@ metadata:
     app: vscode
   name: vscode
 spec:
+  serviceName: "vscode"
   replicas: 1
   selector:
     matchLabels:

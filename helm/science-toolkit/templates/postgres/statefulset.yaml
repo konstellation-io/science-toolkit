@@ -5,6 +5,7 @@ metadata:
     app: postgres
   name: postgres
 spec:
+  serviceName: "postgres"
   replicas: 1
   selector:
     matchLabels:

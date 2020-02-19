@@ -1,5 +1,9 @@
 The Science Toolkit have been deployed successfully!!!
 
+Link:
+
+http://app.{{ .Values.domain }}
+
 *IMPORTANT*: You need to update the content of `.Values.gitea.oauth2.clientID` and `.Values.gitea.oauth2.secret`
 and relauch the helm installation as follow.
 
