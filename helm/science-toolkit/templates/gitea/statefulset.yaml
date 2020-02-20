@@ -5,6 +5,7 @@ metadata:
   labels:
     app:  gitea
 spec:
+  serviceName: "gitea"
   replicas: 1
   template:
     metadata:
@@ -21,12 +22,20 @@ spec:
           volumeMounts:
             - name: gitea-pvc
               mountPath: /data
+            - name: gitea-init
+              mountPath: /data/gitea/conf/app.ini
+              subPath: app.ini
+
           livenessProbe:
             httpGet:
               path: /
               port: 3000
             initialDelaySeconds: 30
             periodSeconds: 60
+      volumes:
+        - name: gitea-init
+          configMap:
+            name: gitea-init
   volumeClaimTemplates:
     - metadata:
         name: gitea-pvc

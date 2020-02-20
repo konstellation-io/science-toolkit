@@ -5,6 +5,7 @@ metadata:
   labels:
     app:  drone
 spec:
+  serviceName: "drone"
   replicas: 1
   template:
     metadata:
