@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: gitea
+      annotations:
+        helm.sh/restart-deployment: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
         - name: gitea
