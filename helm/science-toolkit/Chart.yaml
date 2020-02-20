@@ -3,3 +3,10 @@ appVersion: "1.0"
 description: Science Toolkit
 name: science-toolkit
 version: 0.1.0
+dependencies:
+  - name: jupyterhub
+    version: "0.8.2"
+    repository: https://jupyterhub.github.io/helm-chart/
+  - name: minio
+    version: "2.5.16"
+    repository: "@stable"

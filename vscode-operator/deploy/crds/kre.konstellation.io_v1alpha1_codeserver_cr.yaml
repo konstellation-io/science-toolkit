@@ -1,0 +1,29 @@
+apiVersion: kre.konstellation.io/v1alpha1
+kind: CodeServer
+metadata:
+  name: gustavo
+spec:
+  # Default values copied from <project_dir>/helm-charts/codeserver/values.yaml
+  
+  # Default values for codeserver.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+
+  domain: toolkit.local
+  auth:
+    username: gustavo
+    password: 123456
+
+  storage:
+    size: 10Gi
+    className: standard
+
+  #sharedVolume:
+  #  name: ""
+
+  gitea:
+    clientId: "12345"
+    clientSecret: "12345"
+
+  tls:
+    enabled: false

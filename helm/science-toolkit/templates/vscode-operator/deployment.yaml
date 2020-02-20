@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vscode-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: vscode-operator
+  template:
+    metadata:
+      labels:
+        name: vscode-operator
+      annotations:
+        helm.sh/restart-deployment: {{ randAlphaNum 5 | quote }}
+    spec:
+      serviceAccountName: vscode-operator
+      containers:
+        - name: vscode-operator
+          # Replace this with the built image name
+          image: terminus7/sci-toolkit-vscode-operator:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "vscode-operator"
