@@ -19,8 +19,8 @@ data:
   MINIO_ACCESS_KEY: "minio"
   MINIO_SECRET_KEY: "minio123"
 
-  GITEA_USERNAME: {{ .Values.gitea.username }}
-  GITEA_PASSWORD: {{ .Values.gitea.password }}
+  GITEA_USERNAME: {{ .Values.gitea.admin.username }}
+  GITEA_PASSWORD: {{ .Values.gitea.admin.password }}
 
   JUPYTER_USERNAME: {{ .Values.jupyterhub.credentials.username }}
   JUPYTER_PASSWORD: {{ .Values.jupyterhub.credentials.password }}

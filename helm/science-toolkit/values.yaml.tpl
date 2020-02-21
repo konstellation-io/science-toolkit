@@ -9,8 +9,10 @@ autologin:
     pullPolicy: IfNotPresent
 
 gitea:
-  username: test
-  password: Test.123
+  admin:
+    username: test
+    password: Test.123
+    email: test@test.com
   image:
     repository: gitea/gitea
     tag: 1.10.0
