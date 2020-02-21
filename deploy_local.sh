@@ -11,8 +11,7 @@ export NAMESPACE=toolkit
 export DEPLOY_NAME=toolkit
 export MINIKUBE_PROFILE=toolkit
 export AUTOLOGIN_TAG="latest"
-export JUPYTERHUB_ENABLED=true
-export MINIO_ENABLED=true
+
 
 check_requirements
 
@@ -24,18 +23,19 @@ case $* in
 *--skip-build*)
   export SKIP_BUILD=1
   ;;
-*--disable-jupyterhub*)
-  export JUPYTERHUB_ENABLED=false
-  ;;
-*--disable-minio*)
-  export MINIO_ENABLED=false
-  ;;
 esac
 
 ./scripts/replace_env_path.sh
 . ./scripts/minikube_start.sh
 
 IP=$(minikube -p $MINIKUBE_PROFILE ip)
+export DOMAIN=toolkit.$IP.nip.io
+export JUPYTERHUB_GITEA_CLIENT_ID=""
+export JUPYTERHUB_GITEA_CLIENT_SECRET=""
+export DRONE_GITEA_CLIENT_ID=""
+export DRONE_GITEA_CLIENT_SECRET=""
+export VSCODE_GITEA_CLIENT_ID=""
+export VSCODE_GITEA_CLIENT_SECRET=""
 
 # Setup environment to build images inside minikube
 eval "$(minikube docker-env -p "$MINIKUBE_PROFILE")"
