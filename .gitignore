@@ -1,7 +1,5 @@
 node_modules
 .idea
 .vscode
-./helm/science-toolkit/values.yaml
-./helm/values-dell-lite.yaml
-./helm/values-dell.yaml
-./helm/science-toolkit-lite/values.yaml
+helm/science-toolkit*/values.yaml
+helm/values-*.yaml

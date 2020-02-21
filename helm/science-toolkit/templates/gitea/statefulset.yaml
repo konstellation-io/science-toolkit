@@ -21,13 +21,23 @@ spec:
           envFrom:
             - configMapRef:
                 name: gitea-config
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/su"
+                  - "git"
+                  - "-c"
+                  - "/usr/local/bin/create-admin.sh"
           volumeMounts:
             - name: gitea-pvc
               mountPath: /data
             - name: gitea-init
               mountPath: /data/gitea/conf/app.ini
               subPath: app.ini
-
+            - name: gitea-init
+              mountPath: /usr/local/bin/create-admin.sh
+              subPath: create-admin.sh
           livenessProbe:
             httpGet:
               path: /
@@ -38,6 +48,7 @@ spec:
         - name: gitea-init
           configMap:
             name: gitea-init
+            defaultMode: 0777
   volumeClaimTemplates:
     - metadata:
         name: gitea-pvc
