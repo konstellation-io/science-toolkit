@@ -67,9 +67,23 @@ jupyterhub:
     password: test
   hub:
     cookieSecret: "61cffae7cfa30a05086fd916ec27f06b1388ada9302356c090c735b00082ad4a"
-    extraConfig: |-
-      c.Spawner.ip = '0.0.0.0'
-      c.Spawner.cmd = ['jupyter-labhub']
+    extraEnv:
+      OAUTH2_AUTHORIZE_URL: "http://gitea.${DOMAIN}/login/oauth/authorize"
+    extraConfig:
+      myConfig: |
+        c.Spawner.ip = '0.0.0.0'
+        c.Spawner.cmd = ['jupyter-labhub']
+        c.JupyterHub.authenticator_class = 'oauthenticator.generic.GenericOAuthenticator'
+        c.GenericOAuthenticator.oauth_callback_url = 'http://jupyter.${DOMAIN}/hub/oauth_callback'
+        c.GenericOAuthenticator.client_id = '${JUPYTERHUB_GITEA_CLIENT_ID}'
+        c.GenericOAuthenticator.client_secret = '${JUPYTERHUB_GITEA_CLIENT_SECRET}'
+        c.GenericOAuthenticator.login_service = 'Gitea'
+        c.GenericOAuthenticator.userdata_url = 'http://gitea.${DOMAIN}/api/v1/user'
+        c.GenericOAuthenticator.token_url = 'http://gitea.${DOMAIN}/login/oauth/access_token'
+        c.GenericOAuthenticator.extra_params = {
+          'client_id': '${JUPYTERHUB_GITEA_CLIENT_ID}',
+          'client_secret': '${JUPYTERHUB_GITEA_CLIENT_SECRET}'
+        }
   proxy:
     secretToken: "3bcee88b0a1aea302b9757fd9dcc8579469f86bac91229ee5dd0262f4b3d274d"
     service:
