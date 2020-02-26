@@ -6,7 +6,6 @@ stages:
   - deploy
 
 include:
-  - local: autologin/.gitlab-ci.yml
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
   - local: vscode/.gitlab-ci.yml
   - local: mlflow/.gitlab-ci.yml

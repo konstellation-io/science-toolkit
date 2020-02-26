@@ -1,11 +1,9 @@
 domain: toolkit.local
 
-autologin:
-  username: "test"
-  password: "test123"
+dashboard:
   image:
-    repository: terminus7/sci-toolkit-autologin
-    tag: ${AUTOLOGIN_TAG}
+    repository: terminus7/sci-toolkit-dashboard
+    tag: latest
     pullPolicy: IfNotPresent
 
 gitea:

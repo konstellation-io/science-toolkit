@@ -15,7 +15,3 @@ spec:
             backend:
               serviceName: gitea
               servicePort: http
-          - path: /listener
-            backend:
-              serviceName: autologin
-              servicePort: http

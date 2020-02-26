@@ -8,14 +8,11 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: {{ .Values.auth.username }}-code.{{ .Values.domain }}
+    - host: {{ .Values.username }}-code.{{ .Values.domain }}
       http:
         paths:
           - path: /
             backend:
               serviceName: {{ include "codeserver.fullname" . }}
               servicePort: http
-          - path: /listener
-            backend:
-              serviceName: autologin
-              servicePort: http
+

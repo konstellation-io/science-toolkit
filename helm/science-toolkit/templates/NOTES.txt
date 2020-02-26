@@ -1,11 +1,12 @@
-The Science Toolkit have been deployed successfully!!!
+----
 
-Link:
+🌠 Konstellation Science Toolkit {{- if .Release.IsInstall }} Installed{{- else }} Upgraded{{- end }}
+##############################
 
-http://app.{{ .Values.domain }}
+Your release is named {{ .Release.Name }}.
 
-*IMPORTANT*: You need to update the content of `.Values.gitea.oauth2.clientID` and `.Values.gitea.oauth2.secret`
-and relauch the helm installation as follow.
+Now open your browser at: 🌎 http://app.{{ .Values.domain }}
 
+Thank you for installing {{ .Chart.Name | upper }}.
 
-helm upgrade --install sci-toolkit --namespace sci-toolkit helm/science-toolkit 
+----

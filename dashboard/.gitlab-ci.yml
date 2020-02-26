@@ -1,17 +1,17 @@
-release-autologin:
+release-dashboard:
   stage: semantic-release
   image: node:12
   before_script:
-    - npm install --prefix autologin
+    - npm install --prefix dashboard
   script:
-    - cd autologin && npx semantic-release -e semantic-release-monorepo
+    - cd dashboard && npx semantic-release -e semantic-release-monorepo
   only:
     refs:
       - master
     changes:
-      - autologin/**/*
+      - dashboard/**/*
 
-publish-autologin-image:
+publish-dashboard-image:
   stage: publish
   image: docker:18-git
   services:
@@ -19,16 +19,15 @@ publish-autologin-image:
   tags:
     - dind
   variables:
-    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-autologin"
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-dashboard"
   before_script:
     - apk add bash git coreutils --update
-    - TAG=${CI_COMMIT_TAG#"autologin-v"}
+    - TAG=${CI_COMMIT_TAG#"dashboard-v"}
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
-    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./autologin
+    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./dashboard
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
     - docker push $IMAGE_PROJECT_NAME:latest
   only:
-    - /^autologin-v\d*.\d*.\d*$/
-
+    - /^dashboard-v\d*.\d*.\d*$/

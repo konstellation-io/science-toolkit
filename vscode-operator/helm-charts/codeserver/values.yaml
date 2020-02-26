@@ -1,18 +1,10 @@
 domain: toolkit.local
-auth:
-  username: demo
-  password: 123456
-
+username: demo
+tls:
+  enabled: false
 storage:
   size: 10Gi
   className: standard
 
 sharedVolume:
   name: ""
-
-gitea:
-  clientId: ""
-  clientSecret: ""
-
-tls:
-  enabled: false

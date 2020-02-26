@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: autologin
+  name: dashboard
   labels:
-    app: autologin  
+    app: dashboard
 spec:
   clusterIP: None
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: autologin
+    app: dashboard

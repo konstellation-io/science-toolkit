@@ -14,7 +14,4 @@ spec:
             backend:
               serviceName: proxy-public
               servicePort: http
-          - path: /listener
-            backend:
-              serviceName: autologin
-              servicePort: http
+

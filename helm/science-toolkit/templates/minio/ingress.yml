@@ -15,7 +15,3 @@ spec:
             backend:
               serviceName: {{ .Release.Name }}-minio
               servicePort: 9000
-          - path: /listener
-            backend:
-              serviceName: autologin
-              servicePort: http
