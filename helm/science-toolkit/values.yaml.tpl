@@ -1,8 +1,8 @@
 domain: toolkit.local
 
 autologin:
-  username: test
-  password: test123
+  username: "test"
+  password: "test123"
   image:
     repository: terminus7/sci-toolkit-autologin
     tag: ${AUTOLOGIN_TAG}
@@ -10,12 +10,12 @@ autologin:
 
 gitea:
   admin:
-    username: test
-    password: Test.123
+    username: ${GITEA_ADMIN_USER}
+    password: "${GITEA_ADMIN_PASSWORD}"
     email: test@test.com
   image:
-    repository: gitea/gitea
-    tag: 1.10.0
+    repository: terminus7/gitea
+    tag: oauth
     pullPolicy: IfNotPresent
   storage:
     size: 10Gi
@@ -58,7 +58,7 @@ vscode:
     repository: terminus7/sci-toolkit-vscode
     tag: ${VSCODE_TAG}
     pullPolicy: IfNotPresent
-  password: "123456"
+  password: 123456
   storage:
     size: 10Gi
     storageClassName: standard
@@ -68,24 +68,66 @@ jupyterhub:
     username: test
     password: test
   hub:
+    initContainers:
+      - name: gitea-oauth2-setup
+        image: terminus7/gitea-oauth2-setup:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        envFrom:
+          - secretRef:
+              name: gitea-admin-secrets
+          - secretRef:
+              name: jupyter-oauth2-secrets
+          - configMapRef:
+              name: gitea-configmap
     cookieSecret: "61cffae7cfa30a05086fd916ec27f06b1388ada9302356c090c735b00082ad4a"
     extraEnv:
-      OAUTH2_AUTHORIZE_URL: "http://gitea.${DOMAIN}/login/oauth/authorize"
+      - name: OAUTH2_AUTHORIZE_URL
+        valueFrom:
+          configMapKeyRef:
+            name: gitea-configmap
+            key: GITEA_OAUTH2_AUTHORIZE_URL
+      - name: OAUTH2_TOKEN_URL
+        valueFrom:
+          configMapKeyRef:
+            name: gitea-configmap
+            key: GITEA_OAUTH2_TOKEN_URL
+      - name: OAUTH2_USERDATA_URL
+        valueFrom:
+          configMapKeyRef:
+            name: gitea-configmap
+            key: GITEA_OAUTH2_USERDATA_URL
+      - name: OAUTH_CALLBACK_URL
+        valueFrom:
+          secretKeyRef:
+            name: jupyter-oauth2-secrets
+            key: JUPYTER_OAUTH2_CALLBACK_URL
+      - name: OAUTH_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: jupyter-oauth2-secrets
+            key: JUPYTER_OAUTH2_CLIENT_ID
+      - name: OAUTH_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: jupyter-oauth2-secrets
+            key: JUPYTER_OAUTH2_CLIENT_SECRET
+      - name: GITEA_REDIRECT_URIS
+        valueFrom:
+          secretKeyRef:
+            name: jupyter-oauth2-secrets
+            key: GITEA_REDIRECT_URIS
     extraConfig:
       myConfig: |
         c.Spawner.ip = '0.0.0.0'
         c.Spawner.cmd = ['jupyter-labhub']
         c.JupyterHub.authenticator_class = 'oauthenticator.generic.GenericOAuthenticator'
-        c.GenericOAuthenticator.oauth_callback_url = 'http://jupyter.${DOMAIN}/hub/oauth_callback'
-        c.GenericOAuthenticator.client_id = '${JUPYTERHUB_GITEA_CLIENT_ID}'
-        c.GenericOAuthenticator.client_secret = '${JUPYTERHUB_GITEA_CLIENT_SECRET}'
         c.GenericOAuthenticator.login_service = 'Gitea'
-        c.GenericOAuthenticator.userdata_url = 'http://gitea.${DOMAIN}/api/v1/user'
-        c.GenericOAuthenticator.token_url = 'http://gitea.${DOMAIN}/login/oauth/access_token'
-        c.GenericOAuthenticator.extra_params = {
-          'client_id': '${JUPYTERHUB_GITEA_CLIENT_ID}',
-          'client_secret': '${JUPYTERHUB_GITEA_CLIENT_SECRET}'
-        }
+        
   proxy:
     secretToken: "3bcee88b0a1aea302b9757fd9dcc8579469f86bac91229ee5dd0262f4b3d274d"
     service:
