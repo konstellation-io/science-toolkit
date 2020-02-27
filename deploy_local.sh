@@ -11,9 +11,19 @@ export NAMESPACE=toolkit
 export DEPLOY_NAME=toolkit
 export MINIKUBE_PROFILE=toolkit
 export AUTOLOGIN_TAG="latest"
-
+export GITEA_ADMIN_USER="toolkit-admin"
+export GITEA_ADMIN_PASSWORD=123456
+export GITEA_URL="http://gitea"
 
 check_requirements
+
+clean () {
+  helm -n toolkit delete toolkit
+  kubectl -n toolkit delete statefulsets.apps gitea
+  kubectl -n toolkit delete statefulsets.apps postgres
+  kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc 
+  kubectl -n toolkit delete crd codeservers.sci-toolkit.konstellation.io
+}
 
 case $* in
 # WARNING: Doing a hard reset before deploying
@@ -23,19 +33,17 @@ case $* in
 *--skip-build*)
   export SKIP_BUILD=1
   ;;
+*--clean* | *--semi-dracarys*)
+  clean
+  ;;
 esac
 
-./scripts/replace_env_path.sh
 . ./scripts/minikube_start.sh
 
 IP=$(minikube -p $MINIKUBE_PROFILE ip)
 export DOMAIN=toolkit.$IP.nip.io
-export JUPYTERHUB_GITEA_CLIENT_ID=""
-export JUPYTERHUB_GITEA_CLIENT_SECRET=""
-export DRONE_GITEA_CLIENT_ID=""
-export DRONE_GITEA_CLIENT_SECRET=""
-export VSCODE_GITEA_CLIENT_ID=""
-export VSCODE_GITEA_CLIENT_SECRET=""
+
+./scripts/replace_env_path.sh
 
 # Setup environment to build images inside minikube
 eval "$(minikube docker-env -p "$MINIKUBE_PROFILE")"
@@ -48,6 +56,9 @@ if [ "$SKIP_BUILD" != "1" ]; then
 
   build_header "vscode"
   docker build -t terminus7/sci-toolkit-vscode:latest vscode
+
+  build_header "gitea-oauth2-setup"
+  docker build -t terminus7/gitea-oauth2-setup:latest gitea-oauth2-setup
 fi
 
 # Helm v3 needs this the base repo to be added manually
@@ -82,3 +93,5 @@ if [ "$OPERATOR_SDK_INSTALLED" != "1" ]; then
 fi
 
 echo_green "\n✔️  Done.\n\n"
+
+

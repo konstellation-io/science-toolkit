@@ -14,15 +14,15 @@ data:
 
   # Temporal credentials until moved to a DB
   AUTOLOGIN_USERNAME: {{ .Values.autologin.username }}
-  AUTOLOGIN_PASSWORD: {{ .Values.autologin.password }}
+  AUTOLOGIN_PASSWORD: {{ .Values.autologin.password | quote }}
 
   MINIO_ACCESS_KEY: "minio"
   MINIO_SECRET_KEY: "minio123"
 
   GITEA_USERNAME: {{ .Values.gitea.admin.username }}
-  GITEA_PASSWORD: {{ .Values.gitea.admin.password }}
+  GITEA_PASSWORD: {{ .Values.gitea.admin.password | quote }}
 
   JUPYTER_USERNAME: {{ .Values.jupyterhub.credentials.username }}
-  JUPYTER_PASSWORD: {{ .Values.jupyterhub.credentials.password }}
+  JUPYTER_PASSWORD: {{ .Values.jupyterhub.credentials.password | quote }}
 
-  VSCODE_PASSWORD: "{{ .Values.vscode.password }}"
+  VSCODE_PASSWORD: {{ .Values.vscode.password | quote }}

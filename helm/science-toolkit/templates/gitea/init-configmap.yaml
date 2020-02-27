@@ -94,13 +94,19 @@ data:
   create-admin.sh: |+
     #!/bin/sh
     sleep 5
-    API_RESPONSE_CODE=$(curl -s -w %{http_code} -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} http://localhost:3000/api/v1/user)
-    if [  "$API_RESPONSE_CODE" == "401" ]; then 
-      gitea admin create-user \
-        --must-change-password=false \
-        --email {{ .Values.gitea.admin.email }} \
-        --username {{ .Values.gitea.admin.username }} \
-        --password {{ .Values.gitea.admin.password }} \
-        --admin
-    fi
+    while true; do
+      API_RESPONSE_CODE=$(curl -s -w %{http_code} -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} http://localhost:3000/api/v1/user)
+      if [  "$API_RESPONSE_CODE" == "401" ]; then 
+        /usr/local/bin/gitea admin create-user \
+          --must-change-password=false \
+          --email {{ .Values.gitea.admin.email }} \
+          --username {{ .Values.gitea.admin.username }} \
+          --password {{ .Values.gitea.admin.password }} \
+          --config /data/gitea/conf/app.ini \
+          --admin
+        exit 0  
+      fi
+      echo "Retrying in a few seconds"
+      sleep 5
+    done
 

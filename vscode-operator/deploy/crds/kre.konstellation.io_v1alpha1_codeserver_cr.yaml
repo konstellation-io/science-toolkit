@@ -1,4 +1,4 @@
-apiVersion: kre.konstellation.io/v1alpha1
+apiVersion: sci-toolkit.konstellation.io/v1alpha1
 kind: CodeServer
 metadata:
   name: gustavo
@@ -12,7 +12,7 @@ spec:
   domain: toolkit.local
   auth:
     username: gustavo
-    password: 123456
+    password: Aa-123456
 
   storage:
     size: 10Gi
@@ -22,8 +22,8 @@ spec:
   #  name: ""
 
   gitea:
-    clientId: "12345"
-    clientSecret: "12345"
+    clientId: "123456"
+    clientSecret: "123456"
 
   tls:
     enabled: false

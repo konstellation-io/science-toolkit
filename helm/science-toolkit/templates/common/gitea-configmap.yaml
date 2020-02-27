@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitea-configmap
+  labels:
+    app:  gitea-configmap
+data:
+  GITEA_URL: {{ printf "http://gitea.%s" .Values.domain }}
+  GITEA_OAUTH2_AUTHORIZE_URL: {{ printf "http://gitea.%s/login/oauth/authorize" .Values.domain }}
+  GITEA_OAUTH2_TOKEN_URL: {{ printf "http://gitea.%s/login/oauth/access_token" .Values.domain }}
+  GITEA_OAUTH2_USERDATA_URL: {{ printf "http://gitea.%s/api/v1/user" .Values.domain }}
+
