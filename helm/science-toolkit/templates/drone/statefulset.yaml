@@ -14,6 +14,22 @@ spec:
       annotations:
         helm.sh/restart-deployment: {{ randAlphaNum 5 | quote }}
     spec:
+      initContainers:
+        - name: gitea-oauth2-setup
+          image: terminus7/gitea-oauth2-setup:latest
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          envFrom:
+            - secretRef:
+                name: gitea-admin-secrets
+            - secretRef:
+                name: drone-oauth2-secrets
+            - configMapRef:
+                name: gitea-configmap
       containers:
         - name: drone
           image: {{ .Values.drone.image.repository }}:{{ .Values.drone.image.tag }}
@@ -43,22 +59,7 @@ spec:
               port: 80
             initialDelaySeconds: 30
             periodSeconds: 60
-      initContainers:
-        - name: gitea-oauth2-setup
-          image: terminus7/gitea-oauth2-setup:latest
-          imagePullPolicy: IfNotPresent
-          env:
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          envFrom:
-            - secretRef:
-                name: gitea-admin-secrets
-            - secretRef:
-                name: drone-oauth2-secrets
-            - configMapRef:
-                name: gitea-configmap
+      
   volumeClaimTemplates:
     - metadata:
         name: drone-pvc
