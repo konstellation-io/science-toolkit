@@ -24,19 +24,12 @@ func checkGitea(url, username, password string) bool {
 		return false
 	}
 	req.SetBasicAuth(username, password)
-	fmt.Printf("Credentials: %s %s", username, password)
-	fmt.Printf("URL: %s", url)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Println(err)
 		return false
 	}
 	log.Printf("Gitea response status: %d \n", resp.StatusCode)
-
-	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-
-	fmt.Println(string(body))
 
 	return resp.StatusCode == http.StatusOK
 
@@ -53,7 +46,6 @@ func createOauth2Application(name string, redirectUris []string, url, username, 
 		log.Printf("payload conversion error: %w \n", err)
 		return nil, err
 	}
-	fmt.Println(string(payloadData))
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/user/applications/oauth2", url), bytes.NewBuffer(payloadData))
 	if err != nil {
 		log.Printf("error calling Gitea when creating Oauth2 Application: %w \n", err)
