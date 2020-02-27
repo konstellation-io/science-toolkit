@@ -19,8 +19,6 @@ check_requirements
 
 clean () {
   helm -n toolkit delete toolkit
-  kubectl -n toolkit delete statefulsets.apps gitea
-  kubectl -n toolkit delete statefulsets.apps postgres
   kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc 
   kubectl -n toolkit delete crd codeservers.sci-toolkit.konstellation.io
 }

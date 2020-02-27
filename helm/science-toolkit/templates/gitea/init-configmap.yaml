@@ -103,7 +103,7 @@ data:
           --username {{ .Values.gitea.admin.username }} \
           --password {{ .Values.gitea.admin.password }} \
           --config /data/gitea/conf/app.ini \
-          --admin
+          --admin >> /data/gitea/create_user.log
         exit 0  
       fi
       echo "Retrying in a few seconds"
