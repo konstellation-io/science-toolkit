@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlflow-oauth2-proxy
+data:
+  oauth2_proxy.cfg: |+
+    provider="gitea"
+    cookie_secret="_csrf"
+    login_url="http://gitea.{{ .Values.domain }}/login/oauth/authorize"
+    redeem_url="http://gitea.{{ .Values.domain }}/login/oauth/access_token"
+    profile_url="http://gitea.{{ .Values.domain }}/api/v1/user"
+    redirect_url="http://mlflow.{{ .Values.domain }}/oauth2/callback"
+    cookie_secure=false
+    cookie_samesite="none"

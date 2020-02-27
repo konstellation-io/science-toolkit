@@ -20,9 +20,6 @@ gitea:
   storage:
     size: 10Gi
     storageClassName: standard
-  oauth2:
-    clientID: Y2hhbmdlLWNsaWVudC1pZA==
-    secret: Y2hhbmdlLXNlY3JldA==
 
 postgres:
   dbName: gitea
@@ -165,3 +162,17 @@ minio:
       - minio.local
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
+
+mlflow:
+  name: mlflow-tracking-server
+  image: 
+    repository: terminus7/mlflow
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+  service:
+    port: 8080
+  host: mlflow
+  volume:
+    size: 10Gi
+  s3: 
+    bucket: mlflow-artifacts
