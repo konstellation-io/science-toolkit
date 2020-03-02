@@ -23,9 +23,6 @@ func ReadUser() gin.HandlerFunc {
 			return
 		}
 
-		// TODO: REMOVE DEBUG
-		h.Username = "gustavo"
-
 		c.Header("x-forwarded-user", h.Username)
 
 		if h.Username == "" {
