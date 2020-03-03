@@ -16,7 +16,24 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "codeserver.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        app: codeserver-{{ .Values.username }}
     spec:
+      initContainers:
+        - name: gitea-oauth2-setup
+          image: terminus7/gitea-oauth2-setup:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - secretRef:
+                name: gitea-admin-secrets
+            - secretRef:
+                name: codeserver-oauth2-secrets-{{ .Values.username }}
+            - configMapRef:
+                name: gitea-configmap
       containers:
         - name: {{ .Chart.Name }}
           image: terminus7/sci-toolkit-vscode:latest
@@ -32,16 +49,24 @@ spec:
             - "*"
             - "-upstream"
             - "http://127.0.0.1:8080/"
+            - "-pass-user-headers"
+            - "-set-xauthrequest"
+            - "-skip-provider-button"
           env:
             - name: OAUTH2_PROXY_GITEA_USER
-              value: "{{ .Values.auth.username }}"
+              value: "{{ .Values.username }}"
             - name: OAUTH2_PROXY_HTTP_ADDRESS
               value: "0.0.0.0:4180"
             - name: OAUTH2_PROXY_CLIENT_ID
-              value: "{{ .Values.gitea.clientId }}"
+              valueFrom:
+                secretKeyRef:
+                  name: codeserver-oauth2-secrets-{{ .Values.username }}
+                  key: CODESERVER_OAUTH2_CLIENT_ID
             - name: OAUTH2_PROXY_CLIENT_SECRET
-              value: "{{ .Values.gitea.clientSecret }}"
-
+              valueFrom:
+                secretKeyRef:
+                  name: codeserver-oauth2-secrets-{{ .Values.username }}
+                  key: CODESERVER_OAUTH2_CLIENT_SECRET
           volumeMounts:
             - name: oauth2-config
               mountPath: /etc/oauth2_proxy.cfg

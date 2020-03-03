@@ -5,7 +5,26 @@ metadata:
 rules:
   - apiGroups: [""]       # "" indicates the core API group
     resources: ["secrets"]
-    verbs: ["get","update","list"]
+    verbs: ["get","update","list", "create"]
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: codeserver
+rules:
+  - apiGroups: ["sci-toolkit.konstellation.io"]
+    resources: ["codeservers"]
+    verbs: ["*"]
+---
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dashboard
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["*"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -31,4 +50,30 @@ subjects:
 roleRef:
   kind: Role
   name: oauth
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: default-codeserver
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: codeserver
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: default-dashboard
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: dashboard
   apiGroup: rbac.authorization.k8s.io

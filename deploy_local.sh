@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e
 if [ "$DEBUG" = "1" ]; then
@@ -10,7 +10,6 @@ fi
 export NAMESPACE=toolkit
 export DEPLOY_NAME=toolkit
 export MINIKUBE_PROFILE=toolkit
-export AUTOLOGIN_TAG="latest"
 export GITEA_ADMIN_USER="toolkit-admin"
 export GITEA_ADMIN_PASSWORD=123456
 export GITEA_URL="http://gitea"
@@ -19,8 +18,8 @@ check_requirements
 
 clean () {
   helm -n toolkit delete toolkit
-  kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc 
-  kubectl -n toolkit delete crd codeservers.sci-toolkit.konstellation.io
+  kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc --force --grace-period=0
+  kubectl -n toolkit delete crd codeservers.sci-toolkit.konstellation.io --force --grace-period=0
 }
 
 case $* in
@@ -46,11 +45,10 @@ export DOMAIN=toolkit.$IP.nip.io
 # Setup environment to build images inside minikube
 eval "$(minikube docker-env -p "$MINIKUBE_PROFILE")"
 
-
 if [ "$SKIP_BUILD" != "1" ]; then
 
-  build_header "autologin"
-  docker build -t terminus7/sci-toolkit-autologin:latest autologin
+  build_header "dashboard"
+  docker build -t terminus7/sci-toolkit-dashboard:latest dashboard
 
   build_header "vscode"
   docker build -t terminus7/sci-toolkit-vscode:latest vscode

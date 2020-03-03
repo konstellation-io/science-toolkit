@@ -56,7 +56,6 @@ spec:
             - "-upstream"
             - "http://127.0.0.1:5000/"
             - "-pass-user-headers"
-            - "-set-xauthrequest"
             - "-skip-provider-button"
           env:
             - name: OAUTH2_PROXY_HTTP_ADDRESS
@@ -92,4 +91,3 @@ spec:
         - name: oauth2-config
           configMap:
             name: mlflow-oauth2-proxy
-        

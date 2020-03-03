@@ -10,20 +10,14 @@ spec:
   # Declare variables to be passed into your templates.
 
   domain: toolkit.local
-  auth:
-    username: gustavo
-    password: Aa-123456
+  username: gustavo
 
   storage:
     size: 10Gi
     className: standard
 
-  #sharedVolume:
-  #  name: ""
-
-  gitea:
-    clientId: "123456"
-    clientSecret: "123456"
+  sharedVolume:
+    name: ""
 
   tls:
     enabled: false
