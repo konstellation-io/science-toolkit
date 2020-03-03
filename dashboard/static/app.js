@@ -5,10 +5,12 @@ const app = new Vue({
     data() {
         return {
             baseURL: new URL(window.location),
+            error: null,
             username: "",
             codeServer: {
                 status: false,
                 isRunning: false,
+                isLoading: false,
             },
             services: [
                 {name: "drone", label: "Drone CI"},
@@ -47,18 +49,33 @@ const app = new Vue({
             this.username = res.headers['x-forwarded-user']
         },
         async startCodeServer() {
-            const res = await axios.post(`/api/start`)
-            console.log(res)
-            setTimeout(() => {
+            this.error = null
+            this.codeServer.isLoading = true
+            try {
+                await axios.post(`/api/start`)
+            }catch (e) {
+                this.error = e
+                console.log("Error: ",e)
+            }finally {
                 this.statusCodeServer()
-            }, 3000)
+                this.codeServer.isLoading = false
+            }
+
         },
         async stopCodeServer() {
-            const res = await axios.post(`/api/stop`)
-            console.log(res)
-            setTimeout(() => {
-                this.statusCodeServer()
-            }, 1000)
+            this.error = null
+            this.codeServer.isLoading = true
+            try {
+                await axios.post(`/api/stop`)
+            }catch (e) {
+                this.error = e
+                console.log("Error: ",e)
+            }finally {
+                setTimeout(() => {
+                    this.statusCodeServer()
+                    this.codeServer.isLoading = false
+                }, 3000)
+            }
         },
         open(url) {
             window.open(url, "_blank")

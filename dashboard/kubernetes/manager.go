@@ -129,7 +129,7 @@ func (r ResourceManager) DeleteCodeServer(name string) error {
 func (r *ResourceManager) WaitCodeServerRunning(name string, timeToWait time.Duration) (chan bool, error) {
 	waitChan := make(chan bool)
 
-	labelSelector := fmt.Sprintf("app=codeserver-%s", name)
+	labelSelector := fmt.Sprintf("app=%s", name)
 
 	fmt.Printf("Creating watcher for POD with labels: %s\n", labelSelector)
 

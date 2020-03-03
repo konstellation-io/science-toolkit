@@ -13,6 +13,9 @@
   <script src="//cdn.jsdelivr.net/npm/vue"></script>
   <script src="//unpkg.com/axios/dist/axios.min.js"></script>
   <style>
+    .is-full{
+      display: inline-block;
+    }
     .logo {
       margin-right: 1em;
     }
@@ -86,10 +89,12 @@
               </label>
               <div class="field has-addons title is-5">
                 <p class="control" v-if="canStart">
-                  <button class="button is-link" @click="startCodeServer">Start</button>
+                  <button class="button is-link"
+                          v-bind:class="{'is-loading': codeServer.isLoading}"
+                          @click="startCodeServer">Start</button>
                 </p>
                 <p class="control" v-if="canStop">
-                  <button class="button is-danger" @click="stopCodeServer">Stop</button>
+                  <button class="button is-danger" v-bind:class="{'is-loading': codeServer.isLoading}" @click="stopCodeServer">Stop</button>
                 </p>
                 <p class="control ">
                 <span class="file-name label title  is-spaced">Server is
@@ -100,6 +105,12 @@
               </div>
             </div>
           </div>
+
+          <!-- Errors Row -->
+          <div v-if="error" class="column is-full notification is-danger">
+            {{error}}
+          </div>
+
         </div>
       </div>
 

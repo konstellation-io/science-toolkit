@@ -16,6 +16,16 @@ rules:
     resources: ["codeservers"]
     verbs: ["*"]
 ---
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dashboard
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["*"]
+---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -53,4 +63,17 @@ subjects:
 roleRef:
   kind: Role
   name: codeserver
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: default-dashboard
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: dashboard
   apiGroup: rbac.authorization.k8s.io
