@@ -1,5 +1,5 @@
 deploy-docs-site:
-  stage: deploy
+  stage: publish
   image: node
   variables:
     HUGO_VERSION: "0.66.0"
@@ -14,20 +14,28 @@ deploy-docs-site:
         && mv /tmp/hugo /usr/local/sbin/hugo
         && rm -rf /tmp/${HUGO_ID}_linux_amd64
         && rm -rf /tmp/${HUGO_ID}_Linux-64bit.tar.gz
+    # install theme submodules and dependencies
     - npm install --prefix docs-site
     - git submodule init
-    - git submodule update --init --recursive
+      && git submodule update --init --recursive
+    # Setup git pointing to Github Pages branch
+    -  mkdir /tmp/gh-pages
+      && (cd /tmp/gh-pages
+        && git init
+        && git config --global user.email "${GITLAB_USER_EMAIL}"
+        && git config --global user.name "${GITLAB_USER_NAME}"
+        && git remote add upstream https://${GITHUB_PUBLISH_USERNAME}:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
+        && git fetch upstream
+        && git checkout gh-pages)
   script:
-    - cd docs-site
-    - git checkout --orphan=gh-pages
-    - hugo -d ../gh-pages -c ../docs
-    - cd ../gh-pages
-    - git add .
-    - git config --global user.email "${GITLAB_USER_EMAIL}"
-    - git config --global user.name "${GITLAB_USER_NAME}"
-    - git commit --allow-empty -m "publish docs pages from commit ${CI_COMMIT_SHORT_SHA}"
-    - git remote add upstream https://guumaster:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
-    - git push upstream gh-pages:gh-pages
+    # Generate site
+    - cd docs-site && hugo -d /tmp/gh-pages -c ../docs
+
+    # Commit & Publish site
+    - cd /tmp/gh-pages
+      && git add .
+      && git commit -m "publish docs pages from commit ${CI_COMMIT_SHORT_SHA}"
+      && git push upstream gh-pages:gh-pages --force
   only:
     refs:
       - master

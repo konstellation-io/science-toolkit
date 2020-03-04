@@ -72,12 +72,6 @@ There's a horizontal rule above and below this.
 
 ----------------
 
-Here is an unordered list:
-
-* Liverpool F.C.
-* Chelsea F.C.
-* Manchester United F.C.
-
 And an ordered list:
 
 1. Michael Brecker

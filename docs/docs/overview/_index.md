@@ -3,8 +3,9 @@ title: "Overview"
 linkTitle: "Overview"
 weight: 1
 description: >
-  General information about goals and usage of this project.
+  General information about goals and usage of the Science Toolkit.
 ---
+
 
 ## Background and Goal
 
