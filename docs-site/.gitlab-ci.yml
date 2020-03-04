@@ -6,7 +6,8 @@ deploy-docs-site:
     HUGO_TYPE: "_extended"
   before_script:
     - export HUGO_ID="hugo${HUGO_TYPE}_${HUGO_VERSION}"
-    - curl -sL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_ID}_Linux-64bit.tar.gz -o /tmp
+    - curl -sL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_ID}_Linux-64bit.tar.gz
+        -o /tmp/${HUGO_ID}_Linux-64bit.tar.gz
         && tar -xf /tmp/${HUGO_ID}_Linux-64bit.tar.gz -C /tmp
         && mkdir -p /usr/local/sbin
         && mv /tmp/hugo /usr/local/sbin/hugo
