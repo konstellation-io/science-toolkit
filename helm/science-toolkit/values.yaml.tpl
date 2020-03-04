@@ -143,9 +143,15 @@ jupyterhub:
         - name: received-data
           persistentVolumeClaim:
             claimName: received-data-claim
+        - name: minio-config
+          configMap:
+            name: minio-config
       extraVolumeMounts:
         - mountPath: /home/jovyan/projects
           name: received-data
+        - name: minio-confg
+          mountPath: /home/jovyan/.mc/config.json
+          subPath: config.json
 
 minio:
   accessKey: minio
