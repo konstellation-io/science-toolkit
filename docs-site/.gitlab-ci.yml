@@ -4,6 +4,7 @@ deploy-docs-site:
   variables:
     HUGO_VERSION: "0.66.0"
     HUGO_TYPE: "_extended"
+    GITHUB_PUBLISH_TOKEN: $GITHUB_PUBLISH_TOKEN
   before_script:
     - export HUGO_ID="hugo${HUGO_TYPE}_${HUGO_VERSION}"
     - curl -sL https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_ID}_Linux-64bit.tar.gz
@@ -23,7 +24,7 @@ deploy-docs-site:
     - cd ../gh-pages
     - git add .
     - git ci -m "publish pages"
-    - git add upstream git@github.com:intelygenz/science-toolkit.git
+    - git add upstream https://guumaster:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
     - git push upstream gh-pages:gh-pages
   only:
     refs:
