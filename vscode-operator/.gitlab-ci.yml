@@ -1,0 +1,42 @@
+release-vscode-operator:
+  stage: semantic-release
+  image: node:10
+  before_script:
+    - npm install --prefix vscode-operator
+  script:
+    - cd vscode-operator && npx semantic-release -e semantic-release-monorepo
+  only:
+    refs:
+      - master
+    changes:
+      - vscode-operator/**/*
+      - .gitlab-ci.yml
+
+publish-vscode-operator-image:
+  stage: publish
+  image: docker:18-git
+  services:
+    - docker:18-dind
+  variables:
+    SDK_RELEASE_VERSION: v0.15.1
+    HELM_VERSION: v3.0.3
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode-operator:latest"
+    DOCKER_USER: $DOCKER_USER
+    DOCKER_PASS: $DOCKER_PASS
+  before_script:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - cd vscode-operator
+    - ./scripts/install_operator_sdk.sh
+    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+    - chmod +x /usr/local/bin/helm
+    - helm repo add stable https://kubernetes-charts.storage.googleapis.com
+    - helm dependency update helm-charts/kre-chart
+  script:
+    - TAG=${CI_COMMIT_TAG#vscode-operator-v}
+    - operator-sdk build $IMAGE_PROJECT_NAME:$TAG
+    - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
+    - docker push $IMAGE_PROJECT_NAME:$TAG
+    - docker push $IMAGE_PROJECT_NAME:latest
+  only:
+    refs:
+      - /^vscode-operator-v\d*.\d*.\d*$/

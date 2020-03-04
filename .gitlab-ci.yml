@@ -9,6 +9,7 @@ include:
   - local: dashboard/.gitlab-ci.yml
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
   - local: vscode/.gitlab-ci.yml
+  - local: vscode-operator/.gitlab-ci.yml
   - local: mlflow/.gitlab-ci.yml
   - local: helm/.gitlab-ci.yml
   - local: docs-site/.gitlab-ci.yml
