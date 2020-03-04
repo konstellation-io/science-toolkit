@@ -168,7 +168,7 @@ minio:
       nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
 
 mlflow:
-  name: mlflow-tracking-server
+  name: mlflow-server
   image: 
     repository: terminus7/mlflow
     tag: 1.0.0
