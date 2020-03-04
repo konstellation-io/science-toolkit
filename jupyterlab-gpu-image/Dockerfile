@@ -31,6 +31,7 @@ RUN apt-get update && apt-get -yq dist-upgrade \
     sudo \
     locales \
     fonts-liberation \
+    libaio1 \
     `cat apt_get_libraries.txt | xargs` \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -76,10 +77,19 @@ ENV GOPATH $HOME/go
 ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
 
 # Install Minio client
-
 RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc && \
     chmod +x mc && \
     mv mc /usr/local/bin/mc
+
+# Install Oracle client
+ENV ORACLE_HOME /opt/oracle/instantclient_18_5
+ENV LD_RUN_PATH=$ORACLE_HOME
+COPY instantclient-* /tmp/
+RUN mkdir -p /opt/oracle && \
+	unzip "/tmp/instantclient*.zip" -d /opt/oracle && \
+	sh -c "echo /opt/oracle/instantclient_18_5 > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
+	ldconfig && \
+	export LD_LIBRARY_PATH=/opt/oracle/instantclient_18_5:$LD_LIBRARY_PATH
 
 ADD fix-permissions /usr/local/bin/fix-permissions
 # Create jovyan user with UID=1000 and in the 'users' group
