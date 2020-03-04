@@ -14,7 +14,8 @@ deploy-docs-site:
         && rm -rf /tmp/${HUGO_ID}_linux_amd64
         && rm -rf /tmp/${HUGO_ID}_Linux-64bit.tar.gz
     - npm install --prefix docs-site
-    - git submodule update
+    - git submodule init
+    - git submodule update --init --recursive
   script:
     - cd docs-site
     - git checkout --orphan=gh-pages
