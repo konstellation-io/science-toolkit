@@ -15,7 +15,7 @@ deploy-docs-site:
     - npm install --prefix docs-site
   script:
     - cd docs-site
-    - git checkout gh-pages
+    - git checkout --orphan=gh-pages
     - hugo -d ../gh-pages -c ../docs
     - cd ../gh-pages
     - git add .
