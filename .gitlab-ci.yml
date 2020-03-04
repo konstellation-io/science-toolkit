@@ -11,3 +11,4 @@ include:
   - local: vscode/.gitlab-ci.yml
   - local: mlflow/.gitlab-ci.yml
   - local: helm/.gitlab-ci.yml
+  - local: docs-site/.gitlab-ci.yml

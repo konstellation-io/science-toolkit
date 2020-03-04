@@ -1,0 +1,30 @@
+deploy-docs-site:
+  stage: deploy
+  image: node
+  variables:
+    HUGO_VERSION: "0.66.0"
+    HUGO_TYPE: "_extended"
+  before_script:
+    - export HUGO_ID="hugo${HUGO_TYPE}_${HUGO_VERSION}"
+    - wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_ID}_Linux-64bit.tar.gz /tmp
+        && tar -xf /tmp/${HUGO_ID}_Linux-64bit.tar.gz -C /tmp
+        && mkdir -p /usr/local/sbin
+        && mv /tmp/hugo /usr/local/sbin/hugo
+        && rm -rf /tmp/${HUGO_ID}_linux_amd64
+        && rm -rf /tmp/${HUGO_ID}_Linux-64bit.tar.gz
+    - npm install --prefix docs-site
+  script:
+    - cd docs-site
+    - git checkout gh-pages
+    - hugo -d ../gh-pages -c ../docs
+    - cd ../gh-pages
+    - git add .
+    - git ci -m "publish pages"
+    - git add upstream git@github.com:intelygenz/science-toolkit.git
+    - git push upstream gh-pages:gh-pages
+  only:
+    refs:
+      - master
+    changes:
+      - docs/**/*
+      - docs-site/**/*

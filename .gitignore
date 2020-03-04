@@ -3,3 +3,4 @@ node_modules
 .vscode
 helm/science-toolkit*/values.yaml
 helm/values-*.yaml
+gh-pages
