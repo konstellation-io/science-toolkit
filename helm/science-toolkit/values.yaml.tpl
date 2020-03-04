@@ -143,9 +143,15 @@ jupyterhub:
         - name: received-data
           persistentVolumeClaim:
             claimName: received-data-claim
+        - name: minio-config
+          configMap:
+            name: minio-config
       extraVolumeMounts:
         - mountPath: /home/jovyan/projects
           name: received-data
+        - name: minio-confg
+          mountPath: /home/jovyan/.mc/config.json
+          subPath: config.json
 
 minio:
   accessKey: minio
@@ -162,7 +168,7 @@ minio:
       nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
 
 mlflow:
-  name: mlflow-tracking-server
+  name: mlflow-server
   image: 
     repository: terminus7/mlflow
     tag: 1.0.0

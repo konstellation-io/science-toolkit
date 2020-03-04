@@ -15,7 +15,7 @@ release-helm-after-image:
   stage: semantic-release-helm
   image: node:10
   before_script:
-    - npm install -g semantic-release semantic-release/gitlab
+    - npm install -g semantic-release@15.14.0 semantic-release/gitlab
   script:
     - semantic-release -t helm-chart-v\${version} -b $CI_COMMIT_TAG
   only:

@@ -36,9 +36,16 @@ jupyterhub:
         - name: received-data
           persistentVolumeClaim:
             claimName: received-data-lite-claim
+        - name: minio-config
+          configMap:
+            name: minio-config
+
       extraVolumeMounts:
-        - mountPath: /home/jovyan/projects
-          name: received-data-lite
+        - name: received-data-lite
+          mountPath: /home/jovyan/projects
+        - name: minio-confg
+          mountPath: /home/jovyan/.mc/config.json
+          subPath: config.json
 
 minio:
   accessKey: minio
