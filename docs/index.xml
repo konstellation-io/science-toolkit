@@ -88,12 +88,6 @@
 &lt;hr&gt;
 &lt;p&gt;There&amp;rsquo;s a horizontal rule above and below this.&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;Here is an unordered list:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Liverpool F.C.&lt;/li&gt;
-&lt;li&gt;Chelsea F.C.&lt;/li&gt;
-&lt;li&gt;Manchester United F.C.&lt;/li&gt;
-&lt;/ul&gt;
 &lt;p&gt;And an ordered list:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Michael Brecker&lt;/li&gt;
