@@ -23,7 +23,9 @@ deploy-docs-site:
     - hugo -d ../gh-pages -c ../docs
     - cd ../gh-pages
     - git add .
-    - git commit --allow-empty -m "publish pages from commit ${CI_COMMIT_SHORT_SHA}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git commit --allow-empty -m "publish docs pages from commit ${CI_COMMIT_SHORT_SHA}"
     - git add upstream https://guumaster:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
     - git push upstream gh-pages:gh-pages
   only:
