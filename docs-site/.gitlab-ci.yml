@@ -1,28 +1,30 @@
-release-docs-site:
-  stage: semantic-release
-  image: node:12
-  before_script:
-    - npm install --prefix docs-site
-  script:
-    - cd docs-site && npx semantic-release -e semantic-release-monorepo
-  only:
-    refs:
-      - master
-    changes:
-      - docs-site/**/*
-
 deploy-docs-site:
   stage: deploy
   image: node
   variables:
-    FIREBASE_TOKEN: $FIREBASE_TOKEN
+    HUGO_VERSION: "0.66.0"
+    HUGO_TYPE: "_extended"
   before_script:
-    - npm install -g firebase-tools
-    
+    - export HUGO_ID="hugo${HUGO_TYPE}_${HUGO_VERSION}"
+    - wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${HUGO_ID}_Linux-64bit.tar.gz /tmp
+        && tar -xf /tmp/${HUGO_ID}_Linux-64bit.tar.gz -C /tmp
+        && mkdir -p /usr/local/sbin
+        && mv /tmp/hugo /usr/local/sbin/hugo
+        && rm -rf /tmp/${HUGO_ID}_linux_amd64
+        && rm -rf /tmp/${HUGO_ID}_Linux-64bit.tar.gz
+    - npm install --prefix docs-site
   script:
-    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./docs-site
-    - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
-    - docker push $IMAGE_PROJECT_NAME:$TAG
-    - docker push $IMAGE_PROJECT_NAME:latest
+    - cd docs-site
+    - git checkout gh-pages
+    - hugo -d ../gh-pages -c ../docs
+    - cd ../gh-pages
+    - git add .
+    - git ci -m "publish pages"
+    - git add upstream git@github.com:intelygenz/science-toolkit.git
+    - git push upstream gh-pages:gh-pages
   only:
-    - /^docs-site-v\d*.\d*.\d*$/
+    refs:
+      - master
+    changes:
+      - docs/**/*
+      - docs-site/**/*
