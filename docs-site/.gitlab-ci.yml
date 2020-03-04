@@ -23,7 +23,7 @@ deploy-docs-site:
     - hugo -d ../gh-pages -c ../docs
     - cd ../gh-pages
     - git add .
-    - git ci -m "publish pages"
+    - git commit --allow-empty -m "publish pages from commit ${CI_COMMIT_SHORT_SHA}"
     - git add upstream https://guumaster:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
     - git push upstream gh-pages:gh-pages
   only:
