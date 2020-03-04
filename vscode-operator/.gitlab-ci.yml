@@ -30,7 +30,7 @@ publish-vscode-operator-image:
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
     - helm repo add stable https://kubernetes-charts.storage.googleapis.com
-    - helm dependency update helm-charts/kre-chart
+    - helm dependency update helm-charts/codeserver
   script:
     - TAG=${CI_COMMIT_TAG#vscode-operator-v}
     - operator-sdk build $IMAGE_PROJECT_NAME:$TAG
