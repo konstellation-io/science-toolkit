@@ -1,0 +1,44 @@
+release-docs-site:
+  stage: semantic-release
+  image: node:12
+  before_script:
+    - npm install --prefix docs-site
+  script:
+    - cd docs-site && npx semantic-release -e semantic-release-monorepo
+  only:
+    refs:
+      - master
+    changes:
+      - docs-site/**/*
+
+build-docs-site:
+  stage: build
+  image: node
+  variables:
+    FIREBASE_TOKEN: $FIREBASE_TOKEN
+  before_script:
+    - npm install -g firebase-tools
+    
+  script:
+    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./docs-site
+    - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
+    - docker push $IMAGE_PROJECT_NAME:$TAG
+    - docker push $IMAGE_PROJECT_NAME:latest
+  only:
+    - /^docs-site-v\d*.\d*.\d*$/
+
+deploy-docs-site:
+  stage: deploy
+  image: node
+  variables:
+    FIREBASE_TOKEN: $FIREBASE_TOKEN
+  before_script:
+    - npm install -g firebase-tools
+    
+  script:
+    - docker build -t $IMAGE_PROJECT_NAME:$TAG ./docs-site
+    - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
+    - docker push $IMAGE_PROJECT_NAME:$TAG
+    - docker push $IMAGE_PROJECT_NAME:latest
+  only:
+    - /^docs-site-v\d*.\d*.\d*$/
