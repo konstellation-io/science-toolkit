@@ -13,11 +13,9 @@ release-vscode:
 
 publish-vscode-image:
   stage: publish
-  image: docker:18-git
+  image: docker:latest
   services:
-    - docker:18-dind
-  tags:
-    - dind
+    - docker:dind
   variables:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode"
   before_script:
