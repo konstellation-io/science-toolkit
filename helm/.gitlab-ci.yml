@@ -29,7 +29,7 @@ generate-helm-chart:
   services:
     - docker:dind
   variables:
-    HELM_VERSION: v3.0.3
+    HELM_VERSION: v3.1.1
   before_script:
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
@@ -38,7 +38,7 @@ generate-helm-chart:
       -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
     - apk add --update bash gettext coreutils
-    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
     - export VSCODE_TAG=$(./scripts/git_latest_tag.sh "vscode")
     - export DASHBOARD_TAG=$(./scripts/git_latest_tag.sh "dashboard")
@@ -63,7 +63,7 @@ generate-helm-lite-chart:
   services:
     - docker:dind
   variables:
-    HELM_VERSION: v3.0.3
+    HELM_VERSION: v3.1.1
   before_script:
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
@@ -72,7 +72,7 @@ generate-helm-lite-chart:
       -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
     - apk add --update bash gettext coreutils
-    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
     - export JUPYTER_LAB_GPU_TAG=$(./scripts/git_latest_tag.sh "jupyterlab-gpu-image")
     - export MLFLOW_TAG=$(./scripts/git_latest_tag.sh "mlflow")
@@ -95,10 +95,10 @@ deploy-helm-dell:
   environment:
     name: int
   variables:
-    HELM_VERSION: v3.0.3
+    HELM_VERSION: v3.1.1
   image: google/cloud-sdk:283.0.0
   script:
-    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - kubectl create ns science-toolkit --dry-run -o yaml | kubectl apply -f -
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
     - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz science-toolkit-$CHART_VERSION.tgz
@@ -122,10 +122,10 @@ deploy-helm-lite-dell:
   environment:
     name: int
   variables:
-    HELM_VERSION: v3.0.3
+    HELM_VERSION: v3.1.1
   image: google/cloud-sdk:283.0.0
   script:
-    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - kubectl create ns science-toolkit-lite --dry-run -o yaml | kubectl apply -f -
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
     - aws s3 cp s3://science-toolkit-lite-helm-charts/science-toolkit-lite-$CHART_VERSION.tgz science-toolkit-lite-$CHART_VERSION.tgz

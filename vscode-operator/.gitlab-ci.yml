@@ -19,7 +19,7 @@ publish-vscode-operator-image:
     - docker:dind
   variables:
     SDK_RELEASE_VERSION: v0.15.1
-    HELM_VERSION: v3.0.3
+    HELM_VERSION: v3.1.1
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode-operator"
     DOCKER_PASS: $DOCKER_PASS
   before_script:
