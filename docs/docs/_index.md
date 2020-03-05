@@ -6,3 +6,5 @@ menu:
   main:
     weight: 20
 ---
+
+Documentation homepage.
