@@ -13,11 +13,9 @@ release-gitea-oauth2-setup:
 
 publish-gitea-oauth2-setup-image:
   stage: publish
-  image: docker:18-git
+  image: docker:latest
   services:
-    - docker:18-dind
-  tags:
-    - dind
+    - docker:dind
   variables:
     IMAGE_PROJECT_NAME: "terminus7/gitea-oauth2-setup"
   before_script:
@@ -29,5 +27,7 @@ publish-gitea-oauth2-setup-image:
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
     - docker push $IMAGE_PROJECT_NAME:latest
+  after_script:
+    - docker rmi $IMAGE_PROJECT_NAME:$TAG
   only:
     - /^gitea-oauth2-setup-v\d*.\d*.\d*$/

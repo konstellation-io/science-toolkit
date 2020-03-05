@@ -14,14 +14,13 @@ release-vscode-operator:
 
 publish-vscode-operator-image:
   stage: publish
-  image: docker:18-git
+  image: docker:latest
   services:
-    - docker:18-dind
+    - docker:dind
   variables:
     SDK_RELEASE_VERSION: v0.15.1
     HELM_VERSION: v3.0.3
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode-operator"
-    DOCKER_USER: $DOCKER_USER
     DOCKER_PASS: $DOCKER_PASS
   before_script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -37,6 +36,8 @@ publish-vscode-operator-image:
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
     - docker push $IMAGE_PROJECT_NAME:latest
+  after_script:
+    - docker rmi $IMAGE_PROJECT_NAME:$TAG
   only:
     refs:
       - /^vscode-operator-v\d*.\d*.\d*$/
