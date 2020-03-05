@@ -3,7 +3,7 @@ domain: toolkit.local
 dashboard:
   image:
     repository: terminus7/sci-toolkit-dashboard
-    tag: latest
+    tag: ${DASHBOARD_TAG}
     pullPolicy: IfNotPresent
 
 gitea:
@@ -65,7 +65,7 @@ jupyterhub:
   hub:
     initContainers:
       - name: gitea-oauth2-setup
-        image: terminus7/gitea-oauth2-setup:latest
+        image: terminus7/gitea-oauth2-setup:${GITEA_OAUTH2_SETUP_TAG}
         imagePullPolicy: IfNotPresent
         env:
           - name: POD_NAMESPACE
@@ -137,7 +137,7 @@ jupyterhub:
       enabled: true
     image:
       name: terminus7/jupyterlab-gpu
-      tag: 1.4.0-test
+      tag: ${JUPYTER_LAB_GPU_TAG}
     storage:
       extraVolumes:
         - name: received-data
@@ -171,7 +171,7 @@ mlflow:
   name: mlflow-server
   image: 
     repository: terminus7/mlflow
-    tag: 1.0.0
+    tag: ${MLFLOW_TAG}
     pullPolicy: IfNotPresent
   service:
     port: 8080

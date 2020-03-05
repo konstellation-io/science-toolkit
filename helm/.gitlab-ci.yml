@@ -25,11 +25,11 @@ release-helm-after-image:
 
 generate-helm-chart:
   stage: build
-  image: docker:18-git
+  image: docker:latest
   services:
-    - docker:18-dind
+    - docker:dind
   variables:
-    HELM_VERSION: v2.14.3
+    HELM_VERSION: v3.0.3
   before_script:
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
@@ -40,11 +40,15 @@ generate-helm-chart:
     - apk add --update bash gettext coreutils
     - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
-    - helm init --client-only --wait
     - export VSCODE_TAG=$(./scripts/git_latest_tag.sh "vscode")
+    - export DASHBOARD_TAG=$(./scripts/git_latest_tag.sh "dashboard")
+    - export GITEA_OAUTH2_SETUP_TAG=$(./scripts/git_latest_tag.sh "gitea-oauth2-setup")
+    - export JUPYTER_LAB_GPU_TAG=$(./scripts/git_latest_tag.sh "jupyterlab-gpu-image")
+    - export MLFLOW_TAG=$(./scripts/git_latest_tag.sh "mlflow")
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
+    - helm repo add stable https://kubernetes-charts.storage.googleapis.com
     - helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
     - helm dep update helm/science-toolkit
     - helm package helm/science-toolkit --version $CHART_VERSION
@@ -55,11 +59,11 @@ generate-helm-chart:
 
 generate-helm-lite-chart:
   stage: build
-  image: docker:18-git
+  image: docker:latest
   services:
-    - docker:18-dind
+    - docker:dind
   variables:
-    HELM_VERSION: v2.14.3
+    HELM_VERSION: v3.0.3
   before_script:
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
@@ -70,10 +74,12 @@ generate-helm-lite-chart:
     - apk add --update bash gettext coreutils
     - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
-    - helm init --client-only --wait
+    - export JUPYTER_LAB_GPU_TAG=$(./scripts/git_latest_tag.sh "jupyterlab-gpu-image")
+    - export MLFLOW_TAG=$(./scripts/git_latest_tag.sh "mlflow")
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
+    - helm repo add stable https://kubernetes-charts.storage.googleapis.com
     - helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
     - helm dep update helm/science-toolkit-lite
     - helm package helm/science-toolkit-lite --version $CHART_VERSION
@@ -88,16 +94,17 @@ deploy-helm-dell:
     - konstellation
   environment:
     name: int
-  image: google/cloud-sdk:266.0.0
+  variables:
+    HELM_VERSION: v3.0.3
+  image: google/cloud-sdk:283.0.0
   script:
+    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - kubectl create ns science-toolkit --dry-run -o yaml | kubectl apply -f -
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
-    - helm init --client-only --wait
     - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz science-toolkit-$CHART_VERSION.tgz
     - ./scripts/replace_env_path.sh
     - helm upgrade
       --wait
-      --recreate-pods
       --install science-toolkit
       --namespace science-toolkit
       --values helm/values-dell.yaml
@@ -114,16 +121,17 @@ deploy-helm-lite-dell:
     - konstellation
   environment:
     name: int
-  image: google/cloud-sdk:266.0.0
+  variables:
+    HELM_VERSION: v3.0.3
+  image: google/cloud-sdk:283.0.0
   script:
+    - wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - kubectl create ns science-toolkit-lite --dry-run -o yaml | kubectl apply -f -
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
-    - helm init --client-only --wait
     - aws s3 cp s3://science-toolkit-lite-helm-charts/science-toolkit-lite-$CHART_VERSION.tgz science-toolkit-lite-$CHART_VERSION.tgz
     - ./scripts/replace_env_path.sh
     - helm upgrade
       --wait
-      --recreate-pods
       --install science-toolkit-lite
       --namespace science-toolkit-lite
       --values helm/values-dell-lite.yaml

@@ -1,11 +1,6 @@
 {
-  "verifyConditions": [
-    {
-      "path": "@semantic-release/gitlab",
-      "gitlabUrl": "https://gitlab.intelygenz.com",
-      "gitlabApiPathPrefix": "/api/v4"
-    }
-  ],
+  "repositoryUrl": "https://github.com/intelygenz/science-toolkit.git",
+  "verifyConditions": [],
   "analyzeCommits": {
     "format": "angular",
     "preset": "angular",
@@ -33,13 +28,7 @@
     ]
   },
   "prepare": [],
-  "publish": [
-    {
-      "path": "@semantic-release/gitlab",
-      "gitlabUrl": "https://gitlab.intelygenz.com",
-      "gitlabApiPathPrefix": "/api/v4"
-    }
-  ],
+  "publish": [],
   "success": false,
   "fail": false
 }

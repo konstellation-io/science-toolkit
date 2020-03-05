@@ -29,7 +29,7 @@ jupyterhub:
       enabled: true
     image:
       name: terminus7/jupyterlab-gpu
-      tag: 1.0.0
+      tag: ${JUPYTER_LAB_GPU_TAG}
     storage:
       capacity: 2Gi
       extraVolumes:
@@ -65,7 +65,7 @@ mlflow:
   name: mlflow-tracking-server
   image: 
     repository: terminus7/mlflow
-    tag: 1.0.0
+    tag: ${MLFLOW_TAG}
     pullPolicy: IfNotPresent
   service:
     port: 5000

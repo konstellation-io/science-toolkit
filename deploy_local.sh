@@ -14,6 +14,12 @@ export GITEA_ADMIN_USER="toolkit-admin"
 export GITEA_ADMIN_PASSWORD=123456
 export GITEA_URL="http://gitea"
 
+export VSCODE_TAG=latest
+export DASHBOARD_TAG=latest
+export GITEA_OAUTH2_SETUP_TAG=latest
+export JUPYTER_LAB_GPU_TAG=latest
+export MLFLOW_TAG=latest
+
 check_requirements
 
 clean () {
