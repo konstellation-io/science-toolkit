@@ -2,7 +2,7 @@
   "name": "vscode",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/intelygenz/science-toolkit.git"
+    "url": "https://github.com/intelygenz/science-toolkit.git"
   },
   "version": "0.0.0",
   "dependencies": {
