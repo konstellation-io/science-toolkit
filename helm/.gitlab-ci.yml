@@ -40,11 +40,12 @@ generate-helm-chart:
     - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
-    - export VSCODE_TAG=$(./scripts/git_latest_tag.sh "vscode")
-    - export DASHBOARD_TAG=$(./scripts/git_latest_tag.sh "dashboard")
-    - export GITEA_OAUTH2_SETUP_TAG=$(./scripts/git_latest_tag.sh "gitea-oauth2-setup")
-    - export JUPYTER_LAB_GPU_TAG=$(./scripts/git_latest_tag.sh "jupyterlab-gpu-image")
-    - export MLFLOW_TAG=$(./scripts/git_latest_tag.sh "mlflow")
+    - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
+    - chmod +x /usr/local/bin/gitlab-components-tags
+    - export GITLAB_TOKEN=${CI_JOB_TOKEN}
+    - export VERSION_TAGS=$(gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell)
+    - echo $VERSION_TAGS
+    - eval($VERSION_TAGS)
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
@@ -74,8 +75,12 @@ generate-helm-lite-chart:
     - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
-    - export JUPYTER_LAB_GPU_TAG=$(./scripts/git_latest_tag.sh "jupyterlab-gpu-image")
-    - export MLFLOW_TAG=$(./scripts/git_latest_tag.sh "mlflow")
+    - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
+    - chmod +x /usr/local/bin/gitlab-components-tags
+    - export GITLAB_TOKEN=${CI_JOB_TOKEN}
+    - export VERSION_TAGS=$(gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell)
+    - echo $VERSION_TAGS
+    - eval($VERSION_TAGS)
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
@@ -87,58 +92,3 @@ generate-helm-lite-chart:
   only:
     refs:
       - /^helm-chart-v\d*.\d*.\d*$/
-
-deploy-helm-dell:
-  stage: deploy
-  tags:
-    - konstellation
-  environment:
-    name: int
-  variables:
-    HELM_VERSION: v3.1.1
-  image: google/cloud-sdk:283.0.0
-  script:
-    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
-    - kubectl create ns science-toolkit --dry-run -o yaml | kubectl apply -f -
-    - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
-    - aws s3 cp s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz science-toolkit-$CHART_VERSION.tgz
-    - ./scripts/replace_env_path.sh
-    - helm upgrade
-      --wait
-      --install science-toolkit
-      --namespace science-toolkit
-      --values helm/values-dell.yaml
-      --timeout 600
-      science-toolkit-$CHART_VERSION.tgz
-  only:
-    refs:
-      - /^helm-chart-v\d*.\d*.\d*$/
-  when: manual
-
-deploy-helm-lite-dell:
-  stage: deploy
-  tags:
-    - konstellation
-  environment:
-    name: int
-  variables:
-    HELM_VERSION: v3.1.1
-  image: google/cloud-sdk:283.0.0
-  script:
-    - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
-    - kubectl create ns science-toolkit-lite --dry-run -o yaml | kubectl apply -f -
-    - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
-    - aws s3 cp s3://science-toolkit-lite-helm-charts/science-toolkit-lite-$CHART_VERSION.tgz science-toolkit-lite-$CHART_VERSION.tgz
-    - ./scripts/replace_env_path.sh
-    - helm upgrade
-      --wait
-      --install science-toolkit-lite
-      --namespace science-toolkit-lite
-      --values helm/values-dell-lite.yaml
-      --timeout 600
-      science-toolkit-lite-$CHART_VERSION.tgz
-  only:
-    refs:
-      - /^helm-chart-v\d*.\d*.\d*$/
-  when: manual
-

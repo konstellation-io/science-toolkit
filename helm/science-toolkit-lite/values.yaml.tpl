@@ -29,7 +29,7 @@ jupyterhub:
       enabled: true
     image:
       name: terminus7/jupyterlab-gpu
-      tag: ${JUPYTER_LAB_GPU_TAG}
+      tag: ${JUPYTERLAB_GPU_TAG}
     storage:
       capacity: 2Gi
       extraVolumes:
