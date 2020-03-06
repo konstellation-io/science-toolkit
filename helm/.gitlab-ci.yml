@@ -31,6 +31,7 @@ generate-helm-chart:
   variables:
     HELM_VERSION: v3.1.1
     GITHUB_TOKEN: $GITHUB_TOKEN
+    COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
@@ -43,7 +44,7 @@ generate-helm-chart:
     - chmod +x /usr/local/bin/helm
     - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
     - chmod +x /usr/local/bin/gitlab-components-tags
-    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
+    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
     - echo $VERSION_TAGS
     - eval($VERSION_TAGS)
     - ./scripts/replace_env_path.sh
@@ -66,6 +67,7 @@ generate-helm-lite-chart:
   variables:
     HELM_VERSION: v3.1.1
     GITHUB_TOKEN: $GITHUB_TOKEN
+    COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
@@ -78,7 +80,7 @@ generate-helm-lite-chart:
     - chmod +x /usr/local/bin/helm
     - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
     - chmod +x /usr/local/bin/gitlab-components-tags
-    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
+    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
     - echo $VERSION_TAGS
     - eval($VERSION_TAGS)
     - ./scripts/replace_env_path.sh
