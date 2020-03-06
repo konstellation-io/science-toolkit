@@ -44,7 +44,7 @@ generate-helm-chart:
     - chmod +x /usr/local/bin/helm
     - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
     - chmod +x /usr/local/bin/gitlab-components-tags
-    - eval(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
+    - eval $(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
@@ -78,7 +78,7 @@ generate-helm-lite-chart:
     - chmod +x /usr/local/bin/helm
     - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
     - chmod +x /usr/local/bin/gitlab-components-tags
-    - eval(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
+    - eval $(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
