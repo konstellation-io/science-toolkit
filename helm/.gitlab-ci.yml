@@ -43,7 +43,7 @@ generate-helm-chart:
     - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
     - chmod +x /usr/local/bin/gitlab-components-tags
     - export GITLAB_TOKEN=${CI_JOB_TOKEN}
-    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell)
+    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITLAB)
     - echo $VERSION_TAGS
     - eval($VERSION_TAGS)
     - ./scripts/replace_env_path.sh
@@ -78,7 +78,7 @@ generate-helm-lite-chart:
     - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
     - chmod +x /usr/local/bin/gitlab-components-tags
     - export GITLAB_TOKEN=${CI_JOB_TOKEN}
-    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell)
+    - export VERSION_TAGS=$(/usr/local/bin/gitlab-components-tags -p $CI_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITLAB)
     - echo $VERSION_TAGS
     - eval($VERSION_TAGS)
     - ./scripts/replace_env_path.sh
