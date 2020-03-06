@@ -37,7 +37,7 @@ generate-helm-chart:
       -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
-    - apk add --update bash gettext coreutils
+    - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
     - export VSCODE_TAG=$(./scripts/git_latest_tag.sh "vscode")
@@ -71,7 +71,7 @@ generate-helm-lite-chart:
       -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
       -e AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
-    - apk add --update bash gettext coreutils
+    - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
     - export JUPYTER_LAB_GPU_TAG=$(./scripts/git_latest_tag.sh "jupyterlab-gpu-image")
