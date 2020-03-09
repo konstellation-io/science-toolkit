@@ -4,7 +4,7 @@ release-vscode:
   before_script:
     - npm install --prefix vscode
   script:
-    - cd vscode && npx semantic-release
+    - cd vscode && npx semantic-release -e semantic-release-monorepo
   only:
     refs:
       - master
