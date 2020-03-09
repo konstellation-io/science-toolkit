@@ -32,6 +32,8 @@ generate-helm-chart:
     HELM_VERSION: v3.1.1
     TAGS_VERSION: 1.0.0
     GITHUB_TOKEN: $GITHUB_TOKEN
+    GITLAB_USER_NAME: $GITLAB_USER_NAME
+    GITLAB_USER_EMAIL: $GITLAB_USER_EMAIL
     COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
     - apk add git --update
@@ -63,6 +65,7 @@ generate-helm-chart:
     - git checkout gh-pages
     - /usr/local/bin/helm-chart-releaser index -o intelygenz -r science-toolkit -c https://intelygenz.github.io/science-toolkit/helm-chart -i helm-chart/index.yaml -p /tmp/helm-chart
     - git add helm-chart/index.yaml
+    - git config --global user.email "${GITLAB_USER_EMAIL}" && git config --global user.name "${GITLAB_USER_NAME}"
     - git commit -m "add chart version $CHART_VERSION"
     - git push
   artifacts:
