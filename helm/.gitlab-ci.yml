@@ -42,10 +42,10 @@ generate-helm-chart:
     - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
-    - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
-    - chmod +x /usr/local/bin/gitlab-components-tags
-    - /usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB
-    - eval $(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
+    - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
+    - chmod +x /usr/local/bin/monorepo-components-tags
+    - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB
+    - eval $(/usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB)
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
@@ -81,10 +81,10 @@ generate-helm-lite-chart:
     - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
-    - wget -q https://gitlab-components-tags.s3.amazonaws.com/gitlab-components-tags -O /usr/local/bin/gitlab-components-tags
-    - chmod +x /usr/local/bin/gitlab-components-tags
-    - /usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB
-    - eval $(/usr/local/bin/gitlab-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --provider GITHUB)
+    - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
+    - chmod +x /usr/local/bin/monorepo-components-tags
+    - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB
+    - eval $(/usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB)
     - ./scripts/replace_env_path.sh
   script:
     - export CHART_VERSION=${CI_COMMIT_TAG#helm-chart-v}
