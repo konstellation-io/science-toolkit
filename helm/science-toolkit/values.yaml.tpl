@@ -147,11 +147,21 @@ jupyterhub:
           configMap:
             name: minio-config
       extraVolumeMounts:
-        - mountPath: /home/jovyan/projects
-          name: received-data
-        - name: minio-confg
-          mountPath: /home/jovyan/.mc/config.json
+        - name: received-data
+          mountPath: /home/jovyan/projects
+        - name: minio-config
+          mountPath: /tmp/config.json
           subPath: config.json
+    lifecycleHooks:
+      postStart:
+        exec:
+          command:
+            - "sh"
+            - "-c"
+            - >
+              mkdir /home/jovyan/.mc;
+              cp /tmp/config.json /home/jovyan/.mc/config.json;
+              chown -R jovyan /home/jovyan/.mc
 
 minio:
   accessKey: minio
