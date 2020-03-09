@@ -1,0 +1,10 @@
+apiVersion: v1
+entries:
+  science-toolkit:
+    - apiVersion: v1
+      created: "2020-03-09T10:01:14.041490078Z"
+      description: A helm chart to install Science Toolkit
+      name: science-toolkit
+      urls:
+        - https://github.com/intelygenz/science-toolkit/archive/helm-chart-v1.0.68.tar.gz
+      version: 1.0.68
