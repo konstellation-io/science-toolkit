@@ -53,6 +53,10 @@ generate-helm-chart:
     - helm dep update helm/science-toolkit
     - helm package helm/science-toolkit --version $CHART_VERSION
     - $DOCKER_COMMAND mesosphere/aws-cli s3 cp science-toolkit-$CHART_VERSION.tgz s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz
+  artifacts:
+    when: on_failure
+    paths:
+      - helm
   only:
     refs:
       - /^helm-chart-v\d*.\d*.\d*$/
@@ -87,6 +91,10 @@ generate-helm-lite-chart:
     - helm dep update helm/science-toolkit-lite
     - helm package helm/science-toolkit-lite --version $CHART_VERSION
     - $DOCKER_COMMAND mesosphere/aws-cli s3 cp science-toolkit-lite-$CHART_VERSION.tgz s3://science-toolkit-lite-helm-charts/science-toolkit-lite-$CHART_VERSION.tgz
+  artifacts:
+    when: on_failure
+    paths:
+      - helm
   only:
     refs:
       - /^helm-chart-v\d*.\d*.\d*$/
