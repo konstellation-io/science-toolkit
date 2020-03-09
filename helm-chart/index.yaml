@@ -6,5 +6,5 @@ entries:
       description: A helm chart to install Science Toolkit
       name: science-toolkit
       urls:
-        - https://github.com/intelygenz/science-toolkit/releases/download/science-toolkit-0.1.0/science-toolkit-0.1.0.tgz
+        - https://github.com/intelygenz/science-toolkit/releases/download/helm-chart-0.1.0/helm-chart-0.1.0.tgz
       version: 0.1.0
