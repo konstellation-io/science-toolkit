@@ -34,6 +34,7 @@ generate-helm-chart:
     GITHUB_TOKEN: $GITHUB_TOKEN
     COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
+    - apk add git --update
     - export DOCKER_COMMAND="docker run
       -v $CI_PROJECT_DIR:/app
       -w /app
@@ -43,6 +44,8 @@ generate-helm-chart:
     - apk add --update bash gettext coreutils git
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
+    - wget -q https://github.com/helm/chart-releaser/releases/download/v0.2.3/chart-releaser_0.2.3_linux_amd64.tar.gz -O - | tar -xzO cr > /usr/local/bin/helm-chart-releaser
+    - chmod +x /usr/local/bin/helm-chart-releaser
     - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
     - chmod +x /usr/local/bin/monorepo-components-tags
     - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
@@ -53,8 +56,14 @@ generate-helm-chart:
     - helm repo add stable https://kubernetes-charts.storage.googleapis.com
     - helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
     - helm dep update helm/science-toolkit
-    - helm package helm/science-toolkit --version $CHART_VERSION
-    - $DOCKER_COMMAND mesosphere/aws-cli s3 cp science-toolkit-$CHART_VERSION.tgz s3://science-toolkit-helm-charts/science-toolkit-$CHART_VERSION.tgz
+    - mkdir /tmp/helm-chart
+    - helm package helm/science-toolkit --version $CHART_VERSION -d /tmp/helm-chart
+    - /usr/local/bin/helm-chart-releaser upload  -o intelygenz -r science-toolkit -p /tmp/helm-chart --token $GITHUB_TOKEN
+    - git checkout gh-pages
+    - /usr/local/bin/helm-chart-releaser index -o intelygenz -r science-toolkit -c https://intelygenz.github.io/science-toolkit/helm-chart -i helm-chart/index.yaml -p /tmp/helm-chart
+    - git add helm-chart/index.yaml
+    - git commit -m "add chart version $CHART_VERSION"
+    - git push
   artifacts:
     when: on_failure
     paths:
