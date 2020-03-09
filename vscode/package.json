@@ -16,6 +16,12 @@
     "semantic-release-monorepo": "6.1.1"
   },
   "release": {
+    "plugins": [
+      ["@semantic-release/npm", { "npmPublish": false }],
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ],
     "monorepo": {
       "branch": "master",
       "analyzeCommits": {
