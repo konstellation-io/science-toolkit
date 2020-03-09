@@ -1,9 +1,9 @@
 domain: toolkit.local
 
 sharedVolume:
-  name: received-data-lite
+  name: received-data-toolkit-lite
   storageClassName: standard
-  path: /sci-toolkit-data/received-data-lite
+  path: /sci-toolkit-data/received-data-toolkit-lite
   size: 1Gi
 
 jupyterhub:
@@ -12,9 +12,10 @@ jupyterhub:
     password: test
   hub:
     cookieSecret: "61cffae7cfa30a05086fd916ec27f06b1388ada9302356c090c735b00082ad4a"
-    extraConfig: |-
-      c.Spawner.ip = '0.0.0.0'
-      c.Spawner.cmd = ['jupyter-labhub']
+    extraConfig: 
+      myConfig: |-
+        c.Spawner.ip = '0.0.0.0'
+        c.Spawner.cmd = ['jupyter-labhub']
   proxy:
     secretToken: "3bcee88b0a1aea302b9757fd9dcc8579469f86bac91229ee5dd0262f4b3d274d"
     service:
@@ -33,26 +34,35 @@ jupyterhub:
     storage:
       capacity: 2Gi
       extraVolumes:
-        - name: received-data
+        - name: received-data-toolkit-lite
           persistentVolumeClaim:
-            claimName: received-data-lite-claim
+            claimName: received-data-toolkit-lite-claim
         - name: minio-config
           configMap:
             name: minio-config
-
       extraVolumeMounts:
-        - name: received-data-lite
+        - name: received-data-toolkit-lite
           mountPath: /home/jovyan/projects
-        - name: minio-confg
-          mountPath: /home/jovyan/.mc/config.json
+        - name: minio-config
+          mountPath: /tmp/config.json
           subPath: config.json
+    lifecycleHooks:
+      postStart:
+        exec:
+          command:
+            - "sh"
+            - "-c"
+            - >
+              mkdir /home/jovyan/.mc;
+              cp /tmp/config.json /home/jovyan/.mc/config.json;
+              chown -R jovyan /home/jovyan/.mc
 
 minio:
   accessKey: minio
   secretKey: minio123
   persistence:
     storageClass: standard
-    existingClaim: received-data-lite-claim
+    existingClaim: received-data-toolkit-lite-claim
     accessMode: ReadWriteMany
   ingress:
     enabled: true

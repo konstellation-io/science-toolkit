@@ -10,7 +10,7 @@ data:
       "version": "9",
       "hosts": {
         "minio": {
-          "url": "http://minio",
+          "url": "http://{{ .Release.Name }}-minio:9000",
           "accessKey": "{{ .Values.minio.accessKey }}",
           "secretKey": "{{ .Values.minio.secretKey }}",
           "api": "S3v4",
