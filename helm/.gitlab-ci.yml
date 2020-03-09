@@ -59,6 +59,7 @@ generate-helm-chart:
     - mkdir /tmp/helm-chart
     - helm package helm/science-toolkit --version $CHART_VERSION -d /tmp/helm-chart
     - /usr/local/bin/helm-chart-releaser upload  -o intelygenz -r science-toolkit -p /tmp/helm-chart --token $GITHUB_TOKEN
+    - git fetch
     - git checkout gh-pages
     - /usr/local/bin/helm-chart-releaser index -o intelygenz -r science-toolkit -c https://intelygenz.github.io/science-toolkit/helm-chart -i helm-chart/index.yaml -p /tmp/helm-chart
     - git add helm-chart/index.yaml
