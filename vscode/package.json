@@ -27,11 +27,6 @@
         "changelogFile": "CHANGELOG.md"
       }
     },
-    "branch": "master",
-    "verifyConditions": [],
-    "prepare": [],
-    "publish": [],
-    "success": false,
-    "fail": false
+    "branch": "master"
   }
 }
