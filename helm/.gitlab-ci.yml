@@ -22,6 +22,7 @@ release-helm-after-image:
     - tags
   except:
     - /^helm-chart-v\d*.\d*.\d*$/
+    - gh-pages
 
 generate-helm-chart:
   stage: build
