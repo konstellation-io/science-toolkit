@@ -19,6 +19,13 @@ type Config struct {
 		Port string `yaml:"port" envconfig:"TOOLKIT_PORT"`
 	} `yaml:"server"`
 
+	VSCode struct {
+		Storage struct {
+			Size      string `yaml:"size" envconfig:"TOOLKIT_VSCODE_STORAGE_SIZE"`
+			ClassName string `yaml:"className" envconfig:"TOOLKIT_VSCODE_STORAGE_CLASSNAME"`
+		} `yaml:"storage"`
+	} `yaml:"vscode"`
+
 	Kubernetes struct {
 		Namespace string `yaml:"namespace" envconfig:"POD_NAMESPACE"`
 
