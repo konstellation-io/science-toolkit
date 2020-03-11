@@ -111,6 +111,11 @@ jupyterhub:
           secretKeyRef:
             name: jupyter-oauth2-secrets
             key: GITEA_REDIRECT_URIS
+    db:
+      type: postgres
+      url: postgres+psycopg2://postgres:test@postgres:5432/hub
+      pvc:
+        storageClassName: standard
     extraConfig:
       myConfig: |
         c.Spawner.ip = '0.0.0.0'
@@ -134,6 +139,9 @@ jupyterhub:
       name: terminus7/jupyterlab-gpu
       tag: ${JUPYTERLAB_GPU_IMAGE_TAG}
     storage:
+      capacity: 10Gi
+      dynamic:
+        storageClass: standard
       extraVolumes:
         - name: received-data
           persistentVolumeClaim:
@@ -155,8 +163,7 @@ jupyterhub:
             - "-c"
             - >
               mkdir /home/jovyan/.mc;
-              cp /tmp/config.json /home/jovyan/.mc/config.json;
-              chown -R jovyan /home/jovyan/.mc
+              cp /tmp/config.json /home/jovyan/.mc/config.json
 
 minio:
   accessKey: minio
