@@ -29,6 +29,8 @@ spec:
                 name: dashboard-oauth2-secrets
             - configMapRef:
                 name: gitea-configmap
+            - configMapRef:
+                name: dashboard-configmap
       containers:
         - name: dashboard
           image: {{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag }}

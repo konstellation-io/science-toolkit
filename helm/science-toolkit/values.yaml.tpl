@@ -49,11 +49,6 @@ sharedVolume:
   path: /sci-toolkit/received-data
 
 vscode:
-  image:
-    repository: terminus7/sci-toolkit-vscode
-    tag: ${VSCODE_TAG}
-    pullPolicy: IfNotPresent
-  password: 123456
   storage:
     size: 10Gi
     storageClassName: standard

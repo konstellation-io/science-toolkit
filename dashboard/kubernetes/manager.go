@@ -108,6 +108,10 @@ func (r *ResourceManager) CreateCodeServer(serverName, username string) error {
 			"spec": map[string]interface{}{
 				"domain":   r.config.BaseDomainName,
 				"username": username,
+				"storage": map[string]string{
+					"size":      r.config.VSCode.Storage.Size,
+					"className": r.config.VSCode.Storage.ClassName,
+				},
 			},
 		},
 	}

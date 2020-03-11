@@ -1,4 +1,8 @@
 baseDomainName: "toolkit.192.168.99.118.nip.io"
+vscode:
+  storage:
+    size: "1Gi"
+    className: "standard"
 server:
   port: "4000"
 kubernetes:
