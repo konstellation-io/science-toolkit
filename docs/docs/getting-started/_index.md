@@ -1,7 +1,7 @@
 ---
 title: "Getting Started"
 linkTitle: "Getting Started"
-weight: 2
+weight: 20
 description: >
   What does your user need to know to try your project?
 ---
@@ -21,29 +21,20 @@ In order to install Science Toolkit needs the following tools:
 $ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 $ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 $ helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/
-$ helm dep update helm/science-toolkit-lite
+$ helm repo update
 ```
 
 
 ## Setting up chart values
 
-- Fill values needed to install science toolkit chart:
+Make a copy of [sample-values.yaml](https://github.com/intelygenz/science-toolkit/tree/master/helm/example-values.yaml) and change what you need to deploy Science Toolkit on top of a Minikube local environment.
 
-| Parameter                        | Description                                                     | Default         |
-| -------------------------------- | --------------------------------------------------------------- | --------------- |
-| `domain`                         | This is the base DNS name for all the components in the toolkit | `toolkit.local` |
-| `sharedVolume.storageClassName`  | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
-| `gitea.volume.storageClassName`  | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
-| `drone.volume.storageClassName`  | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
-| `vscode.volume.size`             | Size for the vscode config volume                               | `10Gi`          |
-| `vscode.volume.storageClassName` | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
+Basically you need to set some credentials for different components. Only change your storage class name if your cluster have something different from `standard`.
 
 
 ## Installation
 
-
 ```bash
-$ helm repo update
 $ helm upgrade \
   --wait \
   --install science-toolkit \
@@ -56,4 +47,7 @@ $ helm upgrade \
 
 ### Domain Setup
 
-If you are deploying Science Toolkit in a remote cluster you need setup a DNS helm param on `values.yaml` file
+If you are deploying Science Toolkit in a remote cluster you need setup a DNS subdomain pointint to the ip address
+where your ingress controller is listening, and set this domain in the `values.yaml` file before deploy it.
+
+
