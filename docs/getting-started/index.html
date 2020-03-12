@@ -38,8 +38,8 @@
 
 
 
-<link rel="preload" href="/science-toolkit/scss/main.min.0197c686a0ab5eeaf82b578ba00695f168dbf69abe17a4f3e6c69cd1eff36813.css" as="style">
-<link href="/science-toolkit/scss/main.min.0197c686a0ab5eeaf82b578ba00695f168dbf69abe17a4f3e6c69cd1eff36813.css" rel="stylesheet" integrity="">
+<link rel="preload" href="/science-toolkit/scss/main.min.818a933df0186c907f1faea6730835dd5fa01c3b53af36bb68396dc80a2d3c45.css" as="style">
+<link href="/science-toolkit/scss/main.min.818a933df0186c907f1faea6730835dd5fa01c3b53af36bb68396dc80a2d3c45.css" rel="stylesheet" integrity="">
 
 
 <script
@@ -110,7 +110,7 @@
   aria-label="Search this site…"
   autocomplete="off"
   
-  data-offline-search-index-json-src="/science-toolkit/offline-search-index.f572192e0537ca52123762d79fc7c144b40ad30f2269611474a9015bebb722bba32d51b24d7cdb07c9932bcb131890f9b98dad666bd88b90214f38274985e96d.json"
+  data-offline-search-index-json-src="/science-toolkit/offline-search-index.0282d07d0627489726168477c78fc4f047c1effff88aec054466f7baf89fcfd5882f42452167c6b1a9aaa5ffb10fa8121927c64b26465812a3ef868802fa6128.json"
   data-offline-search-base-href="/"
 >
 
@@ -209,10 +209,10 @@
 
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="/science-toolkit/docs/concepts/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Concepts</a>
+    <a  href="/science-toolkit/docs/components/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Components</a>
   </li>
   <ul>
-    <li class="collapse " id="science-toolkitdocsconcepts">
+    <li class="collapse " id="science-toolkitdocscomponents">
       
       
       
@@ -308,10 +308,14 @@
 
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#prerequisites">Prerequisites</a></li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#setup">Setup</a></li>
-    <li><a href="#try-it-out">Try it out!</a></li>
+    <li><a href="#pre-requisites">Pre-requisites</a></li>
+    <li><a href="#add-helm-dependencies-repos">Add helm dependencies repos</a></li>
+    <li><a href="#setting-up-chart-values">Setting up chart values</a></li>
+    <li><a href="#installation">Installation</a>
+      <ul>
+        <li><a href="#domain-setup">Domain Setup</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -350,31 +354,35 @@
 <div class="td-content">
 	<h1>Getting Started</h1>
 	<div class="lead">What does your user need to know to try your project?</div>
-	
-
-<div class="pageinfo pageinfo-primary">
-<p>This is a placeholder page that shows you how to use this template site.</p>
-
-</div>
-
-<p>Information in this section helps your user try your project themselves.</p>
+	<h2 id="pre-requisites">Pre-requisites</h2>
+<p>In order to install Science Toolkit needs the following tools:</p>
 <ul>
-<li>
-<p>What do your users need to do to start using your project? This could include downloading/installation instructions, including any prerequisites or system requirements.</p>
-</li>
-<li>
-<p>Introductory “Hello World” example, if appropriate. More complex tutorials should live in the Tutorials section.</p>
+<li>Helm version 3. <a href="https://helm.sh/">+ info</a> (works also with v2)</li>
+<li>A Kubernetes cluster (tested only with 1.15.4) <a href="https://kubernetes.io/es/">+ info</a>
+<ul>
+<li>You can also use a local cluster like <a href="https://kubernetes.io/docs/setup/learning-environment/minikube/">minikube</a>.</li>
+</ul>
 </li>
 </ul>
-<p>Consider using the headings below for your getting started page. You can delete any that are not applicable to your project.</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>Are there any system requirements for using your project? What languages are supported (if any)? Do users need to already have any software or tools installed?</p>
+<h2 id="add-helm-dependencies-repos">Add helm dependencies repos</h2>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+$ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+$ helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/
+$ helm repo update
+</code></pre></div><h2 id="setting-up-chart-values">Setting up chart values</h2>
+<p>Make a copy of <a href="https://github.com/intelygenz/science-toolkit/tree/master/helm/example-values.yaml">sample-values.yaml</a> and change what you need to deploy Science Toolkit on top of a Minikube local environment.</p>
+<p>Basically you need to set some credentials for different components. Only change your storage class name if your cluster have something different from <code>standard</code>.</p>
 <h2 id="installation">Installation</h2>
-<p>Where can your user find your project code? How can they install it (binaries, installable package, build from source)? Are there multiple options/versions they can install and how should they choose the right one for them?</p>
-<h2 id="setup">Setup</h2>
-<p>Is there any initial setup users need to do after installation to try your project?</p>
-<h2 id="try-it-out">Try it out!</h2>
-<p>Can your users test their installation, for example by running a commmand or deploying a Hello World example?</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm upgrade <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  --wait <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  --install science-toolkit <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  --namespace science-toolkit <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  --values values.yaml <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  --timeout 5m <span style="color:#4e9a06">\
+</span><span style="color:#4e9a06"></span>  science-toolkit/science-toolkit
+</code></pre></div><h3 id="domain-setup">Domain Setup</h3>
+<p>If you are deploying Science Toolkit in a remote cluster you need setup a DNS subdomain pointint to the ip address
+where your ingress controller is listening, and set this domain in the <code>values.yaml</code> file before deploy it.</p>
 
         <div class="section-index">
     
@@ -426,21 +434,9 @@
         
 <ul class="list-inline mb-0">
   
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="User mailing list" aria-label="User mailing list">
-    <a class="text-white" target="_blank" href="https://example.org/mail">
-      <i class="fa fa-envelope"></i>
-    </a>
-  </li>
-  
   <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Twitter" aria-label="Twitter">
-    <a class="text-white" target="_blank" href="https://example.org/twitter">
+    <a class="text-white" target="_blank" href="https://twitter.com/intelygenz">
       <i class="fab fa-twitter"></i>
-    </a>
-  </li>
-  
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Stack Overflow" aria-label="Stack Overflow">
-    <a class="text-white" target="_blank" href="https://example.org/stack">
-      <i class="fab fa-stack-overflow"></i>
     </a>
   </li>
   
@@ -455,21 +451,9 @@
         
 <ul class="list-inline mb-0">
   
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="GitLab" aria-label="GitLab">
-    <a class="text-white" target="_blank" href="https://gitlab.intelygenz.com/t7-team/intelygenz-science-toolkit/intelygenz-science-toolkit">
-      <i class="fab fa-gitlab"></i>
-    </a>
-  </li>
-  
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Slack" aria-label="Slack">
-    <a class="text-white" target="_blank" href="https://example.org/slack">
-      <i class="fab fa-slack"></i>
-    </a>
-  </li>
-  
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Developer mailing list" aria-label="Developer mailing list">
-    <a class="text-white" target="_blank" href="https://example.org/mail">
-      <i class="fa fa-envelope"></i>
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Github" aria-label="Github">
+    <a class="text-white" target="_blank" href="https://github.com/intelygenz/science-toolkit">
+      <i class="fab fa-github"></i>
     </a>
   </li>
   

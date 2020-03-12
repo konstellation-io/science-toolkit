@@ -38,8 +38,8 @@
 
 
 
-<link rel="preload" href="/science-toolkit/scss/main.min.0197c686a0ab5eeaf82b578ba00695f168dbf69abe17a4f3e6c69cd1eff36813.css" as="style">
-<link href="/science-toolkit/scss/main.min.0197c686a0ab5eeaf82b578ba00695f168dbf69abe17a4f3e6c69cd1eff36813.css" rel="stylesheet" integrity="">
+<link rel="preload" href="/science-toolkit/scss/main.min.818a933df0186c907f1faea6730835dd5fa01c3b53af36bb68396dc80a2d3c45.css" as="style">
+<link href="/science-toolkit/scss/main.min.818a933df0186c907f1faea6730835dd5fa01c3b53af36bb68396dc80a2d3c45.css" rel="stylesheet" integrity="">
 
 
 <script
@@ -110,7 +110,7 @@
   aria-label="Search this site…"
   autocomplete="off"
   
-  data-offline-search-index-json-src="/science-toolkit/offline-search-index.f572192e0537ca52123762d79fc7c144b40ad30f2269611474a9015bebb722bba32d51b24d7cdb07c9932bcb131890f9b98dad666bd88b90214f38274985e96d.json"
+  data-offline-search-index-json-src="/science-toolkit/offline-search-index.0282d07d0627489726168477c78fc4f047c1effff88aec054466f7baf89fcfd5882f42452167c6b1a9aaa5ffb10fa8121927c64b26465812a3ef868802fa6128.json"
   data-offline-search-base-href="/"
 >
 
@@ -209,10 +209,10 @@
 
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="/science-toolkit/docs/concepts/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Concepts</a>
+    <a  href="/science-toolkit/docs/components/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Components</a>
   </li>
   <ul>
-    <li class="collapse " id="science-toolkitdocsconcepts">
+    <li class="collapse " id="science-toolkitdocscomponents">
       
       
       
@@ -306,16 +306,6 @@
 
 
 
-<nav id="TableOfContents">
-  <ul>
-    <li><a href="#quick-start-with-netlify">Quick start with Netlify</a></li>
-    <li><a href="#updating-a-single-page">Updating a single page</a></li>
-    <li><a href="#previewing-your-changes-locally">Previewing your changes locally</a></li>
-    <li><a href="#creating-an-issue">Creating an issue</a></li>
-    <li><a href="#useful-resources">Useful resources</a></li>
-  </ul>
-</nav>
-
 
 
           </div>
@@ -354,74 +344,10 @@
 	
 
 <div class="pageinfo pageinfo-primary">
-<p>These basic sample guidelines assume that your Docsy site is deployed using Netlify and your files are stored in GitHub. You can use the guidelines &ldquo;as is&rdquo; or adapt them with your own instructions: for example, other deployment options, information about your doc project&rsquo;s file structure, project-specific review guidelines, versioning guidelines, or any other information your users might find useful when updating your site. <a href="https://github.com/kubeflow/website/blob/master/README.md">Kubeflow</a> has a great example.</p>
-<p>Don&rsquo;t forget to link to your own doc repo rather than our example site! Also make sure users can find these guidelines from your doc repo README: either add them there and link to them from this page, add them here and link to them from the README, or include them in both locations.</p>
+<p>Here is the guidelines to contribute to this open source project.</p>
 
 </div>
 
-<p>We use <a href="https://gohugo.io/">Hugo</a> to format and generate our website, the
-<a href="https://github.com/google/docsy">Docsy</a> theme for styling and site structure,
-and <a href="https://www.netlify.com/">Netlify</a> to manage the deployment of the site.
-Hugo is an open-source static site generator that provides us with templates,
-content organisation in a standard directory structure, and a website generation
-engine. You write the pages in Markdown (or HTML if you want), and Hugo wraps them up into a website.</p>
-<p>All submissions, including submissions by project members, require review. We
-use GitHub pull requests for this purpose. Consult
-<a href="https://help.github.com/articles/about-pull-requests/">GitHub Help</a> for more
-information on using pull requests.</p>
-<h2 id="quick-start-with-netlify">Quick start with Netlify</h2>
-<p>Here&rsquo;s a quick guide to updating the docs. It assumes you&rsquo;re familiar with the
-GitHub workflow and you&rsquo;re happy to use the automated preview of your doc
-updates:</p>
-<ol>
-<li>Fork the <a href="https://github.com/google/docsy-example">Science Toolkits repo</a> on GitHub.</li>
-<li>Make your changes and send a pull request (PR).</li>
-<li>If you&rsquo;re not yet ready for a review, add &ldquo;WIP&rdquo; to the PR name to indicate
-it&rsquo;s a work in progress. (<strong>Don&rsquo;t</strong> add the Hugo property
-&ldquo;draft = true&rdquo; to the page front matter, because that prevents the
-auto-deployment of the content preview described in the next point.)</li>
-<li>Wait for the automated PR workflow to do some checks. When it&rsquo;s ready,
-you should see a comment like this: <strong>deploy/netlify — Deploy preview ready!</strong></li>
-<li>Click <strong>Details</strong> to the right of &ldquo;Deploy preview ready&rdquo; to see a preview
-of your updates.</li>
-<li>Continue updating your doc and pushing your changes until you&rsquo;re happy with
-the content.</li>
-<li>When you&rsquo;re ready for a review, add a comment to the PR, and remove any
-&ldquo;WIP&rdquo; markers.</li>
-</ol>
-<h2 id="updating-a-single-page">Updating a single page</h2>
-<p>If you&rsquo;ve just spotted something you&rsquo;d like to change while using the docs, Docsy has a shortcut for you:</p>
-<ol>
-<li>Click <strong>Edit this page</strong> in the top right hand corner of the page.</li>
-<li>If you don&rsquo;t already have an up to date fork of the project repo, you are prompted to get one - click <strong>Fork this repository and propose changes</strong> or <strong>Update your Fork</strong> to get an up to date version of the project to edit. The appropriate page in your fork is displayed in edit mode.</li>
-<li>Follow the rest of the <a href="#quick-start-with-netlify">Quick start with Netlify</a> process above to make, preview, and propose your changes.</li>
-</ol>
-<h2 id="previewing-your-changes-locally">Previewing your changes locally</h2>
-<p>If you want to run your own local Hugo server to preview your changes as you work:</p>
-<ol>
-<li>
-<p>Follow the instructions in <a href="/docs/getting-started">Getting started</a> to install Hugo and any other tools you need. You&rsquo;ll need at least <strong>Hugo version 0.45</strong> (we recommend using the most recent available version), and it must be the <strong>extended</strong> version, which supports SCSS.</p>
-</li>
-<li>
-<p>Fork the <a href="https://github.com/google/docsy-example">Science Toolkits repo</a> repo into your own project, then create a local copy using <code>git clone</code>. Don’t forget to use <code>--recurse-submodules</code> or you won’t pull down some of the code you need to generate a working site.</p>
-<pre><code>git clone --recurse-submodules --depth 1 https://github.com/google/docsy-example.git
-</code></pre></li>
-<li>
-<p>Run <code>hugo server</code> in the site root directory. By default your site will be available at http://localhost:1313/. Now that you&rsquo;re serving your site locally, Hugo will watch for changes to the content and automatically refresh your site.</p>
-</li>
-<li>
-<p>Continue with the usual GitHub workflow to edit files, commit them, push the
-changes up to your fork, and create a pull request.</p>
-</li>
-</ol>
-<h2 id="creating-an-issue">Creating an issue</h2>
-<p>If you&rsquo;ve found a problem in the docs, but you&rsquo;re not sure how to fix it yourself, please create an issue in the <a href="https://github.com/google/docsy-example/issues">Science Toolkits repo</a>. You can also create an issue about a specific page by clicking the <strong>Create Issue</strong> button in the top right hand corner of the page.</p>
-<h2 id="useful-resources">Useful resources</h2>
-<ul>
-<li>[Docsy user guide](wherever it goes): All about Docsy, including how it manages navigation, look and feel, and multi-language support.</li>
-<li><a href="https://gohugo.io/documentation/">Hugo documentation</a>: Comprehensive reference for Hugo.</li>
-<li><a href="https://guides.github.com/activities/hello-world/">Github Hello World!</a>: A basic introduction to GitHub concepts and workflow.</li>
-</ul>
 
         <div class="section-index">
     
@@ -466,21 +392,9 @@ changes up to your fork, and create a pull request.</p>
         
 <ul class="list-inline mb-0">
   
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="User mailing list" aria-label="User mailing list">
-    <a class="text-white" target="_blank" href="https://example.org/mail">
-      <i class="fa fa-envelope"></i>
-    </a>
-  </li>
-  
   <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Twitter" aria-label="Twitter">
-    <a class="text-white" target="_blank" href="https://example.org/twitter">
+    <a class="text-white" target="_blank" href="https://twitter.com/intelygenz">
       <i class="fab fa-twitter"></i>
-    </a>
-  </li>
-  
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Stack Overflow" aria-label="Stack Overflow">
-    <a class="text-white" target="_blank" href="https://example.org/stack">
-      <i class="fab fa-stack-overflow"></i>
     </a>
   </li>
   
@@ -495,21 +409,9 @@ changes up to your fork, and create a pull request.</p>
         
 <ul class="list-inline mb-0">
   
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="GitLab" aria-label="GitLab">
-    <a class="text-white" target="_blank" href="https://gitlab.intelygenz.com/t7-team/intelygenz-science-toolkit/intelygenz-science-toolkit">
-      <i class="fab fa-gitlab"></i>
-    </a>
-  </li>
-  
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Slack" aria-label="Slack">
-    <a class="text-white" target="_blank" href="https://example.org/slack">
-      <i class="fab fa-slack"></i>
-    </a>
-  </li>
-  
-  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Developer mailing list" aria-label="Developer mailing list">
-    <a class="text-white" target="_blank" href="https://example.org/mail">
-      <i class="fa fa-envelope"></i>
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Github" aria-label="Github">
+    <a class="text-white" target="_blank" href="https://github.com/intelygenz/science-toolkit">
+      <i class="fab fa-github"></i>
     </a>
   </li>
   
