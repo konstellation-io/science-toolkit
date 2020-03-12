@@ -55,9 +55,6 @@ vscode:
     storageClassName: standard
 
 jupyterhub:
-  credentials:
-    username: test
-    password: test
   hub:
     initContainers:
       - name: gitea-oauth2-setup

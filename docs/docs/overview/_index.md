@@ -1,7 +1,7 @@
 ---
 title: "Overview"
 linkTitle: "Overview"
-weight: 1
+weight: 10
 description: >
   General information about goals and usage of the Science Toolkit.
 ---
@@ -41,13 +41,3 @@ As it is important to not lose sight of the useful information that we need to s
 Last but not least, a dashboard is mandatory to support the analysis during the exploratory data analysis phase and for checking the results of the experiments executed.
 
 The Science Toolkit covers with open source technologies all the needs for the different phases highlighted in the previous paragraphs. The aim of this is to provide a suite of tools and technological frameworks to work in data projects, as well as, the right workflow and methodology to help artificial intelligence researchers and practitioners to obtain the maximum value from each phase of the project.
-
----
-
-## Where should I go next?
-
-Give your users next steps from the Overview. For example:
-
-* [Getting Started](/getting-started/): Get started with $project
-* [Examples](/examples/): Check out some example code!
-

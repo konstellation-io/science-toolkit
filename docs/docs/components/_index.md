@@ -1,17 +1,32 @@
 
 ---
-title: "Concepts"
-linkTitle: "Concepts"
-weight: 4
+title: "Components"
+linkTitle: "Components"
+weight: 30
 description: >
-  Basic concepts of Science Toolkit.
+  Basic components of Science Toolkit.
 ---
 
 
 ## Gitea
 
-Gitea is an open-source forge software package for hosting software development version control using Git as well as other collaborative features like bug tracking, wikis, and code review. For more information please visit: [gitea.io](https://gitea.io/)
+Gitea is an open-source forge software package for hosting software development version control using Git as well as other collaborative features like bug tracking, wikis, and code review. 
 
+For more information please visit: [gitea.io](https://gitea.io/)
+
+
+## JupyterHub
+
+Gitea is an open-source forge software package for hosting software development version control using Git as well as other collaborative features like bug tracking, wikis, and code review.
+
+For more information please visit: [Jupyter Hub](https://jupyter.org/hub/)
+
+
+## VS Code
+
+Visual Studio Code is a lightweight but powerful online code editor that support Python, Go, JavaScript, TypeScript, Node.js, etc)
+For more information please visit: [VS Code](https://github.com/cdr/code-server)
+ 
 
 ## Drone.io
 
@@ -25,13 +40,6 @@ For more information please visit: [Drone.io](https://drone.io/)
 MLflow is an open-source platform to manage the ML lifecycle, including experimentation, reproducibility, and deployment. MLFlow allows tracking the results of jobs that have been scheduled in a pipeline. It is integrated with Minio for persistence. 
 
 For more information please visit: [MLFlow](https://mlflow.org/)
-
-
-## FluentBit
-
-Fluent Bit is an open-source and multi-platform Log Processor and Forwarder which allows you to collect data/logs from different sources, unify and send them to multiple destinations. It's fully compatible with Docker and Kubernetes environments. 
-
-For more information please visit: [FluentBit](https://fluentbit.io/)
 
 
 ## Postgres

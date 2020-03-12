@@ -1,0 +1,39 @@
+domain: toolkit.local
+
+sharedVolume:
+  storageClassName: standard
+
+gitea:
+  admin:
+    username: admin
+    password: 123456
+  storage:
+    storageClassName: standard
+
+postgres:
+  dbName: gitea
+  dbPassword: test
+  storage:
+    storageClassName: standard
+
+drone:
+  storage:
+    storageClassName: standard
+
+vscode:
+  storage:
+    storageClassName: standard
+
+jupyterhub:
+  hub:
+    db:
+      type: postgres
+      url: postgres+psycopg2://postgres:test@postgres:5432/hub
+      pvc:
+        storageClassName: standard
+
+minio:
+  accessKey: minio
+  secretKey: minio123
+  persistence:
+    storageClass: standard

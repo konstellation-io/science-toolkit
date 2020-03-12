@@ -1,7 +1,7 @@
 ---
 title: "Installation"
 linkTitle: "Installation"
-weight: 8
+weight: 40
 description: >
   What does your user need to know to try your project?
 ---
