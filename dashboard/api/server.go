@@ -25,7 +25,7 @@ func New(manager *codeserver.CodeServer) *Server {
 func (s *Server) StartCodeServer(c *gin.Context) {
 	fmt.Printf("starting server\n")
 	u := c.MustGet("user").(codeserver.User)
-	status, err := s.manager.GetStatus(u)
+	status, err := s.manager.GetStatus(c.Request.Context(), u)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -46,7 +46,7 @@ func (s *Server) StartCodeServer(c *gin.Context) {
 func (s *Server) StopCodeServer(c *gin.Context) {
 	u := c.MustGet("user").(codeserver.User)
 
-	status, err := s.manager.GetStatus(u)
+	status, err := s.manager.GetStatus(c.Request.Context(), u)
 	if err != nil {
 		fmt.Printf("error stopping CodeServer: %s\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -59,7 +59,7 @@ func (s *Server) StopCodeServer(c *gin.Context) {
 		return
 	}
 
-	err = s.manager.Stop(u)
+	err = s.manager.Stop(c.Request.Context(), u)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -71,9 +71,23 @@ func (s *Server) StopCodeServer(c *gin.Context) {
 func (s *Server) StatusCodeServer(c *gin.Context) {
 	u := c.MustGet("user").(codeserver.User)
 
-	status, err := s.manager.GetStatus(u)
+	status, err := s.manager.GetStatus(c.Request.Context(), u)
 	if err != nil {
 		fmt.Printf("error getting CodeServer status: %s\n", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"running": status.Running})
+}
+
+// WaitCodeServerRunning wait for a statefulSet resource on running state.
+func (s *Server) WaitCodeServerRunning(c *gin.Context) {
+	u := c.MustGet("user").(codeserver.User)
+
+	status, err := s.manager.WaitCodeServerRunning(c.Request.Context(), u)
+	if err != nil {
+		fmt.Printf("error on wait CodeServer running status: %s\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

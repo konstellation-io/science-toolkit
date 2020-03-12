@@ -1,6 +1,7 @@
 package codeserver
 
 import (
+	"context"
 	"fmt"
 
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -30,7 +31,7 @@ func New(config *config.Config, resources *kubernetes.ResourceManager) *CodeServ
 }
 
 // GetStatus returns the setup and running status of CodeServer for the given user
-func (m *CodeServer) GetStatus(u User) (*ServerStatus, error) {
+func (m *CodeServer) GetStatus(ctx context.Context, u User) (*ServerStatus, error) {
 	status := &ServerStatus{
 		SetupOK: false,
 		Running: false,
@@ -44,7 +45,7 @@ func (m *CodeServer) GetStatus(u User) (*ServerStatus, error) {
 	}
 	status.SetupOK = true
 
-	running, err := m.resources.IsCodeServerRunning(u.GetServerName())
+	running, err := m.resources.IsCodeServerRunning(ctx, u.GetServerName())
 	if err != nil {
 		return nil, err
 	}
@@ -84,8 +85,8 @@ func (m *CodeServer) Start(u User) error {
 }
 
 // Stop stops a CodeServer associated with the given user
-func (m *CodeServer) Stop(u User) error {
-	status, err := m.GetStatus(u)
+func (m *CodeServer) Stop(context context.Context, u User) error {
+	status, err := m.GetStatus(context, u)
 	if err != nil {
 		return err
 	}
@@ -111,4 +112,20 @@ func (m *CodeServer) createSecrets(u User) error {
 
 	return m.resources.CreateSecret(u.GetSecretName(), data)
 
+}
+
+func (m *CodeServer) WaitCodeServerRunning(ctx context.Context, u User) (*ServerStatus, error) {
+	status := &ServerStatus{
+		SetupOK: false,
+		Running: false,
+	}
+
+	err := m.resources.WaitForCodeServerRunning(ctx, u.GetServerName())
+	if err != nil {
+		return nil, err
+	}
+
+	status.Running = true
+
+	return status, nil
 }

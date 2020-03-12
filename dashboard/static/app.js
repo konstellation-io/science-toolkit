@@ -53,14 +53,14 @@ const app = new Vue({
             this.codeServer.isLoading = true
             try {
                 await axios.post(`/api/start`)
+                this.codeServer.status = true
+                this.codeServer.isRunning = true
             }catch (e) {
                 this.error = e
                 console.log("Error: ",e)
             }finally {
-                this.statusCodeServer()
                 this.codeServer.isLoading = false
             }
-
         },
         async stopCodeServer() {
             this.error = null
