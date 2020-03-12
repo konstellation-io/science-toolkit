@@ -1,3 +1,4 @@
+
 ---
 title: "Concepts"
 linkTitle: "Concepts"
@@ -6,12 +7,37 @@ description: >
   Basic concepts of Science Toolkit.
 ---
 
-{{% pageinfo %}}
-This is a placeholder page that shows you how to use this template site.
-{{% /pageinfo %}}
 
-For many projects, users may not need much information beyond the information in the [Overview](/docs/overview/), so this section is **optional**. However if there are areas where your users will need a more detailed understanding of a given term or feature in order to do anything useful with your project (or to not make mistakes when using it) put that information in this section. For example, you may want to add some conceptual pages if you have a large project with many components and a complex architecture.
+## Gitea
 
-Remember to focus on what the user needs to know, not just what you think is interesting about your project! If they don’t need to understand your original design decisions to use or contribute to the project, don’t put them in, or include your design docs in your repo and link to them. Similarly, most users will probably need to know more about how features work when in use rather than how they are implemented. Consider a separate architecture page for more detailed implementation and system design information that potential project contributors can consult.
+Gitea is an open-source forge software package for hosting software development version control using Git as well as other collaborative features like bug tracking, wikis, and code review. For more information please visit: [gitea.io](https://gitea.io/)
+
+
+## Drone.io
+
+Drone.io is an open-source continuous integration platform built on Docker which allows automating Software Testing and Delivery. 
+
+For more information please visit: [Drone.io](https://drone.io/)
+
+
+## MLFlow
+
+MLflow is an open-source platform to manage the ML lifecycle, including experimentation, reproducibility, and deployment. MLFlow allows tracking the results of jobs that have been scheduled in a pipeline. It is integrated with Minio for persistence. 
+
+For more information please visit: [MLFlow](https://mlflow.org/)
+
+
+## FluentBit
+
+Fluent Bit is an open-source and multi-platform Log Processor and Forwarder which allows you to collect data/logs from different sources, unify and send them to multiple destinations. It's fully compatible with Docker and Kubernetes environments. 
+
+For more information please visit: [FluentBit](https://fluentbit.io/)
+
+
+## Postgres
+
+Postgres is an open-source relational database management system emphasizing extensibility and technical standards compliance. It is designed to handle a range of workloads, from single machines to data warehouses or Web services with many concurrent users. 
+
+For more information please visit: [PostgreSQL](https://www.postgresql.org/)
 
 
