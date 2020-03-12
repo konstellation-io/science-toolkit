@@ -8,12 +8,10 @@
   
   <url>
     <loc>https://intelygenz.github.io/science-toolkit/docs/</loc>
-    <lastmod>2017-01-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://intelygenz.github.io/science-toolkit/docs/getting-started/</loc>
-    <lastmod>2017-01-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -29,16 +27,6 @@
   </url>
   
   <url>
-    <loc>https://intelygenz.github.io/science-toolkit/docs/getting-started/example-page/</loc>
-    <lastmod>2017-01-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://intelygenz.github.io/science-toolkit/</loc>
-    <lastmod>2017-01-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://intelygenz.github.io/science-toolkit/index.json</loc>
   </url>
   
@@ -48,6 +36,10 @@
   
   <url>
     <loc>https://intelygenz.github.io/science-toolkit/community/</loc>
+  </url>
+  
+  <url>
+    <loc>https://intelygenz.github.io/science-toolkit/</loc>
   </url>
   
   <url>
