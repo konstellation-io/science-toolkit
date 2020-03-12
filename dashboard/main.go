@@ -27,7 +27,7 @@ func main() {
 	api := r.Group("/api", api.ReadUser())
 	api.POST("/start", s.StartCodeServer)
 	api.POST("/stop", s.StopCodeServer)
-	api.GET("/status", s.StatusCodeServer)
+	api.POST("/status", s.StatusCodeServer)
 
 	// Static routes
 	r.Static("index.html", "./static/")

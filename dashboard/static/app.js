@@ -42,7 +42,7 @@ const app = new Vue({
             return this.codeServer.status && !this.codeServer.isRunning
         },
         async statusCodeServer() {
-            const res = await axios.get(`/api/status`)
+            const res = await axios.post(`/api/status`)
 
             this.codeServer.status = true
             this.codeServer.isRunning = res.data.running
