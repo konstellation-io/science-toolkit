@@ -6,31 +6,54 @@ description: >
   What does your user need to know to try your project?
 ---
 
-{{% pageinfo %}}
-This is a placeholder page that shows you how to use this template site.
-{{% /pageinfo %}}
+## Pre-requisites
 
-Information in this section helps your user try your project themselves.
+In order to install Science Toolkit needs the following tools:
 
-* What do your users need to do to start using your project? This could include downloading/installation instructions, including any prerequisites or system requirements.
+- Helm version 3. [+ info](https://helm.sh/) (works also with v2)
+- A Kubernetes cluster (tested only with 1.15.4) [+ info](https://kubernetes.io/es/)
+  - You can also use a local cluster like [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/).
 
-* Introductory “Hello World” example, if appropriate. More complex tutorials should live in the Tutorials section.
 
-Consider using the headings below for your getting started page. You can delete any that are not applicable to your project.
+## Add helm dependencies repos
 
-## Prerequisites
+```bash
+$ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+$ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+$ helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/
+$ helm dep update helm/science-toolkit-lite
+```
 
-Are there any system requirements for using your project? What languages are supported (if any)? Do users need to already have any software or tools installed?
+
+## Setting up chart values
+
+- Fill values needed to install science toolkit chart:
+
+| Parameter                        | Description                                                     | Default         |
+| -------------------------------- | --------------------------------------------------------------- | --------------- |
+| `domain`                         | This is the base DNS name for all the components in the toolkit | `toolkit.local` |
+| `sharedVolume.storageClassName`  | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
+| `gitea.volume.storageClassName`  | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
+| `drone.volume.storageClassName`  | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
+| `vscode.volume.size`             | Size for the vscode config volume                               | `10Gi`          |
+| `vscode.volume.storageClassName` | The Kubernetes Storage Class Name where to create the volume    | `standard`      |
+
 
 ## Installation
 
-Where can your user find your project code? How can they install it (binaries, installable package, build from source)? Are there multiple options/versions they can install and how should they choose the right one for them?
 
-## Setup
+```bash
+$ helm repo update
+$ helm upgrade \
+  --wait \
+  --install science-toolkit \
+  --namespace science-toolkit \
+  --values values.yaml \
+  --timeout 5m \
+  science-toolkit/science-toolkit
+```
 
-Is there any initial setup users need to do after installation to try your project?
 
-## Try it out!
+### Domain Setup
 
-Can your users test their installation, for example by running a commmand or deploying a Hello World example?
-
+If you are deploying Science Toolkit in a remote cluster you need setup a DNS helm param on `values.yaml` file
