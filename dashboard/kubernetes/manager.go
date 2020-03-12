@@ -1,11 +1,14 @@
 package kubernetes
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"k8s.io/apimachinery/pkg/watch"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
+	k8s_errors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -52,7 +55,7 @@ func (r *ResourceManager) IsSecretPresent(name string) (bool, error) {
 		return false, err
 	}
 
-	return !errors.IsNotFound(err), nil
+	return !k8s_errors.IsNotFound(err), nil
 
 }
 
@@ -79,17 +82,69 @@ func (r *ResourceManager) CreateSecret(name string, input map[string]string) err
 }
 
 // IsCodeServerRunning check if the there is a server for the given username
-func (r *ResourceManager) IsCodeServerRunning(name string) (bool, error) {
-	codeServer, err := r.codeClient.Namespace(r.config.Kubernetes.Namespace).Get(name, metav1.GetOptions{})
-	if errors.IsNotFound(err) {
-		return false, nil
+func (r *ResourceManager) IsCodeServerRunning(ctx context.Context, name string) (bool, error) {
+	ns := r.config.Kubernetes.Namespace
+
+	listOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("app=%s", name),
+		TypeMeta: metav1.TypeMeta{
+			Kind: "StatefulSet",
+		},
 	}
+	list, err := r.codeClient.Namespace(ns).List(listOptions)
 	if err != nil {
 		return false, err
 	}
 
-	fmt.Println("server: ", codeServer)
-	return true, nil
+	numPods := len(list.Items)
+	return numPods != 0, nil
+}
+func (r *ResourceManager) WaitForCodeServerRunning(ctx context.Context, name string) error {
+	ns := r.config.Kubernetes.Namespace
+
+	ctx, cancel := context.WithTimeout(ctx, 300*time.Second)
+	defer cancel()
+
+	exist, err := r.IsCodeServerRunning(ctx, name)
+	if err != nil {
+		return err
+	}
+
+	if exist {
+		return nil
+	}
+
+	listOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("app=%s", name),
+		TypeMeta: metav1.TypeMeta{
+			Kind: "Pod",
+		},
+	}
+
+	w, err := r.codeClient.Namespace(ns).Watch(listOptions)
+	if err != nil {
+		return err
+	}
+	watchResults := w.ResultChan()
+
+	for {
+		select {
+		case event := <-watchResults:
+			if event.Type == watch.Added {
+				if pod, ok := event.Object.(*v1.Pod); ok {
+					if pod.Status.Phase == v1.PodRunning {
+						w.Stop()
+						return nil
+					}
+				}
+			}
+
+		case <-ctx.Done():
+			w.Stop()
+			return errors.New("timeout waiting vscode pod")
+		}
+	}
+
 }
 
 // CreateCodeServer creates a new crd of type CodeServer for the given user

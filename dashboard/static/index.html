@@ -98,7 +98,8 @@
                 </p>
                 <p class="control ">
                 <span class="file-name label title  is-spaced">Server is
-                    <span v-if="codeServer.isRunning" class="tag is-success">running</span>
+                    <span v-if="error" class="tag is-danger">error</span>
+                    <span v-else-if="codeServer.isRunning" class="tag is-success">running</span>
                     <span v-else class="tag is-light">stopped</span>
                 </span>
                 </p>
