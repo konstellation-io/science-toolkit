@@ -112,6 +112,9 @@ func (r *ResourceManager) CreateCodeServer(serverName, username string) error {
 					"size":      r.config.VSCode.Storage.Size,
 					"className": r.config.VSCode.Storage.ClassName,
 				},
+				"sharedVolume": map[string]string{
+					"name": r.config.VSCode.SharedVolume.Name,
+				},
 			},
 		},
 	}
