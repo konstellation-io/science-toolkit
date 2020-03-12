@@ -1,5 +1,11 @@
 domain: toolkit.local
 
+sharedVolume:
+  name: received-data
+  storageClassName: standard
+  size: 10Gi
+  path: /sci-toolkit/received-data
+
 dashboard:
   image:
     repository: terminus7/sci-toolkit-dashboard
@@ -42,11 +48,6 @@ droneRunner:
     tag: latest
     pullPolicy: IfNotPresent
   namespace: sci-toolkit
-
-sharedVolume:
-  name: received-data
-  storageClassName: standard
-  path: /sci-toolkit/received-data
 
 vscode:
   storage:
