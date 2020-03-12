@@ -38,7 +38,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: terminus7/sci-toolkit-vscode:latest
           imagePullPolicy: IfNotPresent
-
+          {{ if .Values.sharedVolume.name -}}
+          volumeMounts:
+            - name: {{ .Values.sharedVolume.name }}
+              mountPath: /home/coder/projects
+          {{- end }}
         - name: {{ .Chart.Name }}-proxy
           image: terminus7/oauth2-proxy:latest
           imagePullPolicy: IfNotPresent

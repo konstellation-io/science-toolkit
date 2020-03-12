@@ -24,6 +24,9 @@ type Config struct {
 			Size      string `yaml:"size" envconfig:"TOOLKIT_VSCODE_STORAGE_SIZE"`
 			ClassName string `yaml:"className" envconfig:"TOOLKIT_VSCODE_STORAGE_CLASSNAME"`
 		} `yaml:"storage"`
+		SharedVolume struct {
+			Name string `yaml:"name" envconfig:"TOOLKIT_SHARED_VOLUME"`
+		} `yaml:"sharedVolume"`
 	} `yaml:"vscode"`
 
 	Kubernetes struct {
