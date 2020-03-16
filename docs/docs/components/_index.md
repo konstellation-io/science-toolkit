@@ -7,6 +7,9 @@ description: >
   Basic components of Science Toolkit.
 ---
 
+## Architecture
+
+![Science Toolkit Architecture](/science-toolkit/ScienceToolkitComponents.jpg)
 
 ## Gitea
 
