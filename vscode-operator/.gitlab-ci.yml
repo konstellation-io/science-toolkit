@@ -9,6 +9,7 @@ release-vscode-operator:
     refs:
       - master
     changes:
+      - vscode/**/*
       - vscode-operator/**/*
       - .gitlab-ci.yml
 
@@ -23,6 +24,8 @@ publish-vscode-operator-image:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode-operator"
     DOCKER_PASS: $DOCKER_PASS
   before_script:
+    - VSCODE_TAG=${CI_COMMIT_TAG#"vscode-v"}
+    - ./scripts/replace_env_path.sh
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - cd vscode-operator
     - ./scripts/install_operator_sdk.sh

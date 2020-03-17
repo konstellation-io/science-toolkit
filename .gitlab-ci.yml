@@ -1,4 +1,5 @@
 stages:
+  - semantic-release-dependency
   - semantic-release
   - publish
   - build

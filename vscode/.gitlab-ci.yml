@@ -1,5 +1,5 @@
 release-vscode:
-  stage: semantic-release
+  stage: semantic-release-dependency
   image: node:12
   before_script:
     - npm install --prefix vscode
