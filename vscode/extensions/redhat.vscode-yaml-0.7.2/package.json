@@ -1,0 +1,183 @@
+{
+	"name": "vscode-yaml",
+	"displayName": "YAML",
+	"description": "YAML Language Support by Red Hat, with built-in Kubernetes and Kedge syntax support",
+	"author": "Red Hat",
+	"contributors": [
+		{
+			"name": "Joshua Pinkney",
+			"email": "jpinkney@redhat.com"
+		}
+	],
+	"license": "MIT",
+	"version": "0.7.2",
+	"publisher": "redhat",
+	"preview": true,
+	"bugs": "https://github.com/redhat-developer/vscode-yaml/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/redhat-developer/vscode-yaml"
+	},
+	"icon": "icon/icon128.png",
+	"engines": {
+		"vscode": "^1.31.0"
+	},
+	"categories": [
+		"Programming Languages",
+		"Linters",
+		"Snippets",
+		"Formatters"
+	],
+	"activationEvents": [
+		"onLanguage:yaml"
+	],
+	"keywords": [
+		"kubernetes",
+		"kedge",
+		"yaml",
+		"autocompletion",
+		"validation"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"languages": [
+			{
+				"id": "yaml",
+				"aliases": [
+					"YAML",
+					"yaml"
+				],
+				"extensions": [
+					".yml",
+					".eyaml",
+					".eyml",
+					".yaml"
+				],
+				"filenames": [
+					".clang-format",
+					"_clang-format"
+				],
+				"firstLine": "^#cloud-config",
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "yaml",
+				"scopeName": "source.yaml",
+				"path": "./syntaxes/yaml.tmLanguage.json"
+			}
+		],
+		"configuration": {
+			"properties": {
+				"yaml.trace.server": {
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Traces the communication between VSCode and the YAML language service."
+				},
+				"yaml.schemas": {
+					"type": "object",
+					"default": {},
+					"description": "Associate schemas to YAML files in the current workspace"
+				},
+				"yaml.format.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable/disable default YAML formatter"
+				},
+				"yaml.format.singleQuote": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use single quotes instead of double quotes"
+				},
+				"yaml.format.bracketSpacing": {
+					"type": "boolean",
+					"default": true,
+					"description": "Print spaces between brackets in objects"
+				},
+				"yaml.format.proseWrap": {
+					"type": "string",
+					"default": "preserve",
+					"enum": [
+						"preserve",
+						"never",
+						"always"
+					],
+					"description": "Always: wrap prose if it exeeds the print width, Never: never wrap the prose, Preserve: wrap prose as-is"
+				},
+				"yaml.format.printWidth": {
+					"type": "integer",
+					"default": 80,
+					"description": "Specify the line length that the printer will wrap on"
+				},
+				"yaml.validate": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable/disable validation feature"
+				},
+				"yaml.hover": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable/disable hover feature"
+				},
+				"yaml.completion": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable/disable completion feature"
+				},
+				"yaml.customTags": {
+					"type": "array",
+					"default": [],
+					"description": "Custom tags for the parser to use"
+				},
+				"yaml.schemaStore.enable": {
+					"type": "boolean",
+					"default": true,
+					"description": "Automatically pull available YAML schemas from JSON Schema Store"
+				}
+			}
+		},
+		"configurationDefaults": {
+			"[yaml]": {
+				"editor.insertSpaces": true,
+				"editor.tabSize": 2,
+				"editor.quickSuggestions": {
+					"other": true,
+					"comments": false,
+					"strings": true
+				},
+				"editor.autoIndent": false
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"update-vscode": "node ./node_modules/vscode/bin/install",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "sh scripts/e2e.sh"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.33",
+		"@types/node": "^6.0.52",
+		"ts-node": "^3.3.0",
+		"typescript": "3.5.1",
+		"vscode": "^1.1.34"
+	},
+	"dependencies": {
+		"vscode-languageclient": "5.2.1",
+		"vscode-nls": "^3.2.1",
+		"vscode-uri": "^2.0.3",
+		"yaml-language-server": "0.7.2"
+	},
+	"__metadata": {
+		"id": "redhat.vscode-yaml",
+		"publisherId": "redhat",
+		"publisherDisplayName": "redhat"
+	}
+}
