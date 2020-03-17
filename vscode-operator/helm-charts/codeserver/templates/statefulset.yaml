@@ -36,7 +36,7 @@ spec:
                 name: gitea-configmap
       containers:
         - name: {{ .Chart.Name }}
-          image: terminus7/sci-toolkit-vscode:latest
+          image: terminus7/sci-toolkit-vscode:{{ .Values.tag }}
           imagePullPolicy: IfNotPresent
           {{ if .Values.sharedVolume.name -}}
           volumeMounts:

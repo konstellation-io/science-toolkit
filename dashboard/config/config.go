@@ -20,6 +20,7 @@ type Config struct {
 	} `yaml:"server"`
 
 	VSCode struct {
+		Tag     string `yaml:"size" envconfig:"TOOLKIT_VSCODE_TAG"`
 		Storage struct {
 			Size      string `yaml:"size" envconfig:"TOOLKIT_VSCODE_STORAGE_SIZE"`
 			ClassName string `yaml:"className" envconfig:"TOOLKIT_VSCODE_STORAGE_CLASSNAME"`

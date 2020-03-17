@@ -50,6 +50,7 @@ droneRunner:
   namespace: sci-toolkit
 
 vscode:
+  tag: ${VSCODE_TAG}
   storage:
     size: 10Gi
     storageClassName: standard

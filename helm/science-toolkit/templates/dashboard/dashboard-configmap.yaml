@@ -5,6 +5,7 @@ metadata:
   labels:
     app:  dashboard-configmap
 data:
+  TOOLKIT_VSCODE_TAG: {{ .Values.vscode.tag }}
   TOOLKIT_VSCODE_STORAGE_SIZE: {{ .Values.vscode.storage.size }}
   TOOLKIT_VSCODE_STORAGE_CLASSNAME: {{ .Values.vscode.storage.storageClassName }}
   TOOLKIT_BASE_DOMAIN_NAME: {{ .Values.domain }}

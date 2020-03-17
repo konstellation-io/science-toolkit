@@ -1,5 +1,6 @@
 domain: toolkit.local
 username: demo
+tag: latest
 tls:
   enabled: false
 storage:
