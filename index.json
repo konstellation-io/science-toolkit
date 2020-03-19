@@ -84,7 +84,7 @@
 				
 				
 				
-				<a class="nav-link" href="/science-toolkit/docs/" ><span>Documentation</span></a>
+				<a class="nav-link" href="/science-toolkit/docs/" ><span>Docs</span></a>
 			</li>
 			
 			<li class="nav-item mr-4 mb-2 mb-lg-0">
@@ -111,7 +111,7 @@
   aria-label="Search this site…"
   autocomplete="off"
   
-  data-offline-search-index-json-src="/science-toolkit/offline-search-index.38995ca8db667995a6ee8d73ae14d5f63c416c771f88a75b61418d4aec135be656d3e37005b89b25642c7b3ef099290f6558d379177607e511d78374c1c745bb.json"
+  data-offline-search-index-json-src="/science-toolkit/offline-search-index.bfcd4a6e201f1aac5cf0eea750782e709a5b9a000c75570158f0ca6cca57e38eacc79365b71cdb3d4713c2d34c94c917f1bc63f938e734ee29e5d0eef0b27817.json"
   data-offline-search-base-href="/"
 >
 

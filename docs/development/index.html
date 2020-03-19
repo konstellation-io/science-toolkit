@@ -7,7 +7,7 @@
 
 <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 
-<link rel="alternate" type="application/rss&#43;xml" href="https://intelygenz.github.io/science-toolkit/docs/contribution-guidelines/index.xml">
+<link rel="alternate" type="application/rss&#43;xml" href="https://intelygenz.github.io/science-toolkit/docs/development/index.xml">
 
 
 <link rel="shortcut icon" href="/favicons/favicon.ico" >
@@ -21,17 +21,17 @@
 <link rel="icon" type="image/png" href="/science-toolkit/favicons/android-144x144.png" sizes="144x144">
 <link rel="icon" type="image/png" href="/science-toolkit/favicons/android-192x192.png" sizes="192x192">
 
-<title>Contribution Guidelines | Science Toolkit</title><meta property="og:title" content="Contribution Guidelines" />
-<meta property="og:description" content="How to contribute to the docs
+<title>Development | Science Toolkit</title><meta property="og:title" content="Development" />
+<meta property="og:description" content="Information about how to start adding features to Science Toolkit
 " />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://intelygenz.github.io/science-toolkit/docs/contribution-guidelines/" />
+<meta property="og:url" content="https://intelygenz.github.io/science-toolkit/docs/development/" />
 
-<meta itemprop="name" content="Contribution Guidelines">
-<meta itemprop="description" content="How to contribute to the docs
+<meta itemprop="name" content="Development">
+<meta itemprop="description" content="Information about how to start adding features to Science Toolkit
 "><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Contribution Guidelines"/>
-<meta name="twitter:description" content="How to contribute to the docs
+<meta name="twitter:title" content="Development"/>
+<meta name="twitter:description" content="Information about how to start adding features to Science Toolkit
 "/>
 
 
@@ -53,7 +53,7 @@
   crossorigin="anonymous"></script>
 
 
-    <title>Contribution Guidelines | Science Toolkit</title>
+    <title>Development | Science Toolkit</title>
   </head>
   <body class="td-section">
     <header>
@@ -255,10 +255,10 @@
 
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="/science-toolkit/docs/contribution-guidelines/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
+    <a  href="/science-toolkit/docs/contribution-guidelines/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
   </li>
   <ul>
-    <li class="collapse show" id="science-toolkitdocscontribution-guidelines">
+    <li class="collapse " id="science-toolkitdocscontribution-guidelines">
       
       
       
@@ -278,10 +278,10 @@
 
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="/science-toolkit/docs/development/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Development</a>
+    <a  href="/science-toolkit/docs/development/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Development</a>
   </li>
   <ul>
-    <li class="collapse " id="science-toolkitdocsdevelopment">
+    <li class="collapse show" id="science-toolkitdocsdevelopment">
       
       
       
@@ -316,8 +316,8 @@
 
 
 
-<a href="https://github.com/intelygenz/science-toolkit/edit/master/docs-markdown/content/en/docs/contribution-guidelines/_index.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
-<a href="https://github.com/intelygenz/science-toolkit/issues/new?title=Contribution%20Guidelines" target="_blank"><i class="fab fa-github fa-fw"></i> Create documentation issue</a>
+<a href="https://github.com/intelygenz/science-toolkit/edit/master/docs-markdown/content/en/docs/development/_index.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
+<a href="https://github.com/intelygenz/science-toolkit/issues/new?title=Development" target="_blank"><i class="fab fa-github fa-fw"></i> Create documentation issue</a>
 
 
 <a href="https://github.com/intelygenz/science-toolkit/issues/new" target="_blank"><i class="fas fa-tasks fa-fw"></i> Create project issue</a>
@@ -328,6 +328,19 @@
 
 
 
+
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#pre-requisites">Pre-requisites</a></li>
+    <li><a href="#installation-variant">Installation variant</a>
+      <ul>
+        <li><a href="#if-you-have-previously-installed-it">If you have previously installed it</a></li>
+        <li><a href="#operator-sdk">Operator SDK</a></li>
+        <li><a href="#building-docker-images">Building docker images</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
 
 
@@ -354,7 +367,7 @@
 
 
 <li class="breadcrumb-item active" aria-current="page">
-	<a href="https://intelygenz.github.io/science-toolkit/docs/contribution-guidelines/">Contribution Guidelines</a>
+	<a href="https://intelygenz.github.io/science-toolkit/docs/development/">Development</a>
 </li>
 
 	</ol>
@@ -362,15 +375,31 @@
 
             
 <div class="td-content">
-	<h1>Contribution Guidelines</h1>
-	<div class="lead">How to contribute to the docs</div>
-	
-
-<div class="pageinfo pageinfo-primary">
-<p>Here is the guidelines to contribute to this open source project.</p>
-
-</div>
-
+	<h1>Development</h1>
+	<div class="lead">Information about how to start adding features to Science Toolkit</div>
+	<h2 id="pre-requisites">Pre-requisites</h2>
+<p>The same requisites you need to install it locally.</p>
+<h2 id="installation-variant">Installation variant</h2>
+<p>In order to start adding features to the Science Toolkit you first need a local installation.
+You can follow the <a href="/docs/installation/minikube/">Minikube installation guide</a> and only need to change this line:</p>
+<p>Change this:</p>
+<pre><code>$/path/to/repo&gt; ./local_env.sh
+</code></pre><p>To this:</p>
+<pre><code>$/path/to/repo&gt; ./local_env.sh --docker-build
+</code></pre><h3 id="if-you-have-previously-installed-it">If you have previously installed it</h3>
+<p>Only if you have previously installed it without the build option, you need to clean the namespace and start over.</p>
+<pre><code>$path/to/repo&gt; ./local_env.sh --dracarys
+</code></pre><p><em>Note</em>: the <code>--dracarys</code> option would reset the Minikube profile and start fresh.</p>
+<h3 id="operator-sdk">Operator SDK</h3>
+<p>If you want to make changes to the <code>vscode-operator</code> you&rsquo;d need the Operator SDK installed.
+You can follow this <a href="https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md">operator-sdk installation guide</a></p>
+<p>That&rsquo;s all you need. The script <code>local_env.sh</code> will detect you have the command and it will run a build for the operator too.local_env</p>
+<h3 id="building-docker-images">Building docker images</h3>
+<p>You can build a single image instead of running <code>local_env.sh</code> each time.
+You need to add some docker environment variables to work with Minikube instead of your host docker.previously</p>
+<pre><code>$&gt; eval &quot;$(minikube docker-env -p &quot;toolkit&quot;)&quot;
+</code></pre><p>Now you can run <code>docker build</code> on that terminal and the image would be built inside Minikube.
+If you have any running pods of the image you re-build, just delete it and Minikube would take care of restarting the container with the new image.previously</p>
 
         <div class="section-index">
     

@@ -7,7 +7,6 @@
 
 <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 
-<link rel="alternate" type="application/rss&#43;xml" href="https://intelygenz.github.io/science-toolkit/docs/contribution-guidelines/index.xml">
 
 
 <link rel="shortcut icon" href="/favicons/favicon.ico" >
@@ -21,17 +20,23 @@
 <link rel="icon" type="image/png" href="/science-toolkit/favicons/android-144x144.png" sizes="144x144">
 <link rel="icon" type="image/png" href="/science-toolkit/favicons/android-192x192.png" sizes="192x192">
 
-<title>Contribution Guidelines | Science Toolkit</title><meta property="og:title" content="Contribution Guidelines" />
-<meta property="og:description" content="How to contribute to the docs
+<title>Installation on Minikube | Science Toolkit</title><meta property="og:title" content="Installation on Minikube" />
+<meta property="og:description" content="How to start the Science Toolkit on a Minikube cluster
 " />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://intelygenz.github.io/science-toolkit/docs/contribution-guidelines/" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://intelygenz.github.io/science-toolkit/docs/installation/minikube/" />
 
-<meta itemprop="name" content="Contribution Guidelines">
-<meta itemprop="description" content="How to contribute to the docs
-"><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Contribution Guidelines"/>
-<meta name="twitter:description" content="How to contribute to the docs
+<meta itemprop="name" content="Installation on Minikube">
+<meta itemprop="description" content="How to start the Science Toolkit on a Minikube cluster
+">
+
+<meta itemprop="wordCount" content="523">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Installation on Minikube"/>
+<meta name="twitter:description" content="How to start the Science Toolkit on a Minikube cluster
 "/>
 
 
@@ -53,9 +58,9 @@
   crossorigin="anonymous"></script>
 
 
-    <title>Contribution Guidelines | Science Toolkit</title>
+    <title>Installation on Minikube | Science Toolkit</title>
   </head>
-  <body class="td-section">
+  <body class="td-page">
     <header>
       
 <nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar">
@@ -226,17 +231,17 @@
 
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="/science-toolkit/docs/installation/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Installation</a>
+    <a  href="/science-toolkit/docs/installation/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Installation</a>
   </li>
   <ul>
-    <li class="collapse " id="science-toolkitdocsinstallation">
+    <li class="collapse show" id="science-toolkitdocsinstallation">
       
       
       
       
       
       
-      <a class="td-sidebar-link td-sidebar-link__page " id="m-science-toolkitdocsinstallationminikube" href="/science-toolkit/docs/installation/minikube/">Installation on Minikube</a>
+      <a class="td-sidebar-link td-sidebar-link__page  active" id="m-science-toolkitdocsinstallationminikube" href="/science-toolkit/docs/installation/minikube/">Installation on Minikube</a>
       
       
     </li>
@@ -255,10 +260,10 @@
 
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="/science-toolkit/docs/contribution-guidelines/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
+    <a  href="/science-toolkit/docs/contribution-guidelines/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
   </li>
   <ul>
-    <li class="collapse show" id="science-toolkitdocscontribution-guidelines">
+    <li class="collapse " id="science-toolkitdocscontribution-guidelines">
       
       
       
@@ -316,8 +321,8 @@
 
 
 
-<a href="https://github.com/intelygenz/science-toolkit/edit/master/docs-markdown/content/en/docs/contribution-guidelines/_index.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
-<a href="https://github.com/intelygenz/science-toolkit/issues/new?title=Contribution%20Guidelines" target="_blank"><i class="fab fa-github fa-fw"></i> Create documentation issue</a>
+<a href="https://github.com/intelygenz/science-toolkit/edit/master/docs-markdown/content/en/docs/installation/minikube.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
+<a href="https://github.com/intelygenz/science-toolkit/issues/new?title=Installation%20on%20Minikube" target="_blank"><i class="fab fa-github fa-fw"></i> Create documentation issue</a>
 
 
 <a href="https://github.com/intelygenz/science-toolkit/issues/new" target="_blank"><i class="fas fa-tasks fa-fw"></i> Create project issue</a>
@@ -328,6 +333,17 @@
 
 
 
+
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#clone-the-repo">Clone the repo</a></li>
+        <li><a href="#create-the-local-environment">Create the local environment</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
 
 
@@ -346,6 +362,9 @@
 
 
 
+
+
+
 <li class="breadcrumb-item" >
 	<a href="https://intelygenz.github.io/science-toolkit/docs/">Docs</a>
 </li>
@@ -353,8 +372,15 @@
 
 
 
+<li class="breadcrumb-item" >
+	<a href="https://intelygenz.github.io/science-toolkit/docs/installation/">Installation</a>
+</li>
+
+
+
+
 <li class="breadcrumb-item active" aria-current="page">
-	<a href="https://intelygenz.github.io/science-toolkit/docs/contribution-guidelines/">Contribution Guidelines</a>
+	<a href="https://intelygenz.github.io/science-toolkit/docs/installation/minikube/">Installation on Minikube</a>
 </li>
 
 	</ol>
@@ -362,47 +388,127 @@
 
             
 <div class="td-content">
-	<h1>Contribution Guidelines</h1>
-	<div class="lead">How to contribute to the docs</div>
-	
+	<h1>Installation on Minikube</h1>
+	<div class="lead">How to start the Science Toolkit on a Minikube cluster</div>
+	<h1 id="pre-requisites">Pre-requisites</h1>
+<ul>
+<li>
+<p>A Minikube installation. If you need help installing it follow <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">this guide</a></p>
+</li>
+<li>
+<p>A Helm installation. You can install it following <a href="https://helm.sh/docs/intro/install/">this guide</a></p>
+</li>
+<li>
+<p>A bash console able execute <code>.sh</code> scripts</p>
+</li>
+<li>
+<p><code>gettext</code> package installed</p>
+</li>
+<li>
+<p>A clone of this repo</p>
+</li>
+</ul>
+<h1 id="checking-requisites">Checking requisites</h1>
+<p>If you have all the pre-requisites you should be able to execute all these commands without errors:</p>
+<pre><code>$&gt; minikube version
+$&gt; helm version
+$&gt; kubectl version
+</code></pre><h1 id="installation-steps">Installation steps</h1>
+<h3 id="clone-the-repo">Clone the repo</h3>
+<pre><code>$&gt; git clone git@github.com:intelygenz/science-toolkit.git
+</code></pre><h3 id="create-the-local-environment">Create the local environment</h3>
+<p>To start the installation you can use the script <code>&lt;repo_root&gt;/local_env.sh</code>. This script will take care of the following steps:</p>
+<ul>
+<li>start a Minikube profile named <code>toolkit</code> with this features (*):
+<ul>
+<li>4 Gb of RAM</li>
+<li>4 CPUs</li>
+<li>40 Gb of disk</li>
+<li>Kubernetes installation v1.15.4</li>
+</ul>
+</li>
+<li>setup helm dependencies needed by the science-toolkit chart</li>
+<li>deploy a helm release on <code>toolkit</code> namespace</li>
+<li>show information on how to access it</li>
+</ul>
+<p>(*) You can change these features to your needs by editing <code>scripts/minikube_start.sh</code></p>
+<p>The output should look like:</p>
+<pre><code>  🙄  [toolkit] minikube v1.7.2 on Ubuntu 19.04
+      ▪ MINIKUBE_PROFILE=toolkit
+  ✨  Using the virtualbox driver based on existing profile
+  👍  Kubernetes 1.17.2 is now available. If you would like to upgrade, specify: --kubernetes-version=1.17.2
+  ⌛  Reconfiguring existing host ...
+  🔄  Starting existing virtualbox VM for &quot;toolkit&quot; ...
+  🐳  Preparing Kubernetes v1.15.4 on Docker 19.03.5 ...
+      ▪ apiserver.authorization-mode=RBAC
+  🚀  Launching Kubernetes ...
+  🌟  Enabling addons: dashboard, default-storageclass, ingress, metrics-server, registry, storage-provisioner
+  🏄  Done! kubectl is now configured to use &quot;toolkit&quot;
+  ⚠️  /snap/bin/kubectl is version 1.17.3, and is incompatible with Kubernetes 1.15.4. You will need to update /snap/bin/kubectl or use 'minikube kubectl' to connect with this cluster
+  🌟  The 'ingress' addon is enabled
+  🌟  The 'dashboard' addon is enabled
+  🌟  The 'registry' addon is enabled
+  🌟  The 'storage-provisioner' addon is enabled
+  🌟  The 'metrics-server' addon is enabled
+  Replacing env to './vscode-operator/helm-charts/codeserver/templates/statefulset.yaml.tpl' into './vscode-operator/helm-charts/codeserver/templates/statefulset.yaml'
+  Replacing env to './helm/science-toolkit-lite/values.yaml.tpl' into './helm/science-toolkit-lite/values.yaml'
+  Replacing env to './helm/science-toolkit/values.yaml.tpl' into './helm/science-toolkit/values.yaml'
+  Replacing env to './tmp/science-toolkit/values.yaml.tpl' into './tmp/science-toolkit/values.yaml'
+  &quot;stable&quot; has been added to your repositories
+  📚️ Create Namespace if not exist...
 
-<div class="pageinfo pageinfo-primary">
-<p>Here is the guidelines to contribute to this open source project.</p>
+  namespace/toolkit configured
+  📦 Applying helm chart...
 
-</div>
+  Hang tight while we grab the latest from your chart repositories...
+  ...Successfully got an update from the &quot;science-toolkit&quot; chart repository
+  ...Successfully got an update from the &quot;rimusz&quot; chart repository
+  ...Successfully got an update from the &quot;stable&quot; chart repository
+  ...Successfully got an update from the &quot;charts.gitpod.io&quot; chart repository
+  Update Complete. ⎈Happy Helming!⎈
+  Saving 2 charts
+  Downloading jupyterhub from repo https://jupyterhub.github.io/helm-chart/
+  Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+  Deleting outdated charts
+  Release &quot;toolkit&quot; does not exist. Installing it now.
+  NAME: toolkit
+  LAST DEPLOYED: Thu Mar 19 09:17:02 2020
+  NAMESPACE: toolkit
+  STATUS: deployed
+  REVISION: 1
+  TEST SUITE: None
+  NOTES:
+  ----
 
+  🌠 Konstellation Science Toolkit Installed
+  ##############################
 
-        <div class="section-index">
-    
-    
-    
-    
-    <hr class="panel-line">
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-    
-</div>
+  Your release is named toolkit.
+
+  Now open your browser at: 🌎 http://app.toolkit.__YOUR_MINIKUBE_IP__.nip.io
+
+  Thank you for installing SCIENCE-TOOLKIT.
+
+  ----
+
+  ✔️  Done.
+
+</code></pre><h1 id="checking-installation">Checking installation</h1>
+<p>Once you installed the science toolkit chart you can access it locally in your browser.</p>
+<p>Open the url   <a href="http://app.toolkit">http://app.toolkit</a>.$YOUR_MINIKUBE_IP.nip.io</p>
+<p>When you open it, it would  redirect you to Gitea to authenticate. The default credentials are:</p>
+<ul>
+<li>user: <code>toolkit-admin</code></li>
+<li>password: <code>123456</code></li>
+</ul>
+<p>Note: Change $YOUR_MINIKUBE_IP for the actual IP of the toolkit profile of minikube. If you need to get the IP run <code>minikube ip -p toolkit</code></p>
 
 	
 	
 	<div class="text-muted mt-5 pt-3 border-top">Last modified January 1, 0001
 </div>
 </div>
+
 
           </main>
         </div>

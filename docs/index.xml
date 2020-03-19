@@ -13,5 +13,130 @@
       
     
     
+    <item>
+      <title>Docs: Installation on Minikube</title>
+      <link>https://intelygenz.github.io/science-toolkit/docs/installation/minikube/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://intelygenz.github.io/science-toolkit/docs/installation/minikube/</guid>
+      <description>
+        
+        
+        &lt;h1 id=&#34;pre-requisites&#34;&gt;Pre-requisites&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A Minikube installation. If you need help installing it follow &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube/&#34;&gt;this guide&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A Helm installation. You can install it following &lt;a href=&#34;https://helm.sh/docs/intro/install/&#34;&gt;this guide&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A bash console able execute &lt;code&gt;.sh&lt;/code&gt; scripts&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;gettext&lt;/code&gt; package installed&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A clone of this repo&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;checking-requisites&#34;&gt;Checking requisites&lt;/h1&gt;
+&lt;p&gt;If you have all the pre-requisites you should be able to execute all these commands without errors:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$&amp;gt; minikube version
+$&amp;gt; helm version
+$&amp;gt; kubectl version
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;installation-steps&#34;&gt;Installation steps&lt;/h1&gt;
+&lt;h3 id=&#34;clone-the-repo&#34;&gt;Clone the repo&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$&amp;gt; git clone git@github.com:intelygenz/science-toolkit.git
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;create-the-local-environment&#34;&gt;Create the local environment&lt;/h3&gt;
+&lt;p&gt;To start the installation you can use the script &lt;code&gt;&amp;lt;repo_root&amp;gt;/local_env.sh&lt;/code&gt;. This script will take care of the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;start a Minikube profile named &lt;code&gt;toolkit&lt;/code&gt; with this features (*):
+&lt;ul&gt;
+&lt;li&gt;4 Gb of RAM&lt;/li&gt;
+&lt;li&gt;4 CPUs&lt;/li&gt;
+&lt;li&gt;40 Gb of disk&lt;/li&gt;
+&lt;li&gt;Kubernetes installation v1.15.4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;setup helm dependencies needed by the science-toolkit chart&lt;/li&gt;
+&lt;li&gt;deploy a helm release on &lt;code&gt;toolkit&lt;/code&gt; namespace&lt;/li&gt;
+&lt;li&gt;show information on how to access it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;(*) You can change these features to your needs by editing &lt;code&gt;scripts/minikube_start.sh&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The output should look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  🙄  [toolkit] minikube v1.7.2 on Ubuntu 19.04
+      ▪ MINIKUBE_PROFILE=toolkit
+  ✨  Using the virtualbox driver based on existing profile
+  👍  Kubernetes 1.17.2 is now available. If you would like to upgrade, specify: --kubernetes-version=1.17.2
+  ⌛  Reconfiguring existing host ...
+  🔄  Starting existing virtualbox VM for &amp;quot;toolkit&amp;quot; ...
+  🐳  Preparing Kubernetes v1.15.4 on Docker 19.03.5 ...
+      ▪ apiserver.authorization-mode=RBAC
+  🚀  Launching Kubernetes ...
+  🌟  Enabling addons: dashboard, default-storageclass, ingress, metrics-server, registry, storage-provisioner
+  🏄  Done! kubectl is now configured to use &amp;quot;toolkit&amp;quot;
+  ⚠️  /snap/bin/kubectl is version 1.17.3, and is incompatible with Kubernetes 1.15.4. You will need to update /snap/bin/kubectl or use &#39;minikube kubectl&#39; to connect with this cluster
+  🌟  The &#39;ingress&#39; addon is enabled
+  🌟  The &#39;dashboard&#39; addon is enabled
+  🌟  The &#39;registry&#39; addon is enabled
+  🌟  The &#39;storage-provisioner&#39; addon is enabled
+  🌟  The &#39;metrics-server&#39; addon is enabled
+  Replacing env to &#39;./vscode-operator/helm-charts/codeserver/templates/statefulset.yaml.tpl&#39; into &#39;./vscode-operator/helm-charts/codeserver/templates/statefulset.yaml&#39;
+  Replacing env to &#39;./helm/science-toolkit-lite/values.yaml.tpl&#39; into &#39;./helm/science-toolkit-lite/values.yaml&#39;
+  Replacing env to &#39;./helm/science-toolkit/values.yaml.tpl&#39; into &#39;./helm/science-toolkit/values.yaml&#39;
+  Replacing env to &#39;./tmp/science-toolkit/values.yaml.tpl&#39; into &#39;./tmp/science-toolkit/values.yaml&#39;
+  &amp;quot;stable&amp;quot; has been added to your repositories
+  📚️ Create Namespace if not exist...
+
+  namespace/toolkit configured
+  📦 Applying helm chart...
+
+  Hang tight while we grab the latest from your chart repositories...
+  ...Successfully got an update from the &amp;quot;science-toolkit&amp;quot; chart repository
+  ...Successfully got an update from the &amp;quot;rimusz&amp;quot; chart repository
+  ...Successfully got an update from the &amp;quot;stable&amp;quot; chart repository
+  ...Successfully got an update from the &amp;quot;charts.gitpod.io&amp;quot; chart repository
+  Update Complete. ⎈Happy Helming!⎈
+  Saving 2 charts
+  Downloading jupyterhub from repo https://jupyterhub.github.io/helm-chart/
+  Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+  Deleting outdated charts
+  Release &amp;quot;toolkit&amp;quot; does not exist. Installing it now.
+  NAME: toolkit
+  LAST DEPLOYED: Thu Mar 19 09:17:02 2020
+  NAMESPACE: toolkit
+  STATUS: deployed
+  REVISION: 1
+  TEST SUITE: None
+  NOTES:
+  ----
+
+  🌠 Konstellation Science Toolkit Installed
+  ##############################
+
+  Your release is named toolkit.
+
+  Now open your browser at: 🌎 http://app.toolkit.__YOUR_MINIKUBE_IP__.nip.io
+
+  Thank you for installing SCIENCE-TOOLKIT.
+
+  ----
+
+  ✔️  Done.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;checking-installation&#34;&gt;Checking installation&lt;/h1&gt;
+&lt;p&gt;Once you installed the science toolkit chart you can access it locally in your browser.&lt;/p&gt;
+&lt;p&gt;Open the url   &lt;a href=&#34;http://app.toolkit&#34;&gt;http://app.toolkit&lt;/a&gt;.$YOUR_MINIKUBE_IP.nip.io&lt;/p&gt;
+&lt;p&gt;When you open it, it would  redirect you to Gitea to authenticate. The default credentials are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;user: &lt;code&gt;toolkit-admin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;password: &lt;code&gt;123456&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note: Change $YOUR_MINIKUBE_IP for the actual IP of the toolkit profile of minikube. If you need to get the IP run &lt;code&gt;minikube ip -p toolkit&lt;/code&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
   </channel>
 </rss>
