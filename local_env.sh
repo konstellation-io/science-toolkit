@@ -19,7 +19,7 @@ export DASHBOARD_TAG=latest
 export GITEA_OAUTH2_SETUP_TAG=latest
 export JUPYTERLAB_GPU_IMAGE_TAG=latest
 export MLFLOW_TAG=latest
-
+export SKIP_BUILD=1
 check_requirements
 
 clean () {
@@ -33,8 +33,8 @@ case $* in
 *--hard* | *--dracarys*)
   . ./scripts/minikube_hard_reset.sh
   ;;
-*--skip-build*)
-  export SKIP_BUILD=1
+*--docker-build*)
+  export SKIP_BUILD=0
   ;;
 *--clean* | *--semi-dracarys*)
   clean
@@ -87,9 +87,10 @@ helm upgrade \
   --install "${DEPLOY_NAME}" \
   --namespace "${NAMESPACE}" \
   --set domain=toolkit.$IP.nip.io \
+  --timeout 60m \
   helm/science-toolkit
 
-if [ "$OPERATOR_SDK_INSTALLED" != "1" ]; then
+if [ "$OPERATOR_SDK_INSTALLED" != "1" ] && [ "$SKIP_BUILD" != "1" ]; then
   echo "\n\n\n"
   echo_warning "¡¡¡¡¡ Operator SDK not installed. Operator image was not built!!!\n\n\n"
 fi
