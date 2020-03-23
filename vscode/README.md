@@ -1,4 +1,4 @@
-# vscode 
+# VS Code
 
 Custom Visual Studio Code Docker image with preconfigured extensions.
 

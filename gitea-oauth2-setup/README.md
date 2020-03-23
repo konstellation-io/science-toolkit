@@ -60,3 +60,4 @@ spec:
 | DEPLOYMENT_SECRET_NAME      | Name where the Kubernetes secrets are defined |
 | OAUTH2_CREDENTIALS_PREFIX   | In order to allow define all the components secrets within the same Kuberentes object is required a prefix to define which component is each config |
 | POD_NAMESPACE               | This value is taken from Kubernetes metadata |
+

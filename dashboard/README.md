@@ -14,3 +14,4 @@ For more details check out the [Science Toolkit documentation](https://intelygen
 | TOOLKIT_VSCODE_STORAGE_CLASSNAME | storage class name used for the volume associated to VSCode instance.                                     |
 | TOOLKIT_BASE_DOMAIN_NAME         | domain name used as part of the OAuth2 authentication on VSCode instances. Ex: toolkit.{your_domain_name} |
 | TOOLKIT_SHARED_VOLUME            | optional name of a shared volume to mount on VSCode instance.                                             |
+

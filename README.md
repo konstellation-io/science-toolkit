@@ -6,9 +6,13 @@ Science Toolkit is an Open Source project with batteries included to facilitate 
 
 ---
 
+
 ## Quick Links
+
 * [Installation](https://intelygenz.github.io/science-toolkit/docs/installation/)
 * [Getting Started](https://intelygenz.github.io/science-toolkit/docs/getting-started/)
 
+
 ## Get Involved
+
 Please refer to the [Community](https://intelygenz.github.io/science-toolkit/community/) page.
