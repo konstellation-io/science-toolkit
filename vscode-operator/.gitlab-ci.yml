@@ -42,6 +42,7 @@ publish-vscode-operator-image:
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
     - docker push $IMAGE_PROJECT_NAME:latest
+    - cd ..
     - ./scripts/update-dockerhub-readme.sh
   after_script:
     - docker rmi $IMAGE_PROJECT_NAME:$TAG
