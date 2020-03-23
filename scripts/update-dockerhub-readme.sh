@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #  Usage:
 #
@@ -15,6 +15,9 @@ README_FILEPATH=${README_FILEPATH:="./README.md"}
 DOCKER_ORG=${DOCKER_ORG:="$UNAME"}
 REPOSITORY_NAME=${REPOSITORY_NAME}
 
+# Reuse already present variable on pipelines
+REPOSITORY_PATH=${IMAGE_PROJECT_NAME:-"$DOCKER_ORG/$REPOSITORY_NAME"}
+
 # Quiet by default
 DEBUG_OPTIONS="-s"
 
@@ -28,14 +31,14 @@ if [ "$UNAME" = "" ] || [ "$UPASS" = "" ]; then
   exit 1
 fi
 
-if [ "$REPOSITORY_NAME" = "" ] || [ "$DOCKER_ORG" = "" ]; then
-  echo "Missing REPOSITORY_NAME or DOCKER_ORG variable"
+if [ "$REPOSITORY_PATH" = "" ]; then
+  echo "Missing REPOSITORY_NAME, DOCKER_ORG or REPOSITORY_PATH variable"
   exit 1
 fi
 
 
 TOKEN=$(curl $DEBUG_OPTIONS -H "Content-Type: application/json" -X POST -d '{"username": "'${UNAME}'", "password": "'${UPASS}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
 
-curl $DEBUG_OPTIONS -H "Authorization: JWT ${TOKEN}" -X PATCH --data-urlencode full_description@${README_FILEPATH} https://hub.docker.com/v2/repositories/${DOCKER_ORG}/${REPOSITORY_NAME}/
+curl $DEBUG_OPTIONS -H "Authorization: JWT ${TOKEN}" -X PATCH --data-urlencode full_description@${README_FILEPATH} https://hub.docker.com/v2/repositories/${REPOSITORY_PATH}/
 
-echo "Repository ${DOCKER_ORG}/${REPOSITORY_NAME} updated."
+echo "Repository ${REPOSITORY_PATH} updated."
