@@ -20,7 +20,7 @@ publish_docker_image:
     IMAGE_PROJECT_NAME: "terminus7/jupyterlab-gpu"
     README_FILEPATH: "./jupyterlab-gpu-image/README.md"
   before_script:
-    - apk add bash git coreutils --update
+    - apk add curl jq bash git coreutils --update
     - TAG=${CI_COMMIT_TAG#"jupyterlab-gpu-image-v"}
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
