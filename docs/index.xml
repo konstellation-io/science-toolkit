@@ -138,5 +138,86 @@ $&amp;gt; kubectl version
       </description>
     </item>
     
+    <item>
+      <title>Docs: Installation on EKS</title>
+      <link>https://intelygenz.github.io/science-toolkit/docs/installation/eks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://intelygenz.github.io/science-toolkit/docs/installation/eks/</guid>
+      <description>
+        
+        
+        &lt;h1 id=&#34;pre-requisites&#34;&gt;Pre-requisites&lt;/h1&gt;
+&lt;h2 id=&#34;aws-infrastructure-size&#34;&gt;AWS Infrastructure Size&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The Science Toolkit needs around 14 IPs for all the pods/services. You need large enough machines to allocate all those IPs, you have the information &lt;a href=&#34;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#AvailableIpPerENI&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Recommendations: At least &lt;code&gt;2 x t3.large&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;storage-provisioner&#34;&gt;Storage Provisioner&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s necessary to have a shared storage. The Toolkit is tested with &lt;a href=&#34;https://aws.amazon.com/es/efs/&#34;&gt;EFS storage&lt;/a&gt;  that it needs to be added to your EKS cluster.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm upgrade --install --set efsProvisioner.efsFileSystemId&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;$AWS_EFS_ID&lt;/span&gt;
+      --set efsProvisioner.awsRegion&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;$AWS_DEFAULT_REGION&lt;/span&gt; --set efsProvisioner.storageClass.name&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;standard
+      efs-provisioner  stable/efs-provisioner
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you want a different sharing approach you can create it on your cluster and then setup the storage class name on the helm &lt;code&gt;values.yml&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;If don&amp;rsquo;t have the EFS provisioner already installed, you can follow &lt;a href=&#34;https://github.com/kubernetes-incubator/external-storage/tree/master/aws/efs&#34;&gt;this guide&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;dns-configuration&#34;&gt;DNS configuration&lt;/h2&gt;
+&lt;p&gt;To access the Science Toolkit you will need one CNAME record with a wildcard connecting to your EKS load balancer.&lt;/p&gt;
+&lt;p&gt;In order to get the load balancer hostname run this command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; kubectl get services nginx-ingress-controller -n kube-system -o wide
+NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP                                                              PORT&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;(&lt;/span&gt;S&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;)&lt;/span&gt;                      AGE     SELECTOR
+nginx-ingress-controller   LoadBalancer   10.100.147.xxx   a92e831a9825e4751ae71e1aa919965e-xxxxxxxx.us-east-1.elb.amazonaws.com   80:31560/TCP,443:31065/TCP   3d19h   app.kubernetes.io/component&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;controller,app&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;nginx-ingress,release&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;nginx-ingress
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Add the CNAME wildcard entry like this.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;*.toolkit.&amp;lt;Your domain&amp;gt;         CNAME       a92e831a9825e4751ae71e1aa919965e-xxxxxxxx.us-east-1.elb.amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;tools-requirements&#34;&gt;Tools Requirements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;kubectl&lt;/code&gt; and &lt;code&gt;helm&lt;/code&gt; installed on your system&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html&#34;&gt;Install AWS IAM Authenticator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html&#34;&gt;Set your AWS Credentials&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Copy your kubeconfig to ./kube dir
+&lt;pre&gt;&lt;code&gt; mkdir -p $HOME/.kube
+ cp ./kubeconfig $HOME/.kube
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;Now you can access to the cluster, if the command &lt;code&gt;kubectl get nodes&lt;/code&gt; return a node list, all is ok.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;installation-steps&#34;&gt;Installation steps&lt;/h1&gt;
+&lt;h3 id=&#34;add-helm-repo&#34;&gt;Add helm repo&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/ 
+helm repo update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;setup-storage-class&#34;&gt;Setup storage class&lt;/h3&gt;
+&lt;p&gt;You can show the actual values with this command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm show values science-toolkit/science-toolkit 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you have a storage class different from &lt;code&gt;standard&lt;/code&gt;, you will need to create a &lt;code&gt;values.yaml&lt;/code&gt; and set the value &lt;code&gt;storageClassName&lt;/code&gt; on all components.&lt;/p&gt;
+&lt;h3 id=&#34;install&#34;&gt;Install&lt;/h3&gt;
+&lt;p&gt;If you are using all the default values run:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;# Create the namespace&lt;/span&gt;
+kubectl create ns science-toolkit --dry-run -o yaml &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;|&lt;/span&gt; kubectl apply -f -
+
+&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;# Install the chart&lt;/span&gt;
+helm upgrade &lt;span style=&#34;color:#4e9a06&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&lt;/span&gt;  --wait &lt;span style=&#34;color:#4e9a06&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&lt;/span&gt;  --install science-toolkit &lt;span style=&#34;color:#4e9a06&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&lt;/span&gt;  --namespace science-toolkit &lt;span style=&#34;color:#4e9a06&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&lt;/span&gt;  --timeout 20m &lt;span style=&#34;color:#4e9a06&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&lt;/span&gt;  science-toolkit/science-toolkit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you have custom values add &lt;code&gt;--values my_values.yaml&lt;/code&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;checking-installation&#34;&gt;Checking installation&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;kubectl get pods -n science-toolkit&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;NAME                                     READY   STATUS    RESTARTS   AGE
+dashboard-7f9f988644-r9drx               2/2     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+drone-0                                  1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+drone-runner-5ddc7b4bb8-7m6qc            1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+gitea-0                                  1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;1&lt;/span&gt;          3d18h
+hub-7bd8b55c5-vshkc                      1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+mlflow-server-74b4b85bbb-bgqlg           2/2     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+postgres-0                               1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+proxy-f95bff87b-nnkpd                    1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+science-toolkit-minio-59b987965c-zc8dr   1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+user-scheduler-795cbb6486-9c94w          1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+user-scheduler-795cbb6486-pvqkv          1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+vscode-operator-54d5c79c65-qhvws         1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+      </description>
+    </item>
+    
   </channel>
 </rss>
