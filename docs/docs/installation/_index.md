@@ -7,5 +7,5 @@ description: >
 ---
 
 {{% pageinfo %}}
-Here is the detailed installation instructions for differente flavors of Kubernetes, like GKE, EKS or AKS.
+Here is the detailed installation instructions for different flavors of Kubernetes, like GKE, EKS or AKS.
 {{% /pageinfo %}}
