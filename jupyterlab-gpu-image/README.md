@@ -10,6 +10,8 @@ Please visit the documentation site for help using and contributing to this imag
 * [Jupyter Docker Stacks on ReadTheDocs](http://jupyter-docker-stacks.readthedocs.io/en/latest/index.html)
 * [Selecting an Image :: Core Stacks :: jupyter/base-notebook](http://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-base-notebook)
 
+This component is part of a toolkit used to simplify the data scientists daily work. 
+For more details check out the [Science Toolkit documentation](https://intelygenz.github.io/science-toolkit/)
 
 ## How update this Image
 

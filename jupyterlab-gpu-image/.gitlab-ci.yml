@@ -18,6 +18,7 @@ publish_docker_image:
     - docker:dind
   variables:
     IMAGE_PROJECT_NAME: "terminus7/jupyterlab-gpu"
+    README_FILEPATH: "./jupyterlab-gpu-image/README.md"
   before_script:
     - apk add bash git coreutils --update
     - TAG=${CI_COMMIT_TAG#"jupyterlab-gpu-image-v"}
@@ -27,6 +28,7 @@ publish_docker_image:
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
     - docker push $IMAGE_PROJECT_NAME:latest
+    - ./scripts/update-dockerhub-readme.sh
   after_script:
     - docker rmi $IMAGE_PROJECT_NAME:$TAG
   only:

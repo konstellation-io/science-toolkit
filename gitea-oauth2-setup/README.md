@@ -2,7 +2,8 @@
 
 This Docker image has been intended to run as an initContainer within a Kubernetes pod. In the start up this container conecto to Gitea server and create an Oauth2 Application api keys.
 
-This is a component of a toolkit that is compound for a group of pieces in order to allow a workflow for data scientists. For more details check out the [Science Toolkit documentation](https://intelygenz.github.io/science-toolkit/)
+This component is part of a toolkit used to simplify the data scientists daily work. 
+For more details check out the [Science Toolkit documentation](https://intelygenz.github.io/science-toolkit/)
 
 
 ## Run
