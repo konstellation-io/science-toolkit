@@ -26,7 +26,7 @@ publish-vscode-operator-image:
     DOCKER_PASS: $DOCKER_PASS
     README_FILEPATH: "./vscode-operator/README.md"
   before_script:
-    - apk add curl jq bash git coreutils --update
+    - apk add curl jq bash gettext git coreutils --update
     - VSCODE_TAG=${CI_COMMIT_TAG#"vscode-v"}
     - ./scripts/replace_env_path.sh
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
