@@ -183,8 +183,6 @@ mlflow:
     repository: terminus7/mlflow
     tag: ${MLFLOW_TAG}
     pullPolicy: IfNotPresent
-  service:
-    port: 8080
   host: mlflow
   volume:
     size: 10Gi

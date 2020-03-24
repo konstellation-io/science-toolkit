@@ -42,7 +42,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: {{ .Values.mlflow.service.port }}
+              port: 5000
             initialDelaySeconds: 30
             periodSeconds: 60
         - name: {{ .Values.mlflow.name }}-proxy
@@ -59,7 +59,7 @@ spec:
             - "-skip-provider-button"
           env:
             - name: OAUTH2_PROXY_HTTP_ADDRESS
-              value: "0.0.0.0:{{ .Values.mlflow.service.port }}"
+              value: "0.0.0.0:8080"
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:

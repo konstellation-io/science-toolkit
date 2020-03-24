@@ -79,8 +79,9 @@ spec:
             - name: http
               containerPort: 4180
               protocol: TCP
-
       volumes:
+        - name: vscode-pvc
+          mountPath: /home/coder/project
         - name: oauth2-config
           configMap:
             name: {{ include "codeserver.fullname" . }}-oauth2-proxy

@@ -19,3 +19,14 @@ For more details check out the [Science Toolkit documentation](https://intelygen
 - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 - [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
 - [Markdown](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+
+## How to update the extensions
+
+- Run the following commands:
+```bash
+docker build -t vscode-demo . 
+docker run -u root -it --network=host \
+ -v $PWD/extensions:/extensions vscode-demo /home/coder 
+```
+- Update the extensions on VSCode.
+- Commit new extensions and remove old on your extensions folders.

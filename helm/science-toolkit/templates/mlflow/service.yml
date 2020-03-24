@@ -7,8 +7,11 @@ metadata:
 spec:
   clusterIP: None
   ports:
-    - port: {{ .Values.mlflow.service.port }}
-      targetPort: {{ .Values.mlflow.service.port }}
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - port: 5000
+      targetPort: 5000
       protocol: TCP
   selector:
     app: {{ .Values.mlflow.name }}
