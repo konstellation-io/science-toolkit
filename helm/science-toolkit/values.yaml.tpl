@@ -35,7 +35,8 @@ vscodeOperator:
 
 oauth2Proxy:
   image:
-    tag: ${OAUTH2_PROXY_TAG}
+    # using latest because this is not generated on this monorepo.
+    tag: latest
 
 postgres:
   dbName: gitea
