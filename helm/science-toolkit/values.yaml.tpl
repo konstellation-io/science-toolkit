@@ -25,6 +25,18 @@ gitea:
     size: 10Gi
     storageClassName: standard
 
+giteaOauth2Setup:
+  image:
+    tag: ${GITEA_OAUTH2_SETUP_TAG}
+
+vscodeOperator:
+  image:
+    tag: ${VSCODE_OPERATOR_TAG}
+
+oauth2Proxy:
+  image:
+    tag: ${OAUTH2_PROXY_TAG}
+
 postgres:
   dbName: gitea
   dbPassword: test

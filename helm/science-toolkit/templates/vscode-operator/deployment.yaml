@@ -18,7 +18,7 @@ spec:
       containers:
         - name: vscode-operator
           # Replace this with the built image name
-          image: terminus7/sci-toolkit-vscode-operator:latest
+          image: "terminus7/sci-toolkit-vscode-operator:{{ .Values.vscodeOperator.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
             - name: WATCH_NAMESPACE
