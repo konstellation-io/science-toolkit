@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: gitea-oauth2-setup
-          image: terminus7/gitea-oauth2-setup:latest
+          image: "terminus7/gitea-oauth2-setup:{{ .Values.giteaOauth2Setup.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
           - name: POD_NAMESPACE

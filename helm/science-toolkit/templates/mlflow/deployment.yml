@@ -13,7 +13,7 @@ spec:
     spec:
       initContainers:
         - name: gitea-oauth2-setup
-          image: terminus7/gitea-oauth2-setup:latest
+          image: "terminus7/gitea-oauth2-setup:{{ .Values.giteaOauth2Setup.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
           - name: POD_NAMESPACE
@@ -46,7 +46,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 60
         - name: {{ .Values.mlflow.name }}-proxy
-          image: terminus7/oauth2-proxy:latest
+          image: "terminus7/oauth2-proxy:{{ .Values.oauth2Proxy.image.tag }}"
           imagePullPolicy: IfNotPresent
           args:
             - "-config"

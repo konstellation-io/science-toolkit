@@ -19,6 +19,9 @@ export DASHBOARD_TAG=latest
 export GITEA_OAUTH2_SETUP_TAG=latest
 export JUPYTERLAB_GPU_IMAGE_TAG=latest
 export MLFLOW_TAG=latest
+export VSCODE_OPERATOR_TAG=latest
+export OAUTH2_PROXY_TAG=latest
+
 export SKIP_BUILD=1
 check_requirements
 
