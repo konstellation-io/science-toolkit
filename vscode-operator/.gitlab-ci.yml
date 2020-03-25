@@ -25,9 +25,14 @@ publish-vscode-operator-image:
     DOCKER_USER: $DOCKER_USER
     DOCKER_PASS: $DOCKER_PASS
     README_FILEPATH: "./vscode-operator/README.md"
+    TAGS_VERSION: 1.0.0
+    COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
     - apk add curl jq bash gettext git coreutils --update
-    - VSCODE_TAG=${CI_COMMIT_TAG#"vscode-v"}
+    - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
+    - chmod +x /usr/local/bin/monorepo-components-tags
+    - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
+    - source /tmp/components_tags.sh
     - ./scripts/replace_env_path.sh
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - cd vscode-operator
