@@ -35,13 +35,15 @@ spec:
             - configMapRef:
                 name: gitea-configmap
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-vscode
           image: terminus7/sci-toolkit-vscode:${VSCODE_TAG}
           imagePullPolicy: IfNotPresent
-          {{ if .Values.sharedVolume.name -}}
           volumeMounts:
+            - name: vscode-pvc
+              mountPath: /home/coder
+          {{- if .Values.sharedVolume.name }}
             - name: {{ .Values.sharedVolume.name }}
-              mountPath: /home/coder/projects
+              mountPath: /home/coder/shared-storage
           {{- end }}
         - name: {{ .Chart.Name }}-proxy
           image: terminus7/oauth2-proxy:latest
@@ -80,8 +82,6 @@ spec:
               containerPort: 4180
               protocol: TCP
       volumes:
-        - name: vscode-pvc
-          mountPath: /home/coder/project
         - name: oauth2-config
           configMap:
             name: {{ include "codeserver.fullname" . }}-oauth2-proxy
@@ -91,14 +91,14 @@ spec:
             claimName: {{ .Values.sharedVolume.name }}-claim
         {{- end }}
   volumeClaimTemplates:
-      - metadata:
-          name: vscode-pvc
-          labels:
-            app: vscode
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          storageClassName: {{ .Values.storage.className }}
-          resources:
-            requests:
-              storage:  {{ .Values.storage.size }}
+    - metadata:
+        name: vscode-pvc
+        labels:
+          app: vscode
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.storage.className }}
+        resources:
+          requests:
+            storage:  {{ .Values.storage.size }}

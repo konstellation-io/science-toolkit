@@ -9,6 +9,6 @@ data:
     login_url="http://gitea.{{ .Values.domain }}/login/oauth/authorize"
     redeem_url="http://gitea.{{ .Values.domain }}/login/oauth/access_token"
     profile_url="http://gitea.{{ .Values.domain }}/api/v1/user"
-    redirect_url="http://{{ .Values.host }}/oauth2/callback"
+    redirect_url="http://{{ .Values.domain }}/oauth2/callback"
     cookie_secure=false
     cookie_samesite="none"
