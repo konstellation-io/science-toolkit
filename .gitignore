@@ -6,4 +6,4 @@ helm/science-toolkit*/charts
 helm/values-*.yaml
 gh-pages
 vscode-operator/helm-charts/codeserver/templates/statefulset.yaml
-!vscode/extensions/*
+!vscode/extensions/**
