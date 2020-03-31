@@ -19,7 +19,7 @@ export DASHBOARD_TAG=latest
 export GITEA_OAUTH2_SETUP_TAG=latest
 export JUPYTERLAB_GPU_IMAGE_TAG=latest
 export MLFLOW_TAG=latest
-export VSCODE_OPERATOR_TAG=latest
+export USER_TOOLS_OPERATOR_TAG=latest
 export OAUTH2_PROXY_TAG=latest
 
 export SKIP_BUILD=1
@@ -28,7 +28,7 @@ check_requirements
 clean () {
   helm -n toolkit delete toolkit
   kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc --force --grace-period=0
-  kubectl -n toolkit delete crd codeservers.sci-toolkit.konstellation.io --force --grace-period=0
+  kubectl -n toolkit delete crd usertools.sci-toolkit.konstellation.io --force --grace-period=0
 }
 
 case $* in
@@ -72,11 +72,11 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 export SDK_RELEASE_VERSION="v0.13.0"
 export OPERATOR_SDK_INSTALLED=$(cmd_installed operator-sdk)
 
-if [ "$SKIP_BUILD" != "1" ] && [ "$OPERATOR_SDK_INSTALLED" = "1" ]; then
-  build_header "vscode-operator"
-  helm dep update vscode-operator/helm-charts/codeserver
-  cd vscode-operator \
-  && operator-sdk build terminus7/sci-toolkit-vscode-operator:latest \
+if [ "$SKIP_BUILD" != "1" ] && [ "$OPERATOR_SDK_INSTALLED" -eq "1" ]; then
+  build_header "user-tools-operator"
+  helm dep update user-tools-operator/helm-charts/usertools
+  cd user-tools-operator \
+  && operator-sdk build terminus7/sci-toolkit-user-tools-operator:latest \
   && cd ..
 fi
 

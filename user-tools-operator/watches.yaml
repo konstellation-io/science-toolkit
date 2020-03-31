@@ -1,5 +1,5 @@
 ---
 - version: v1alpha1
   group: sci-toolkit.konstellation.io
-  kind: CodeServer
-  chart: helm-charts/codeserver
+  kind: UserTools
+  chart: helm-charts/usertools

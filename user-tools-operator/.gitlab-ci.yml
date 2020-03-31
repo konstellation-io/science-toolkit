@@ -1,19 +1,19 @@
-release-vscode-operator:
+release-user-tools-operator:
   stage: semantic-release
   image: node:10
   before_script:
-    - npm install --prefix vscode-operator
+    - npm install --prefix user-tools-operator
   script:
-    - cd vscode-operator && npx semantic-release -e semantic-release-monorepo
+    - cd user-tools-operator && npx semantic-release -e semantic-release-monorepo
   only:
     refs:
       - master
     changes:
       - vscode/**/*
-      - vscode-operator/**/*
+      - user-tools-operator/**/*
       - .gitlab-ci.yml
 
-publish-vscode-operator-image:
+publish-user-tools-operator-image:
   stage: publish
   image: docker:latest
   services:
@@ -21,10 +21,10 @@ publish-vscode-operator-image:
   variables:
     SDK_RELEASE_VERSION: v0.15.1
     HELM_VERSION: v3.1.1
-    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode-operator"
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-user-tools-operator"
     DOCKER_USER: $DOCKER_USER
     DOCKER_PASS: $DOCKER_PASS
-    README_FILEPATH: "./vscode-operator/README.md"
+    README_FILEPATH: "./user-tools-operator/README.md"
     TAGS_VERSION: 1.0.0
     COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
@@ -35,14 +35,14 @@ publish-vscode-operator-image:
     - source /tmp/components_tags.sh
     - ./scripts/replace_env_path.sh
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
-    - cd vscode-operator
+    - cd user-tools-operator
     - ./scripts/install_operator_sdk.sh
     - wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
     - chmod +x /usr/local/bin/helm
     - helm repo add stable https://kubernetes-charts.storage.googleapis.com
-    - helm dependency update helm-charts/codeserver
+    - helm dependency update helm-charts/usertools
   script:
-    - TAG=${CI_COMMIT_TAG#vscode-operator-v}
+    - TAG=${CI_COMMIT_TAG#user-tools-operator-v}
     - operator-sdk build $IMAGE_PROJECT_NAME:$TAG
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
@@ -53,4 +53,4 @@ publish-vscode-operator-image:
     - docker rmi $IMAGE_PROJECT_NAME:$TAG
   only:
     refs:
-      - /^vscode-operator-v\d*.\d*.\d*$/
+      - /^user-tools-operator-v\d*.\d*.\d*$/

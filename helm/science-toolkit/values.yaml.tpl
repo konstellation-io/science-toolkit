@@ -29,9 +29,9 @@ giteaOauth2Setup:
   image:
     tag: ${GITEA_OAUTH2_SETUP_TAG}
 
-vscodeOperator:
+userToolsOperator:
   image:
-    tag: ${VSCODE_OPERATOR_TAG}
+    tag: ${USER_TOOLS_OPERATOR_TAG}
 
 oauth2Proxy:
   image:

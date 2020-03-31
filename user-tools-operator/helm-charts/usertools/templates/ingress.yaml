@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "user-tools.fullname" . }}
+  labels:
+{{ include "user-tools.labels" . | indent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: {{ .Values.username }}-code.{{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ include "user-tools.fullname" . }}-code
+              servicePort: http
+    - host: {{ .Values.username }}-jupyter.{{ .Values.domain }}
+      http:
+        paths:
+            - path: /
+              backend:
+                serviceName: {{ include "user-tools.fullname" . }}-jupyter
+                servicePort: http

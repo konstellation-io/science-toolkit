@@ -1,5 +1,8 @@
+axios.defaults.timeout = 180000
+
 // Get a domain info to build our urls
 const {protocol, hostname, port} = location
+
 const app = new Vue({
     el: '#app',
     data() {
@@ -7,7 +10,7 @@ const app = new Vue({
             baseURL: new URL(window.location),
             error: null,
             username: "",
-            codeServer: {
+            userTools: {
                 status: false,
                 isRunning: false,
                 isLoading: false,
@@ -24,47 +27,47 @@ const app = new Vue({
     },
     created: async function () {
 
-        this.statusCodeServer()
+        this.statusUserTools()
     },
     computed: {
         canStart() {
-            return this.codeServer.status && !this.codeServer.isRunning
+            return this.userTools.status && !this.userTools.isRunning
         },
         canStop() {
-            return this.codeServer.status && this.codeServer.isRunning
+            return this.userTools.status && this.userTools.isRunning
         }
     },
     methods: {
         isDisabled(name) {
-            if (name !== "vscode") {
+            if (name !== "vscode" && name!=="jupyter") {
                 return false
             }
-            return this.codeServer.status && !this.codeServer.isRunning
+            return this.userTools.status && !this.userTools.isRunning
         },
-        async statusCodeServer() {
+        async statusUserTools() {
             const res = await axios.post(`/api/status`)
 
-            this.codeServer.status = true
-            this.codeServer.isRunning = res.data.running
+            this.userTools.status = true
+            this.userTools.isRunning = res.data.running
             this.username = res.headers['x-forwarded-user']
         },
-        async startCodeServer() {
+        async startUserTools() {
             this.error = null
-            this.codeServer.isLoading = true
+            this.userTools.isLoading = true
             try {
                 await axios.post(`/api/start`)
-                this.codeServer.status = true
-                this.codeServer.isRunning = true
+                this.userTools.status = true
+                this.userTools.isRunning = true
             }catch (e) {
                 this.error = e
                 console.log("Error: ",e)
             }finally {
-                this.codeServer.isLoading = false
+                this.userTools.isLoading = false
             }
         },
-        async stopCodeServer() {
+        async stopUserTools() {
             this.error = null
-            this.codeServer.isLoading = true
+            this.userTools.isLoading = true
             try {
                 await axios.post(`/api/stop`)
             }catch (e) {
@@ -72,8 +75,8 @@ const app = new Vue({
                 console.log("Error: ",e)
             }finally {
                 setTimeout(() => {
-                    this.statusCodeServer()
-                    this.codeServer.isLoading = false
+                    this.statusUserTools()
+                    this.userTools.isLoading = false
                 }, 3000)
             }
         },
@@ -85,6 +88,9 @@ const app = new Vue({
             switch (name) {
                 case "vscode":
                     url.host = url.host.replace("app", `${this.username}-code`)
+                    break;
+                case "jupyter":
+                    url.host = url.host.replace("app", `${this.username}-jupyter`)
                     break;
                 default:
                     url.host = url.host.replace("app", name)

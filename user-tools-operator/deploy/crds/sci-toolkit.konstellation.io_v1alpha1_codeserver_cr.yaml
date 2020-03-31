@@ -1,11 +1,11 @@
 apiVersion: sci-toolkit.konstellation.io/v1alpha1
-kind: CodeServer
+kind: UserTools
 metadata:
   name: gustavo
 spec:
-  # Default values copied from <project_dir>/helm-charts/codeserver/values.yaml
+  # Default values copied from <project_dir>/helm-charts/usertools/values.yaml
   
-  # Default values for codeserver.
+  # Default values for usertools.
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
 

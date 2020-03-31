@@ -31,7 +31,7 @@ func New(config *config.Config) *ResourceManager {
 	group := schema.GroupVersionResource{
 		Group:    "sci-toolkit.konstellation.io",
 		Version:  "v1alpha1",
-		Resource: "codeservers",
+		Resource: "usertools",
 	}
 
 	clientset := newClientset(config)
@@ -51,7 +51,7 @@ func New(config *config.Config) *ResourceManager {
 // IsSecretPresent checks if there is a secret with the given name
 func (r *ResourceManager) IsSecretPresent(name string) (bool, error) {
 	_, err := r.clientset.CoreV1().Secrets(r.config.Kubernetes.Namespace).Get(name, metav1.GetOptions{})
-	if err != nil {
+	if err != nil && !k8s_errors.IsNotFound(err) {
 		return false, err
 	}
 
@@ -81,8 +81,8 @@ func (r *ResourceManager) CreateSecret(name string, input map[string]string) err
 	return err
 }
 
-// IsCodeServerRunning check if the there is a server for the given username
-func (r *ResourceManager) IsCodeServerRunning(ctx context.Context, name string) (bool, error) {
+// IsUserToolsRunning check if the there is a server for the given username
+func (r *ResourceManager) IsUserToolsRunning(ctx context.Context, name string) (bool, error) {
 	ns := r.config.Kubernetes.Namespace
 
 	listOptions := metav1.ListOptions{
@@ -99,13 +99,13 @@ func (r *ResourceManager) IsCodeServerRunning(ctx context.Context, name string) 
 	numPods := len(list.Items)
 	return numPods != 0, nil
 }
-func (r *ResourceManager) WaitForCodeServerRunning(ctx context.Context, name string) error {
+func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, name string) error {
 	ns := r.config.Kubernetes.Namespace
 
 	ctx, cancel := context.WithTimeout(ctx, 300*time.Second)
 	defer cancel()
 
-	exist, err := r.IsCodeServerRunning(ctx, name)
+	exist, err := r.IsUserToolsRunning(ctx, name)
 	if err != nil {
 		return err
 	}
@@ -147,11 +147,11 @@ func (r *ResourceManager) WaitForCodeServerRunning(ctx context.Context, name str
 
 }
 
-// CreateCodeServer creates a new crd of type CodeServer for the given user
-func (r *ResourceManager) CreateCodeServer(serverName, username string) error {
+// CreateUserTools creates a new crd of type UserTools for the given user
+func (r *ResourceManager) CreateUserTools(serverName, username string) error {
 	definition := &unstructured.Unstructured{
 		Object: map[string]interface{}{
-			"kind":       "CodeServer",
+			"kind":       "UserTools",
 			"apiVersion": r.apiVersion,
 			"metadata": map[string]interface{}{
 				"name":      serverName,
@@ -177,18 +177,18 @@ func (r *ResourceManager) CreateCodeServer(serverName, username string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("CodeServer created")
+	fmt.Println("UserTools created")
 
 	return nil
 }
 
-// DeleteCodeServer deletes a crd of type CodeServer
-func (r ResourceManager) DeleteCodeServer(name string) error {
+// DeleteUserTools deletes a crd of type UserTools
+func (r ResourceManager) DeleteUserTools(name string) error {
 	return r.codeClient.Namespace(r.config.Kubernetes.Namespace).Delete(name, &metav1.DeleteOptions{})
 }
 
-// WaitCodeServerRunning waits until the CodeServer pod is running
-func (r *ResourceManager) WaitCodeServerRunning(name string, timeToWait time.Duration) (chan bool, error) {
+// WaitUserToolsRunning waits until the UserTools pod is running
+func (r *ResourceManager) WaitUserToolsRunning(name string, timeToWait time.Duration) (chan bool, error) {
 	waitChan := make(chan bool)
 
 	labelSelector := fmt.Sprintf("app=%s", name)

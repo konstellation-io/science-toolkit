@@ -39,7 +39,7 @@ $path/to/repo> ./local_env.sh --dracarys
 
 ### Operator SDK
 
-If you want to make changes to the `vscode-operator` you'd need the Operator SDK installed.
+If you want to make changes to the `user-tools-operator` you'd need the Operator SDK installed.
 You can follow this [operator-sdk installation guide](https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md)
 
 That's all you need. The script `local_env.sh` will detect you have the command and it will run a build for the operator too.local_env

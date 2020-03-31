@@ -71,7 +71,7 @@ The output should look like:
   🌟  The 'registry' addon is enabled
   🌟  The 'storage-provisioner' addon is enabled
   🌟  The 'metrics-server' addon is enabled
-  Replacing env to './vscode-operator/helm-charts/codeserver/templates/statefulset.yaml.tpl' into './vscode-operator/helm-charts/codeserver/templates/statefulset.yaml'
+  Replacing env to './user-tools-operator/helm-charts/usertools/templates/statefulset.yaml.tpl' into './user-tools-operator/helm-charts/usertools/templates/statefulset.yaml'
   Replacing env to './helm/science-toolkit-lite/values.yaml.tpl' into './helm/science-toolkit-lite/values.yaml'
   Replacing env to './helm/science-toolkit/values.yaml.tpl' into './helm/science-toolkit/values.yaml'
   Replacing env to './tmp/science-toolkit/values.yaml.tpl' into './tmp/science-toolkit/values.yaml'
