@@ -82,7 +82,7 @@ $&amp;gt; kubectl version
   🌟  The &#39;registry&#39; addon is enabled
   🌟  The &#39;storage-provisioner&#39; addon is enabled
   🌟  The &#39;metrics-server&#39; addon is enabled
-  Replacing env to &#39;./vscode-operator/helm-charts/codeserver/templates/statefulset.yaml.tpl&#39; into &#39;./vscode-operator/helm-charts/codeserver/templates/statefulset.yaml&#39;
+  Replacing env to &#39;./user-tools-operator/helm-charts/usertools/templates/statefulset.yaml.tpl&#39; into &#39;./user-tools-operator/helm-charts/usertools/templates/statefulset.yaml&#39;
   Replacing env to &#39;./helm/science-toolkit-lite/values.yaml.tpl&#39; into &#39;./helm/science-toolkit-lite/values.yaml&#39;
   Replacing env to &#39;./helm/science-toolkit/values.yaml.tpl&#39; into &#39;./helm/science-toolkit/values.yaml&#39;
   Replacing env to &#39;./tmp/science-toolkit/values.yaml.tpl&#39; into &#39;./tmp/science-toolkit/values.yaml&#39;
@@ -214,7 +214,7 @@ proxy-f95bff87b-nnkpd                    1/1     Running   &lt;span style=&#34;c
 science-toolkit-minio-59b987965c-zc8dr   1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
 user-scheduler-795cbb6486-9c94w          1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
 user-scheduler-795cbb6486-pvqkv          1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
-vscode-operator-54d5c79c65-qhvws         1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
+user-tools-operator-54d5c79c65-qhvws     1/1     Running   &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;          3d18h
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
       </description>
     </item>
