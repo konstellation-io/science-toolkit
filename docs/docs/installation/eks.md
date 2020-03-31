@@ -118,5 +118,5 @@ proxy-f95bff87b-nnkpd                    1/1     Running   0          3d18h
 science-toolkit-minio-59b987965c-zc8dr   1/1     Running   0          3d18h
 user-scheduler-795cbb6486-9c94w          1/1     Running   0          3d18h
 user-scheduler-795cbb6486-pvqkv          1/1     Running   0          3d18h
-vscode-operator-54d5c79c65-qhvws         1/1     Running   0          3d18h
+user-tools-operator-54d5c79c65-qhvws     1/1     Running   0          3d18h
 ```

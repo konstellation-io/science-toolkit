@@ -16,7 +16,7 @@ RUN apt update && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
     update-alternatives --set pip /usr/bin/pip3
 
-RUN pip install jupyter
+RUN pip install jupyter pylint mlflow
 
 RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
     && tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz \

@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"toolkit/dashboard/api"
-	"toolkit/dashboard/codeserver"
 	"toolkit/dashboard/config"
 	"toolkit/dashboard/kubernetes"
+	"toolkit/dashboard/usertools"
 )
 
 func main() {
@@ -19,15 +19,15 @@ func main() {
 
 	cfg := config.New()
 	manager := kubernetes.New(cfg)
-	codeServer := codeserver.New(cfg, manager)
+	codeServer := usertools.New(cfg, manager)
 
 	s := api.New(codeServer)
 
 	// API routes
 	api := r.Group("/api", api.ReadUser())
-	api.POST("/start", s.StartCodeServer)
-	api.POST("/stop", s.StopCodeServer)
-	api.POST("/status", s.StatusCodeServer)
+	api.POST("/start", s.StartUserTools)
+	api.POST("/stop", s.StopUserTools)
+	api.POST("/status", s.StatusUserTools)
 
 	// Static routes
 	r.Static("index.html", "./static/")

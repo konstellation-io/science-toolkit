@@ -2,11 +2,9 @@ package api
 
 import (
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
-
-	"toolkit/dashboard/codeserver"
+	"net/http"
+	"toolkit/dashboard/usertools"
 )
 
 // Headers contains headers to read from requests
@@ -24,13 +22,12 @@ func ReadUser() gin.HandlerFunc {
 		}
 
 		c.Header("x-forwarded-user", h.Username)
-
 		if h.Username == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid username"})
 			return
 		}
 
-		c.Set("user", codeserver.User{
+		c.Set("user", usertools.User{
 			Username: h.Username,
 		})
 

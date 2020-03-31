@@ -90,16 +90,16 @@
               <div class="field has-addons title is-5">
                 <p class="control" v-if="canStart">
                   <button class="button is-link"
-                          v-bind:class="{'is-loading': codeServer.isLoading}"
-                          @click="startCodeServer">Start</button>
+                          v-bind:class="{'is-loading': userTools.isLoading}"
+                          @click="startUserTools">Start</button>
                 </p>
                 <p class="control" v-if="canStop">
-                  <button class="button is-danger" v-bind:class="{'is-loading': codeServer.isLoading}" @click="stopCodeServer">Stop</button>
+                  <button class="button is-danger" v-bind:class="{'is-loading': userTools.isLoading}" @click="stopUserTools">Stop</button>
                 </p>
                 <p class="control ">
                 <span class="file-name label title  is-spaced">Server is
                     <span v-if="error" class="tag is-danger">error</span>
-                    <span v-else-if="codeServer.isRunning" class="tag is-success">running</span>
+                    <span v-else-if="userTools.isRunning" class="tag is-success">running</span>
                     <span v-else class="tag is-light">stopped</span>
                 </span>
                 </p>

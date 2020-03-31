@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vscode-operator
+  name: user-tools-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: vscode-operator
+      name: user-tools-operator
   template:
     metadata:
       labels:
-        name: vscode-operator
+        name: user-tools-operator
       annotations:
         helm.sh/restart-deployment: {{ randAlphaNum 5 | quote }}
     spec:
-      serviceAccountName: vscode-operator
+      serviceAccountName: user-tools-operator
       containers:
-        - name: vscode-operator
+        - name: user-tools-operator
           # Replace this with the built image name
-          image: "terminus7/sci-toolkit-vscode-operator:{{ .Values.vscodeOperator.image.tag }}"
+          image: "terminus7/sci-toolkit-user-tools-operator:{{ .Values.userToolsOperator.image.tag }}"
           imagePullPolicy: IfNotPresent
           env:
             - name: WATCH_NAMESPACE
@@ -30,4 +30,4 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "vscode-operator"
+              value: "user-tools-operator"

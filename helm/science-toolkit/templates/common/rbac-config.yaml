@@ -10,10 +10,10 @@ rules:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: codeserver
+  name: usertools
 rules:
   - apiGroups: ["sci-toolkit.konstellation.io"]
-    resources: ["codeservers"]
+    resources: ["usertools"]
     verbs: ["*"]
 ---
 kind: Role
@@ -54,14 +54,14 @@ roleRef:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: default-codeserver
+  name: default-usertools
 subjects:
   - kind: ServiceAccount
     name: default
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: codeserver
+  name: usertools
   apiGroup: rbac.authorization.k8s.io
 ---
 kind: RoleBinding
