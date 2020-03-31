@@ -5,7 +5,7 @@ metadata:
   labels:
     app:  drone-config
 data:
-  DRONE_GITEA_SERVER: http://gitea.{{ .Values.domain }}/
+  DRONE_GITEA_SERVER: http://gitea.{{ .Values.domain }}
   DRONE_GIT_ALWAYS_AUTH: "false"
   DRONE_RUNNER_CAPACITY: "2"
   DRONE_SERVER_PROTO: http
