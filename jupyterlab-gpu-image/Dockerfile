@@ -91,6 +91,12 @@ RUN mkdir -p /opt/oracle && \
 	ldconfig && \
 	export LD_LIBRARY_PATH=/opt/oracle/instantclient_18_5:$LD_LIBRARY_PATH
 
+# Install Cloudera Impala driver
+RUN wget https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.1004/Debian/clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
+    dpkg -i clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
+    apt-get update && \
+    apt-get install -y odbcinst 
+
 ADD fix-permissions /usr/local/bin/fix-permissions
 # Create jovyan user with UID=1000 and in the 'users' group
 # and make sure these dirs are writable by the `users` group.
