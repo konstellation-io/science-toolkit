@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"toolkit/dashboard/user"
 	"toolkit/dashboard/usertools"
 )
 
@@ -24,8 +25,8 @@ func New(manager *usertools.UserTools) *Server {
 // StartUserTools starts a new instance of UserTools
 func (s *Server) StartUserTools(c *gin.Context) {
 	fmt.Printf("starting server\n")
-	u := c.MustGet("user").(usertools.User)
-	status, err := s.manager.GetStatus(c.Request.Context(), u)
+	u := c.MustGet("user").(user.User)
+	status, err := s.manager.GetStatus(c.Request.Context(), &u)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -34,7 +35,7 @@ func (s *Server) StartUserTools(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "UserTools already running"})
 		return
 	}
-	err = s.manager.Start(u)
+	err = s.manager.Start(&u)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -44,9 +45,9 @@ func (s *Server) StartUserTools(c *gin.Context) {
 
 // StopUserTools stops an existing instance of UserTools
 func (s *Server) StopUserTools(c *gin.Context) {
-	u := c.MustGet("user").(usertools.User)
+	u := c.MustGet("user").(user.User)
 
-	status, err := s.manager.GetStatus(c.Request.Context(), u)
+	status, err := s.manager.GetStatus(c.Request.Context(), &u)
 	if err != nil {
 		fmt.Printf("error stopping UserTools: %s\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -59,7 +60,7 @@ func (s *Server) StopUserTools(c *gin.Context) {
 		return
 	}
 
-	err = s.manager.Stop(c.Request.Context(), u)
+	err = s.manager.Stop(c.Request.Context(), &u)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -69,9 +70,9 @@ func (s *Server) StopUserTools(c *gin.Context) {
 
 // StatusUserTools stops an existing instance of UserTools
 func (s *Server) StatusUserTools(c *gin.Context) {
-	u := c.MustGet("user").(usertools.User)
+	u := c.MustGet("user").(user.User)
 
-	status, err := s.manager.GetStatus(c.Request.Context(), u)
+	status, err := s.manager.GetStatus(c.Request.Context(), &u)
 	if err != nil {
 		fmt.Printf("error getting UserTools status: %s\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -83,9 +84,9 @@ func (s *Server) StatusUserTools(c *gin.Context) {
 
 // WaitUserToolsRunning wait for a statefulSet resource on running state.
 func (s *Server) WaitUserToolsRunning(c *gin.Context) {
-	u := c.MustGet("user").(usertools.User)
+	u := c.MustGet("user").(user.User)
 
-	status, err := s.manager.WaitUserToolsRunning(c.Request.Context(), u)
+	status, err := s.manager.WaitUserToolsRunning(c.Request.Context(), &u)
 	if err != nil {
 		fmt.Printf("error on wait UserTools running status: %s\n", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

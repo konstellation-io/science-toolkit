@@ -13,9 +13,10 @@
   <script src="//cdn.jsdelivr.net/npm/vue"></script>
   <script src="//unpkg.com/axios/dist/axios.min.js"></script>
   <style>
-    .is-full{
+    .is-full {
       display: inline-block;
     }
+
     .logo {
       margin-right: 1em;
     }
@@ -53,8 +54,9 @@
               <div class="field is-grouped is-grouped-multiline is-grouped-centered">
                 <template v-for="service in services">
                   <p class="control">
-                    <a v-if="!isDisabled(service.name)" :href="url(service.name)" >
-                      <button class="button is-large" @click.prevent="open(url(service.name))" :disabled="isDisabled(service.name)">
+                    <a v-if="!isDisabled(service.name)" :href="url(service.name)">
+                      <button class="button is-large" @click.prevent="open(url(service.name))"
+                              :disabled="isDisabled(service.name)">
                         <span class=" is-medium">
                           <figure class="logo image is-32x32">
                             <img :src="`/static/img/${service.name}.png`">
@@ -63,7 +65,8 @@
                         <span> {{ service.label }}</span>
                       </button>
                     </a>
-                    <button v-else class="button is-large" @click.prevent="open(url(service.name))" :disabled="isDisabled(service.name)">
+                    <button v-else class="button is-large" @click.prevent="open(url(service.name))"
+                            :disabled="isDisabled(service.name)">
                         <span class=" is-medium">
                           <figure class="logo image is-32x32">
                             <img :src="`/static/img/${service.name}.png`">
@@ -91,10 +94,13 @@
                 <p class="control" v-if="canStart">
                   <button class="button is-link"
                           v-bind:class="{'is-loading': userTools.isLoading}"
-                          @click="startUserTools">Start</button>
+                          @click="startUserTools">Start
+                  </button>
                 </p>
                 <p class="control" v-if="canStop">
-                  <button class="button is-danger" v-bind:class="{'is-loading': userTools.isLoading}" @click="stopUserTools">Stop</button>
+                  <button class="button is-danger" v-bind:class="{'is-loading': userTools.isLoading}"
+                          @click="stopUserTools">Stop
+                  </button>
                 </p>
                 <p class="control ">
                 <span class="file-name label title  is-spaced">Server is
@@ -109,7 +115,7 @@
 
           <!-- Errors Row -->
           <div v-if="error" class="column is-full notification is-danger">
-            {{error}}
+              {{error}}
           </div>
 
         </div>

@@ -3,8 +3,10 @@ package usertools
 import (
 	"context"
 	"fmt"
+
 	"toolkit/dashboard/config"
 	"toolkit/dashboard/kubernetes"
+	"toolkit/dashboard/user"
 )
 
 // UserTools contains methods to manage UserTools resources
@@ -28,7 +30,7 @@ func New(config *config.Config, resources *kubernetes.ResourceManager) *UserTool
 }
 
 // GetStatus returns the setup and running status of UserTools for the given user
-func (m *UserTools) GetStatus(ctx context.Context, u User) (*ServerStatus, error) {
+func (m *UserTools) GetStatus(ctx context.Context, u *user.User) (*ServerStatus, error) {
 	status := &ServerStatus{
 		SetupOK: false,
 		Running: false,
@@ -51,7 +53,7 @@ func (m *UserTools) GetStatus(ctx context.Context, u User) (*ServerStatus, error
 
 	status.SetupOK = true
 
-	running, err := m.resources.IsUserToolsRunning(ctx, u.GetServerName())
+	running, err := m.resources.IsUserToolsRunning(ctx, u.GetResourceName())
 	if err != nil {
 		return nil, err
 	}
@@ -62,17 +64,17 @@ func (m *UserTools) GetStatus(ctx context.Context, u User) (*ServerStatus, error
 }
 
 // Start initialize a new UserTools for the given user
-func (m *UserTools) Start(u User) error {
+func (m *UserTools) Start(u *user.User) error {
 	err := m.checkOrCreateToolsSecrets(u)
 	if err != nil {
 		return err
 	}
 
-	err = m.resources.CreateUserTools(u.GetServerName(), u.Username)
+	err = m.resources.CreateUserTools(u)
 	if err != nil {
 		return err
 	}
-	doneCh, err := m.resources.WaitUserToolsRunning(u.GetServerName(), 10)
+	doneCh, err := m.resources.WaitUserToolsRunning(u.GetResourceName(), 10)
 	if err != nil {
 		return err
 	}
@@ -84,20 +86,20 @@ func (m *UserTools) Start(u User) error {
 }
 
 // Stop stops a UserTools associated with the given user
-func (m *UserTools) Stop(context context.Context, u User) error {
+func (m *UserTools) Stop(context context.Context, u *user.User) error {
 	status, err := m.GetStatus(context, u)
 	if err != nil {
 		return err
 	}
 	if !status.SetupOK || !status.Running {
-		return fmt.Errorf("can't stop uninitialized UserTools for user %s", u.Username)
+		return fmt.Errorf("can't stop uninitialized UserTools for user %s", u.GetUsernameSlug())
 	}
 
-	return m.resources.DeleteUserTools(u.GetServerName())
+	return m.resources.DeleteUserTools(u)
 }
 
 // checkOrCreateToolsSecrets set ClientID and ClientSecret on Kubernetes secret objects
-func (m *UserTools) checkOrCreateToolsSecrets(u User) error {
+func (m *UserTools) checkOrCreateToolsSecrets(u *user.User) error {
 	fmt.Println("creating tools secrets")
 
 	toolName := "codeserver"
@@ -106,7 +108,7 @@ func (m *UserTools) checkOrCreateToolsSecrets(u User) error {
 		return fmt.Errorf("check %s tool secret: %w", toolName, err)
 	}
 	if !exist {
-		callbackURL := fmt.Sprintf("http://%s-code.%s/oauth2/callback", u.Username, m.config.BaseDomainName)
+		callbackURL := fmt.Sprintf("http://%s-code.%s/oauth2/callback", u.GetUsernameSlug(), m.config.BaseDomainName)
 		data := map[string]string{}
 		data["DEPLOYMENT_SECRET_NAME"] = u.GetSecretName(toolName)
 		data["OAUTH2_CREDENTIALS_PREFIX"] = "CODESERVER"
@@ -127,7 +129,7 @@ func (m *UserTools) checkOrCreateToolsSecrets(u User) error {
 		return fmt.Errorf("check %s tool secret: %w", toolName, err)
 	}
 	if !exist {
-		callbackURL := fmt.Sprintf("http://%s-jupyter.%s/oauth2/callback", u.Username, m.config.BaseDomainName)
+		callbackURL := fmt.Sprintf("http://%s-jupyter.%s/oauth2/callback", u.GetUsernameSlug(), m.config.BaseDomainName)
 		data := map[string]string{}
 		data["DEPLOYMENT_SECRET_NAME"] = u.GetSecretName(toolName)
 		data["OAUTH2_CREDENTIALS_PREFIX"] = "JUPYTER"
@@ -140,20 +142,19 @@ func (m *UserTools) checkOrCreateToolsSecrets(u User) error {
 		if err != nil {
 			return fmt.Errorf("creating %s tools secrets: %w", toolName, err)
 		}
-
 	}
 
 	return nil
-
 }
 
-func (m *UserTools) WaitUserToolsRunning(ctx context.Context, u User) (*ServerStatus, error) {
+// WaitUserToolsRunning waits for user resources to be on running state
+func (m *UserTools) WaitUserToolsRunning(ctx context.Context, u *user.User) (*ServerStatus, error) {
 	status := &ServerStatus{
 		SetupOK: false,
 		Running: false,
 	}
 
-	err := m.resources.WaitForUserToolsRunning(ctx, u.GetServerName())
+	err := m.resources.WaitForUserToolsRunning(ctx, u)
 	if err != nil {
 		return nil, err
 	}

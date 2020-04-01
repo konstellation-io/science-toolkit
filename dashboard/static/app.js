@@ -10,6 +10,7 @@ const app = new Vue({
             baseURL: new URL(window.location),
             error: null,
             username: "",
+            usernameSlug: "",
             userTools: {
                 status: false,
                 isRunning: false,
@@ -39,7 +40,7 @@ const app = new Vue({
     },
     methods: {
         isDisabled(name) {
-            if (name !== "vscode" && name!=="jupyter") {
+            if (name !== "vscode" && name !== "jupyter") {
                 return false
             }
             return this.userTools.status && !this.userTools.isRunning
@@ -50,6 +51,7 @@ const app = new Vue({
             this.userTools.status = true
             this.userTools.isRunning = res.data.running
             this.username = res.headers['x-forwarded-user']
+            this.usernameSlug = res.headers['x-forwarded-user-slug']
         },
         async startUserTools() {
             this.error = null
@@ -58,10 +60,10 @@ const app = new Vue({
                 await axios.post(`/api/start`)
                 this.userTools.status = true
                 this.userTools.isRunning = true
-            }catch (e) {
+            } catch (e) {
                 this.error = e
-                console.log("Error: ",e)
-            }finally {
+                console.log("Error: ", e)
+            } finally {
                 this.userTools.isLoading = false
             }
         },
@@ -70,10 +72,10 @@ const app = new Vue({
             this.userTools.isLoading = true
             try {
                 await axios.post(`/api/stop`)
-            }catch (e) {
+            } catch (e) {
                 this.error = e
-                console.log("Error: ",e)
-            }finally {
+                console.log("Error: ", e)
+            } finally {
                 setTimeout(() => {
                     this.statusUserTools()
                     this.userTools.isLoading = false
@@ -87,10 +89,10 @@ const app = new Vue({
             const url = new URL(window.location)
             switch (name) {
                 case "vscode":
-                    url.host = url.host.replace("app", `${this.username}-code`)
+                    url.host = url.host.replace("app", `${this.usernameSlug}-code`)
                     break;
                 case "jupyter":
-                    url.host = url.host.replace("app", `${this.username}-jupyter`)
+                    url.host = url.host.replace("app", `${this.usernameSlug}-jupyter`)
                     break;
                 default:
                     url.host = url.host.replace("app", name)

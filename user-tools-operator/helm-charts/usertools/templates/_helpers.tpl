@@ -54,8 +54,3 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
-
-{{- define "user-tools.host" -}}
-{{- $protocol := ternary  "https" "http" .Values.tls.enabled -}}
-{{ $protocol }}://{{ .Values.auth.username }}-code.{{ .Values.domain }}
-{{- end -}}
