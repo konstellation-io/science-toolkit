@@ -3,3 +3,4 @@ libffi-dev
 python3-pip 
 language-pack-es
 unixodbc-dev
+unixodbc
