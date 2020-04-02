@@ -97,6 +97,15 @@ RUN wget https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.100
     apt-get update && \
     apt-get install -y odbcinst 
 
+# Build unixodbx 2.3.7
+RUN cd /tmp && \
+    wget http://www.unixodbc.org/unixODBC-2.3.7.tar.gz && \
+    tar xvf unixODBC-2.3.7.tar.gz && \
+    cd unixODBC-2.3.7/ && \
+    ./configure && \
+    make && \
+    make install
+
 ADD fix-permissions /usr/local/bin/fix-permissions
 # Create jovyan user with UID=1000 and in the 'users' group
 # and make sure these dirs are writable by the `users` group.
