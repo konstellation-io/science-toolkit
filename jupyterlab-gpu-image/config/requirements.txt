@@ -44,4 +44,3 @@ tensorflow==2.0.0b1 # needed to have tensorboard features
 tqdm==4.36.1
 xlrd==1.2.0
 pyodbc==4.0.30
-pytables==3.4.4
