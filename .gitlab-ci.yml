@@ -9,6 +9,7 @@ stages:
 include:
   - local: dashboard/.gitlab-ci.yml
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
+  - local: runner-image/.gitlab-ci.yml
   - local: vscode/.gitlab-ci.yml
   - local: user-tools-operator/.gitlab-ci.yml
   - local: gitea-oauth2-setup/.gitlab-ci.yml
