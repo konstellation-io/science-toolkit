@@ -16,7 +16,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "user-tools.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app: user-tools-{{ .Values.username }}
+        app: user-tools-{{ .Values.usernameSlug }}
     spec:
       initContainers:
         - name: codeserver-gitea-oauth2-setup
@@ -31,7 +31,7 @@ spec:
             - secretRef:
                 name: gitea-admin-secrets
             - secretRef:
-                name: codeserver-oauth2-secrets-{{ .Values.username }}
+                name: codeserver-oauth2-secrets-{{ .Values.usernameSlug }}
             - configMapRef:
                 name: gitea-configmap
         - name: jupyter-gitea-oauth2-setup
@@ -46,7 +46,7 @@ spec:
             - secretRef:
                 name: gitea-admin-secrets
             - secretRef:
-                name: jupyter-oauth2-secrets-{{ .Values.username }}
+                name: jupyter-oauth2-secrets-{{ .Values.usernameSlug }}
             - configMapRef:
                 name: gitea-configmap
       containers:
@@ -85,7 +85,7 @@ spec:
             - "-email-domain"
             - "*"
             - "-redirect-url"
-            - "http://{{ .Values.username }}-code.{{ .Values.domain }}/oauth2/callback"
+            - "http://{{ .Values.usernameSlug }}-code.{{ .Values.domain }}/oauth2/callback"
             - "-upstream"
             - "http://127.0.0.1:8080/"
             - "-pass-user-headers"
@@ -99,12 +99,12 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: codeserver-oauth2-secrets-{{ .Values.username }}
+                  name: codeserver-oauth2-secrets-{{ .Values.usernameSlug }}
                   key: CODESERVER_OAUTH2_CLIENT_ID
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: codeserver-oauth2-secrets-{{ .Values.username }}
+                  name: codeserver-oauth2-secrets-{{ .Values.usernameSlug }}
                   key: CODESERVER_OAUTH2_CLIENT_SECRET
           volumeMounts:
             - name: oauth2-config
@@ -123,7 +123,7 @@ spec:
             - "-email-domain"
             - "*"
             - "-redirect-url"
-            - "http://{{ .Values.username }}-jupyter.{{ .Values.domain }}/oauth2/callback"
+            - "http://{{ .Values.usernameSlug }}-jupyter.{{ .Values.domain }}/oauth2/callback"
             - "-upstream"
             - "http://127.0.0.1:8888/"
             - "-pass-user-headers"
@@ -139,12 +139,12 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: jupyter-oauth2-secrets-{{ .Values.username }}
+                  name: jupyter-oauth2-secrets-{{ .Values.usernameSlug }}
                   key: JUPYTER_OAUTH2_CLIENT_ID
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: jupyter-oauth2-secrets-{{ .Values.username }}
+                  name: jupyter-oauth2-secrets-{{ .Values.usernameSlug }}
                   key: JUPYTER_OAUTH2_CLIENT_SECRET
           volumeMounts:
             - name: oauth2-config

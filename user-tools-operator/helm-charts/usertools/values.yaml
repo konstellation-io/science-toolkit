@@ -1,5 +1,6 @@
 domain: toolkit.local
-username: demo
+username: user.name
+usernameSlug: user-name
 tls:
   enabled: false
 storage:

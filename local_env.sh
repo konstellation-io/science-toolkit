@@ -26,23 +26,40 @@ export SKIP_BUILD=1
 check_requirements
 
 clean () {
-  helm -n toolkit delete toolkit
-  kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc --force --grace-period=0
-  kubectl -n toolkit delete crd usertools.sci-toolkit.konstellation.io --force --grace-period=0
+  helm -n toolkit delete toolkit || true
+  (kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc --force --grace-period=0) || true
+  kubectl -n toolkit delete crd usertools.sci-toolkit.konstellation.io --force --grace-period=0 || true
 }
 
-case $* in
-# WARNING: Doing a hard reset before deploying
-*--hard* | *--dracarys*)
-  . ./scripts/minikube_hard_reset.sh
-  ;;
-*--docker-build*)
-  export SKIP_BUILD=0
-  ;;
-*--clean* | *--semi-dracarys*)
-  clean
-  ;;
-esac
+
+while test $# -gt 0; do
+  case "$1" in
+    --help)
+      echo "local_env - attempt to capture frames"
+      echo " "
+      echo "options:"
+      echo "--help                    show brief help"
+      echo "--hard, --dracarys        remove minikube profile entirely"
+      echo "--clean, --semi-dracarys  remove resources from minikube, keep profile intact"
+      echo "--docker-build            build images locally instead of downloading from registry"
+      exit 0
+      ;;
+    # WARNING: Doing a hard reset before deploying
+    *--hard* | *--dracarys*)
+        . ./scripts/minikube_hard_reset.sh
+        shift
+        ;;
+    *--docker-build*)
+        export SKIP_BUILD=0
+        shift
+        ;;
+    *--clean* | *--semi-dracarys*)
+        clean
+        shift
+        ;;
+  esac
+done
+
 
 . ./scripts/minikube_start.sh
 

@@ -3,6 +3,7 @@
 MINIKUBE_MEMORY=4096 #Mb
 MINIKUBE_KUBERNETES_VERSION=1.15.4
 MINIKUBE_CPUS=4
+MINIKUBE_DRIVER=virtualbox
 MINIKUBE_DISK_SIZE='40g'
 
 startMinikube() {
@@ -16,6 +17,7 @@ startMinikube() {
       --memory=$MINIKUBE_MEMORY \
       --kubernetes-version=$MINIKUBE_KUBERNETES_VERSION \
       --disk-size=$MINIKUBE_DISK_SIZE \
+      --driver=$MINIKUBE_DRIVER \
       --extra-config=apiserver.authorization-mode=RBAC
 
     minikube addons enable ingress

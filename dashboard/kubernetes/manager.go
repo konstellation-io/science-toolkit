@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"k8s.io/apimachinery/pkg/watch"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
@@ -12,10 +11,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
 	"toolkit/dashboard/config"
+	"toolkit/dashboard/user"
 )
 
 // ResourceManager interacts with kubernetes
@@ -56,7 +57,6 @@ func (r *ResourceManager) IsSecretPresent(name string) (bool, error) {
 	}
 
 	return !k8s_errors.IsNotFound(err), nil
-
 }
 
 // CreateSecret creates a secret on kubernetes with the given data
@@ -99,13 +99,15 @@ func (r *ResourceManager) IsUserToolsRunning(ctx context.Context, name string) (
 	numPods := len(list.Items)
 	return numPods != 0, nil
 }
-func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, name string) error {
+
+// WaitForUserToolsRunning waits for user resources to be on running state
+func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, u *user.User) error {
 	ns := r.config.Kubernetes.Namespace
 
 	ctx, cancel := context.WithTimeout(ctx, 300*time.Second)
 	defer cancel()
 
-	exist, err := r.IsUserToolsRunning(ctx, name)
+	exist, err := r.IsUserToolsRunning(ctx, u.GetResourceName())
 	if err != nil {
 		return err
 	}
@@ -115,7 +117,7 @@ func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, name stri
 	}
 
 	listOptions := metav1.ListOptions{
-		LabelSelector: fmt.Sprintf("app=%s", name),
+		LabelSelector: fmt.Sprintf("app=%s", u.GetResourceName()),
 		TypeMeta: metav1.TypeMeta{
 			Kind: "Pod",
 		},
@@ -138,17 +140,16 @@ func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, name stri
 					}
 				}
 			}
-
 		case <-ctx.Done():
 			w.Stop()
 			return errors.New("timeout waiting vscode pod")
 		}
 	}
-
 }
 
 // CreateUserTools creates a new crd of type UserTools for the given user
-func (r *ResourceManager) CreateUserTools(serverName, username string) error {
+func (r *ResourceManager) CreateUserTools(user *user.User) error {
+	serverName := user.GetResourceName()
 	definition := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       "UserTools",
@@ -161,8 +162,9 @@ func (r *ResourceManager) CreateUserTools(serverName, username string) error {
 				},
 			},
 			"spec": map[string]interface{}{
-				"domain":   r.config.BaseDomainName,
-				"username": username,
+				"domain":       r.config.BaseDomainName,
+				"username":     user.Username,
+				"usernameSlug": user.GetUsernameSlug(),
 				"storage": map[string]string{
 					"size":      r.config.VSCode.Storage.Size,
 					"className": r.config.VSCode.Storage.ClassName,
@@ -173,6 +175,7 @@ func (r *ResourceManager) CreateUserTools(serverName, username string) error {
 			},
 		},
 	}
+	fmt.Println("Creating users tools: ", definition.Object)
 	_, err := r.codeClient.Namespace(r.config.Kubernetes.Namespace).Create(definition, metav1.CreateOptions{})
 	if err != nil {
 		return err
@@ -183,8 +186,8 @@ func (r *ResourceManager) CreateUserTools(serverName, username string) error {
 }
 
 // DeleteUserTools deletes a crd of type UserTools
-func (r ResourceManager) DeleteUserTools(name string) error {
-	return r.codeClient.Namespace(r.config.Kubernetes.Namespace).Delete(name, &metav1.DeleteOptions{})
+func (r ResourceManager) DeleteUserTools(user *user.User) error {
+	return r.codeClient.Namespace(r.config.Kubernetes.Namespace).Delete(user.GetResourceName(), &metav1.DeleteOptions{})
 }
 
 // WaitUserToolsRunning waits until the UserTools pod is running
@@ -195,7 +198,7 @@ func (r *ResourceManager) WaitUserToolsRunning(name string, timeToWait time.Dura
 
 	fmt.Printf("Creating watcher for POD with labels: %s\n", labelSelector)
 
-	watch, err := r.clientset.CoreV1().Pods(r.config.Kubernetes.Namespace).Watch(metav1.ListOptions{
+	watcher, err := r.clientset.CoreV1().Pods(r.config.Kubernetes.Namespace).Watch(metav1.ListOptions{
 		TypeMeta:      metav1.TypeMeta{},
 		LabelSelector: labelSelector,
 		FieldSelector: "",
@@ -206,7 +209,7 @@ func (r *ResourceManager) WaitUserToolsRunning(name string, timeToWait time.Dura
 	}
 
 	go func() {
-		events := watch.ResultChan()
+		events := watcher.ResultChan()
 
 		startTime := time.Now()
 		for {
@@ -216,13 +219,13 @@ func (r *ResourceManager) WaitUserToolsRunning(name string, timeToWait time.Dura
 
 				if pod.Status.Phase == v1.PodRunning {
 					fmt.Printf("The POD with labels \"%s\" is running\n", labelSelector)
-					watch.Stop()
+					watcher.Stop()
 					waitChan <- true
 					close(waitChan)
 					return
 				}
 			case <-time.After((timeToWait * time.Second) - time.Since(startTime)):
-				watch.Stop()
+				watcher.Stop()
 				waitChan <- false
 				close(waitChan)
 				return
