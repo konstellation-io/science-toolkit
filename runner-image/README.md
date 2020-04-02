@@ -1,6 +1,6 @@
 # Runner Image
 
-This Dockerfile is a basic science-toolkit runner with python libraries
+This Dockerfile is a basic science-toolkit runner with python libraries.
 
 The goal of this image is to be run by Drone.io on Kubernetes.
 
