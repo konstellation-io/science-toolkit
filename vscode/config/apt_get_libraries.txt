@@ -1,0 +1,3 @@
+libffi-dev 
+unixodbc
+unixodbc-dev
