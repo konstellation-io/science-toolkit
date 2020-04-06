@@ -50,6 +50,7 @@ release_operator_vscode:
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git remote add upstream https://${GITHUB_PUBLISH_USERNAME}:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
-    - git tag $TAG && git push upstream $TAG || true
+    - git tag $TAG || true
+    - git push upstream $TAG || true
   only:
     - /^vscode-v\d*.\d*.\d*$/
