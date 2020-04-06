@@ -21,6 +21,8 @@ release-helm-after-image:
   only:
     - tags
   except:
+    - /^jupyterlab-gpu-image-v\d*.\d*.\d*$/
+    - /^vscode-v\d*.\d*.\d*$/
     - /^helm-chart-v\d*.\d*.\d*$/
     - gh-pages
 

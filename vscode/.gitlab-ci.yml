@@ -33,3 +33,20 @@ publish-vscode-image:
     - docker rmi $IMAGE_PROJECT_NAME:$TAG
   only:
     - /^vscode-v\d*.\d*.\d*$/
+
+release_operator_vscode:
+  stage: release-operator
+  image: alpine:3.11.5
+  variables:
+    TAGS_VERSION: 1.0.0
+    COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
+  script:
+    - apk add curl jq bash gettext git coreutils --update
+    - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
+    - chmod +x /usr/local/bin/monorepo-components-tags
+    - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
+    - source /tmp/components_tags.sh
+    - export TAG=./scripts/bump-version.sh $USER_TOOLS_OPERATOR_TAG
+    - git tag $TAG || true
+  only:
+    - /^vscode-v\d*.\d*.\d*$/
