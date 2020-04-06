@@ -9,7 +9,6 @@ release-user-tools-operator:
     refs:
       - master
     changes:
-      - vscode/**/*
       - user-tools-operator/**/*
       - .gitlab-ci.yml
 

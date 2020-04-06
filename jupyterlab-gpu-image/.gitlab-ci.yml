@@ -11,7 +11,7 @@ release-jupyterlab-gpu-image:
     refs:
       - master
 
-publish_docker_image:
+publish_docker_image_jupyter:
   stage: publish
   image: docker:latest
   services:
@@ -47,6 +47,6 @@ release_operator_jupyterlab:
     - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
     - source /tmp/components_tags.sh
     - export TAG=$(./scripts/bump-version.sh user-tools-operator-v$USER_TOOLS_OPERATOR_TAG)
-    - git tag $TAG || true
+    - git tag $TAG && git push origin $TAG || true
   only:
     - /^jupyterlab-gpu-image-v\d*.\d*.\d*$/

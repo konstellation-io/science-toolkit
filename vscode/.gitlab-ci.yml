@@ -47,6 +47,6 @@ release_operator_vscode:
     - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
     - source /tmp/components_tags.sh
     - export TAG=$(./scripts/bump-version.sh user-tools-operator-v$USER_TOOLS_OPERATOR_TAG)
-    - git tag $TAG || true
+    - git tag $TAG && git push origin $TAG || true
   only:
     - /^vscode-v\d*.\d*.\d*$/

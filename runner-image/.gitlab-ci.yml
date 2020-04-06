@@ -11,7 +11,7 @@ release-runner-image:
     refs:
       - master
 
-publish_docker_image:
+publish_docker_image_runner:
   stage: publish
   image: docker:latest
   services:
