@@ -24,6 +24,7 @@ release-helm-after-image:
     - /^jupyterlab-gpu-image-v\d*.\d*.\d*$/
     - /^vscode-v\d*.\d*.\d*$/
     - /^helm-chart-v\d*.\d*.\d*$/
+    - /^science-toolkit-v\d*.\d*.\d*$/
     - gh-pages
 
 generate-helm-chart:
