@@ -3,8 +3,8 @@ stages:
   - semantic-release
   - publish
   - build
+  - release-operator
   - semantic-release-helm
-  - deploy
 
 include:
   - local: dashboard/.gitlab-ci.yml
