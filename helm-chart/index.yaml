@@ -3,6 +3,15 @@ entries:
   science-toolkit:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2020-04-07T10:02:36.890467659Z"
+    description: Science Toolkit
+    digest: b8bc007452d27a57194543c1f3945b8a18e0b7e8686e0fde328f8af7179c82a4
+    name: science-toolkit
+    urls:
+    - https://github.com/intelygenz/science-toolkit/releases/download/science-toolkit-1.0.120/science-toolkit-1.0.120.tgz
+    version: 1.0.120
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2020-04-06T14:50:42.632156783Z"
     description: Science Toolkit
     digest: 46611d02ebca33051e83e8f893d5fbdf33a97afbd3876af4af4623cd4ae43798
