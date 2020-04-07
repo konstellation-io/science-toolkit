@@ -48,7 +48,7 @@ postgres:
 drone:
   image:
     repository: drone/drone
-    tag: 1.6.2
+    tag: 1.7.0
     pullPolicy: IfNotPresent
   storage:
     size: 10Gi
