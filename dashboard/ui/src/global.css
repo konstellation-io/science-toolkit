@@ -8,7 +8,6 @@ body,
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* background-color: #0d0e11; */
 }
 
 .MuiGrid-grid-xs-6 {
