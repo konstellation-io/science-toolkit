@@ -1,0 +1,16 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* background-color: #0d0e11; */
+}
+
+.MuiGrid-grid-xs-6 {
+  max-width: 'inherit';
+}
