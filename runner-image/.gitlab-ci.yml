@@ -24,6 +24,7 @@ publish_docker_image_runner:
     - TAG=${CI_COMMIT_TAG#"runner-image-v"}
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
+    - ./scripts/clean_and_copy.sh common-science-requirements runner-image
     - docker build -t $IMAGE_PROJECT_NAME:$TAG ./runner-image
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG

@@ -6,7 +6,9 @@ ENV LANG C.UTF-8
 
 # Install all OS dependencies for notebook server that starts but lacks all
 # features (e.g., download as all possible file formats)
-ADD ./config/apt_get_libraries.txt apt_get_libraries.txt
+ADD ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
+ADD ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
+RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get -yq dist-upgrade \
@@ -37,11 +39,11 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
 RUN apt update && \
-    apt -y install python3.6 python3-pip python3.6-dev && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1 && \
-    update-alternatives --set python3 /usr/bin/python3.6 && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2 && \
-    update-alternatives --set python /usr/bin/python3.6 && \
+    apt -y install python3.6 python3-pip python3.7-dev && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1 && \
+    update-alternatives --set python3 /usr/bin/python3.7 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2 && \
+    update-alternatives --set python /usr/bin/python3.7 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
     update-alternatives --set pip /usr/bin/pip3
 
@@ -79,11 +81,18 @@ RUN cd /tmp && \
     make install
 
 # Install Frameworks
-ADD ./config/frameworks_requirements.txt frameworks_requirements.txt
+ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
+ADD ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
+RUN cat custom_frameworks_requirements.txt >> frameworks_requirements.txt
 
 RUN pip install -r frameworks_requirements.txt
 
 # Install Libraries
-ADD ./config/requirements.txt requirements.txt
+ADD ./common-science-requirements/requirements.txt requirements.txt
+ADD ./config/requirements.txt custom_requirements.txt
+RUN cat custom_requirements.txt >> requirements.txt
+
+RUN pip install setuptools wheel && \
+      pip install cython thriftpy
 
 RUN pip install -r requirements.txt
