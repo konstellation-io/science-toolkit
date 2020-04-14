@@ -16,14 +16,6 @@ ADD ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
 ADD ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
 RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
 
-RUN apt update && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1 && \
-    update-alternatives --set python3 /usr/bin/python3.7 && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2 && \
-    update-alternatives --set python /usr/bin/python3.7 && \
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
-    update-alternatives --set pip /usr/bin/pip3
-
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update \
     && apt-get install -yq --no-install-recommends \
@@ -46,6 +38,14 @@ RUN apt-get update \
     `cat apt_get_libraries.txt | xargs` \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN apt update && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1 && \
+    update-alternatives --set python3 /usr/bin/python3.7 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2 && \
+    update-alternatives --set python /usr/bin/python3.7 && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
+    update-alternatives --set pip /usr/bin/pip3
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
@@ -151,15 +151,6 @@ ENV PATH /home/$NB_USER/.local/bin:$PATH
 
 USER root
 
-RUN pip install --no-cache-dir \
-    'notebook==6.0.1' \
-    'jupyterhub==1.0.0' \
-    'jupyterlab==1.1.4' 
-
-RUN jupyter serverextension enable --py jupyterlab --sys-prefix
-
-RUN jupyter notebook --generate-config
-
 # Install Libraries
 ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
 ADD ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
@@ -176,6 +167,10 @@ RUN pip install setuptools wheel && \
     pip install cython thriftpy
 
 RUN pip install -r requirements.txt
+
+RUN jupyter serverextension enable --py jupyterlab --sys-prefix
+
+RUN jupyter notebook --generate-config
 
 # Install Jupyterlab Extensions
 ADD ./config/jupyterlab_extensions.txt jupyterlab_extensions.txt

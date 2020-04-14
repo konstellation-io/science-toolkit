@@ -9,3 +9,4 @@ else
     mkdir -p $DEST
 fi
 cp -R $ORIGIN/* $DEST
+sleep 2
