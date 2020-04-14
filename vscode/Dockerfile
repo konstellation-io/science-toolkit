@@ -2,7 +2,7 @@ FROM codercom/code-server:3.0.1
 
 USER root
 
-ENV GO_VERSION 1.14
+ARG GO_VERSION=1.14.2
 ENV GOROOT /usr/local/go
 ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 ENV LC_ALL C.UTF-8
