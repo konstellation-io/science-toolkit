@@ -2,17 +2,18 @@ FROM codercom/code-server:3.0.1
 
 USER root
 
-ENV GO_VERSION 1.14
+ARG GO_VERSION=1.14.2
 ENV GOROOT /usr/local/go
 ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
-ADD ./config/apt_get_libraries.txt apt_get_libraries.txt
+ADD ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
+ADD ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
+RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
 
 RUN apt-get update && \
-    apt-get -yq upgrade && \
     apt-get install -yq --no-install-recommends \
         gcc \
         wget \
@@ -99,13 +100,17 @@ RUN cd /tmp && \
 RUN pip install setuptools wheel && \
     pip install cython thriftpy
 
-# Install Frameworks
-ADD ./config/frameworks_requirements.txt frameworks_requirements.txt
+# Install Libraries
+ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
+ADD ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
+RUN cat custom_frameworks_requirements.txt >> frameworks_requirements.txt
 
 RUN pip install -r frameworks_requirements.txt
 
 # Install Libraries
-ADD ./config/requirements.txt requirements.txt
+ADD ./common-science-requirements/requirements.txt requirements.txt
+ADD ./config/requirements.txt custom_requirements.txt
+RUN cat custom_requirements.txt >> requirements.txt
 
 RUN pip install -r requirements.txt
 

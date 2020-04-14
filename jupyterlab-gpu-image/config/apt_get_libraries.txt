@@ -1,6 +1,1 @@
-python3.6-dev
-libffi-dev 
-python3-pip 
 language-pack-es
-unixodbc-dev
-unixodbc

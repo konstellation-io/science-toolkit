@@ -1,0 +1,7 @@
+python3.7-dev
+python3.7
+python3-pip
+libffi-dev 
+unixodbc
+unixodbc-dev
+libgtk2.0-dev

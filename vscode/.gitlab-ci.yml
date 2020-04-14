@@ -24,6 +24,7 @@ publish-vscode-image:
     - TAG=${CI_COMMIT_TAG#"vscode-v"}
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
+    - ./scripts/clean_and_copy.sh common-science-requirements vscode
     - docker build -t $IMAGE_PROJECT_NAME:$TAG ./vscode
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
