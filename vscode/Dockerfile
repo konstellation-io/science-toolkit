@@ -4,7 +4,7 @@ USER root
 
 ARG GO_VERSION=1.14.2
 ENV GOROOT /usr/local/go
-ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+ENV PATH=$GOROOT/bin:$PATH
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
@@ -41,31 +41,6 @@ RUN apt-get update && \
     update-alternatives --set python /usr/bin/python3 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 2 && \
     update-alternatives --set pip /usr/bin/pip3
-
-RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
-    && tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz \
-    && rm go$GO_VERSION.linux-amd64.tar.gz
-
-
-# Tools needed for VSCode Go Extension
-RUN go get -u -v github.com/mdempsky/gocode \
-      github.com/uudashr/gopkgs/cmd/gopkgs \
-      github.com/ramya-rao-a/go-outline \
-      github.com/acroca/go-symbols \
-      golang.org/x/tools/cmd/guru \
-      golang.org/x/tools/cmd/gorename \
-      github.com/cweill/gotests/... \
-      github.com/fatih/gomodifytags \
-      github.com/josharian/impl \
-      github.com/davidrjenni/reftools/cmd/fillstruct \
-      github.com/haya14busa/goplay/cmd/goplay \
-      github.com/godoctor/godoctor \
-      github.com/go-delve/delve/cmd/dlv \
-      github.com/stamblerre/gocode \
-      github.com/rogpeppe/godef \
-      github.com/sqs/goreturns \
-      golang.org/x/lint/golint \
-      golang.org/x/tools/gopls
 
 # Install Minio client
 RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc && \
@@ -113,6 +88,11 @@ ADD ./config/requirements.txt custom_requirements.txt
 RUN cat custom_requirements.txt >> requirements.txt
 
 RUN pip install -r requirements.txt
+
+# Golang
+RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
+    && tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz \
+    && rm go$GO_VERSION.linux-amd64.tar.gz
 
 COPY extensions /extensions
 RUN chown coder:coder /extensions
