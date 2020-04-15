@@ -76,20 +76,20 @@ if [ "$SKIP_BUILD" != "1" ]; then
   build_header "dashboard"
   docker build -t terminus7/sci-toolkit-dashboard:latest dashboard
 
-  build_header "vscode"
-  ./scripts/clean_and_copy.sh common-science-requirements vscode
-  docker build -t terminus7/sci-toolkit-vscode:latest vscode
-  rm -rf vscode/common-science-requirements
-
-  build_header "jupyterlab-gpu-image"
-  ./scripts/clean_and_copy.sh common-science-requirements/ jupyterlab-gpu-image
-  docker build -t terminus7/jupyterlab-gpu:latest jupyterlab-gpu-image
-  rm -rf jupyterlab-gpu-image/common-science-requirements
-
-  build_header "runner-image"
-  ./scripts/clean_and_copy.sh common-science-requirements/ runner-image
-  docker build -t terminus7/sci-toolkit-runner:latest runner-image
-  rm -rf runner-image/common-science-requirements
+#  build_header "vscode"
+#  ./scripts/clean_and_copy.sh common-science-requirements vscode
+#  docker build -t terminus7/sci-toolkit-vscode:latest vscode
+#  rm -rf vscode/common-science-requirements
+#
+#  build_header "jupyterlab-gpu-image"
+#  ./scripts/clean_and_copy.sh common-science-requirements/ jupyterlab-gpu-image
+#  docker build -t terminus7/jupyterlab-gpu:latest jupyterlab-gpu-image
+#  rm -rf jupyterlab-gpu-image/common-science-requirements
+#
+#  build_header "runner-image"
+#  ./scripts/clean_and_copy.sh common-science-requirements/ runner-image
+#  docker build -t terminus7/sci-toolkit-runner:latest runner-image
+#  rm -rf runner-image/common-science-requirements
 
   build_header "gitea-oauth2-setup"
   docker build -t terminus7/gitea-oauth2-setup:latest gitea-oauth2-setup
@@ -112,6 +112,8 @@ fi
 echo "📚️ Create Namespace if not exist...\n"
 kubectl create ns ${NAMESPACE} --dry-run -o yaml | kubectl apply -f -
 
+./scripts/create_self_signed_cert.sh $NAMESPACE $DEPLOY_NAME
+
 echo "📦 Applying helm chart...\n"
 helm dep update helm/science-toolkit
 helm upgrade \
@@ -119,6 +121,7 @@ helm upgrade \
   --install "${DEPLOY_NAME}" \
   --namespace "${NAMESPACE}" \
   --set domain=toolkit.$IP.nip.io \
+  --set certManager.enable=true \
   --timeout 60m \
   helm/science-toolkit
 
