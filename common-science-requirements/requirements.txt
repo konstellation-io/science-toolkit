@@ -37,3 +37,4 @@ boto3==1.12.36
 autopep8==1.5.1
 pylint==2.4.4
 opencv-python==4.2.0.34
+torchsummary==1.5.1
