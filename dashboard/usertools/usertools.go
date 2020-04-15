@@ -74,13 +74,13 @@ func (m *UserTools) Start(u *user.User) error {
 	if err != nil {
 		return err
 	}
-	doneCh, err := m.resources.WaitUserToolsRunning(u.GetResourceName(), 10)
+	doneCh, err := m.resources.WaitUserToolsRunning(u.GetResourceName(), 600)
 	if err != nil {
 		return err
 	}
 	running := <-doneCh
 	if !running {
-		return fmt.Errorf("UserTools not running after %d seconds", 10)
+		return fmt.Errorf("UserTools not running after %d seconds", 600)
 	}
 	return nil
 }

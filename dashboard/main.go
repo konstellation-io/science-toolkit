@@ -31,8 +31,9 @@ func main() {
 
 	// Static routes
 	r.Static("index.html", "./static/")
-	r.StaticFS("/static", http.Dir("static"))
+	r.StaticFS("/static", http.Dir("static/static"))
 	r.StaticFile("/", "./static/index.html")
+	r.StaticFile("favicon.ico", "./static/favicon.ico")
 
 	log.Fatal(r.Run(fmt.Sprintf("0.0.0.0:%s", cfg.Server.Port)))
 }
