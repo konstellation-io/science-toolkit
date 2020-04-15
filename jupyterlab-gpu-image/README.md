@@ -39,3 +39,13 @@ To upload a datasets from jupyter notebook to minio just run the below command.
 mc ls minio
 mc cp <data_set_file> minio/<project>/<subfolder>
 ```
+
+## How build this Image
+
+From the repo root path run:
+
+```bash
+  ./scripts/clean_and_copy.sh common-science-requirements/ jupyterlab-gpu-image
+  docker build -t terminus7/jupyterlab-gpu:latest jupyterlab-gpu-image
+  rm -rf jupyterlab-gpu-image/common-science-requirements
+```

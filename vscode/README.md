@@ -30,3 +30,13 @@ docker run -u root -it --network=host \
 ```
 - Update the extensions on VSCode.
 - Commit new extensions and remove old on your extensions folders.
+
+## How build this Image
+
+From the repo root path run:
+
+```bash
+  ./scripts/clean_and_copy.sh common-science-requirements vscode
+  docker build -t terminus7/sci-toolkit-vscode:latest vscode
+  rm -rf vscode/common-science-requirements
+```
