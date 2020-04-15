@@ -1,5 +1,6 @@
 stages:
   - semantic-release
+  - test
   - publish
   - build
   - release-operator
