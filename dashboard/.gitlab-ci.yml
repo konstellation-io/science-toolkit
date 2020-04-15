@@ -11,43 +11,9 @@ release-dashboard:
     changes:
       - dashboard/**/*
 
-trivy:
-  stage: test
-  image: docker:stable
-  services:
-    - name: docker:dind
-      entrypoint: ["env", "-u", "DOCKER_HOST"]
-      command: ["dockerd-entrypoint.sh"]
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-dashboard"
-  before_script:
-    - apk add --no-cache curl
-    - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-    - echo $VERSION
-    - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
-    - tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
-  allow_failure: true
-  script:
-    # Build image
-    - docker build -t $IMAGE_PROJECT_NAME:test ./dashboard
-    # Build report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $IMAGE_PROJECT_NAME:test
-    # Print report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
-    # Fail on high and critical vulnerabilities
-    - ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE_PROJECT_NAME:test
-  cache:
-    paths:
-      - .trivycache/
-  artifacts:
-    reports:
-      container_scanning: gl-container-scanning-report.json
-  only:
-    changes:
-      - dashboard/**/*
+trivy-dashboard:
+  extends: .trivy-template
+  
 
 publish-dashboard-image:
   stage: publish
