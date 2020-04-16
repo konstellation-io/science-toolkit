@@ -5,7 +5,7 @@ trivy-dashboard:
     PROJECT_PATH: "dashboard"
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-dashboard.json
+      container_scanning: gl-container-scanning-report-7.json
   only:
     refs:
       - master

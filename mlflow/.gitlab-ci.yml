@@ -5,7 +5,7 @@ trivy-mlflow:
     PROJECT_PATH: "mlflow"
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-mlflow.json
+      container_scanning: gl-container-scanning-report-1.json
   only:
     refs:
       - master

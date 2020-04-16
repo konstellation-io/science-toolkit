@@ -5,7 +5,7 @@ trivy-gitea-oauth2-setup:
     PROJECT_PATH: "gitea-oauth2-setup"
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-gitea-oauth2-setup.json
+      container_scanning: gl-container-scanning-report-2.json
   only:
     refs:
       - master

@@ -33,7 +33,7 @@ trivy-user-tools-operator:
       - .trivycache/
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-user-tools-operator.json
+      container_scanning: gl-container-scanning-report-5.json
   only:
     refs:
       - master
