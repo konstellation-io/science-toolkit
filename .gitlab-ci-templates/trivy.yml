@@ -15,16 +15,17 @@
     - echo $VERSION
     - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
     - tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
+    - cp ./trivy /usr/local/bin/
   allow_failure: true
   script:
     # Build image
     - docker build -t $IMAGE_PROJECT_NAME:test ./$PROJECT_PATH
     # Build report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o $CONTAINER_SCANNING_REPORT $IMAGE_PROJECT_NAME:test
+    - trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o $CONTAINER_SCANNING_REPORT $IMAGE_PROJECT_NAME:test
     # Print report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
+    - trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
     # Fail on high and critical vulnerabilities
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE_PROJECT_NAME:test
+    - trivy --exit-code 0 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE_PROJECT_NAME:test
   cache:
     paths:
       - .trivycache/

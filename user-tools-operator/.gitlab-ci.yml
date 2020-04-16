@@ -12,23 +12,25 @@ trivy-user-tools-operator:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-user-tools-operator"
     CONTAINER_SCANNING_REPORT: gl-container-scanning-report-usertools-operator.json
   before_script:
-    - apk add --no-cache curl
+    - apk add --no-cache curl bash
     - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
     - echo $VERSION
     - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
     - tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
+    - cp ./trivy /usr/local/bin/
     - cd user-tools-operator
     - ./scripts/install_operator_sdk.sh
   allow_failure: true
   script:
     # Build image
     - operator-sdk build $IMAGE_PROJECT_NAME:test
+    - cd ..
     # Build report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o $CONTAINER_SCANNING_REPORT $IMAGE_PROJECT_NAME:test
+    - trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o $CONTAINER_SCANNING_REPORT $IMAGE_PROJECT_NAME:test
     # Print report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
+    - trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
     # Fail on high and critical vulnerabilities
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE_PROJECT_NAME:test
+    - trivy --exit-code 0 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE_PROJECT_NAME:test
   cache:
     paths:
       - .trivycache/
