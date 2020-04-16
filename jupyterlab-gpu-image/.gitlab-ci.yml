@@ -25,7 +25,6 @@ release-jupyterlab-gpu-image:
   only:
     changes:
       - jupyterlab-gpu-image/**/*
-      - common-science-requirements/*
     refs:
       - master
 

@@ -27,7 +27,6 @@ release-vscode:
       - master
     changes:
       - vscode/**/*
-      - common-science-requirements/*
 
 publish-vscode-image:
   stage: publish
