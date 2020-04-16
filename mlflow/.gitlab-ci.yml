@@ -15,6 +15,7 @@ trivy-mlflow:
   extends: .trivy-template
   variables:
     IMAGE_PROJECT_NAME: "terminus7/mlflow"
+    PROJECT_PATH: "mlflow"
   only:
     changes:
       - mlflow/**/*

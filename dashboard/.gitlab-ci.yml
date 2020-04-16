@@ -15,6 +15,7 @@ trivy-dashboard:
   extends: .trivy-template
   variables:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-dashboard"
+    PROJECT_PATH: "dashboard"
   only:
     changes:
       - dashboard/**/*
