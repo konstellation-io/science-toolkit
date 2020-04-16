@@ -3,6 +3,9 @@ trivy-dashboard:
   variables:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-dashboard"
     PROJECT_PATH: "dashboard"
+  artifacts:
+    reports:
+      container_scanning: gl-container-scanning-report-dashboard.json
   only:
     refs:
       - master

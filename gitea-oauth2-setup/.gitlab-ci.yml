@@ -3,6 +3,9 @@ trivy-gitea-oauth2-setup:
   variables:
     IMAGE_PROJECT_NAME: "terminus7/gitea-oauth2-setup"
     PROJECT_PATH: "gitea-oauth2-setup"
+  artifacts:
+    reports:
+      container_scanning: gl-container-scanning-report-gitea-oauth2-setup.json
   only:
     refs:
       - master
