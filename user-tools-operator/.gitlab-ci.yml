@@ -13,7 +13,7 @@ trivy-user-tools-operator:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-user-tools-operator"
     CONTAINER_SCANNING_REPORT: gl-container-scanning-report-usertools-operator.json
   before_script:
-    - apk add curl jq bash gettext git coreutils --update
+    - apk add curl jq bash gettext git coreutils rpm --update
     - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
     - echo $VERSION
     - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
