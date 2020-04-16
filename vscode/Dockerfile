@@ -102,15 +102,12 @@ RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
     && tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz \
     && rm go$GO_VERSION.linux-amd64.tar.gz
 
-
 ADD ./config/go_packages.txt /config/go_packages.txt
 
 # Tools needed for VSCode Go Extension
 RUN go get -v $(cat /config/go_packages.txt)
 
 COPY default_user_settings.json /config/default_user_settings.json
-
-COPY demo /home/coder/demo
 
 COPY extensions /extensions
 RUN chown coder:coder /extensions /home/coder -R && rm /tmp/* -rf
