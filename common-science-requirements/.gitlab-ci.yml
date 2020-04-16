@@ -10,9 +10,9 @@ release-common-requirements:
     - chmod +x /usr/local/bin/monorepo-components-tags
     - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
     - source /tmp/components_tags.sh
-    - export JUPYTERLAB_GPU_IMAGE_TAG=$(./scripts/bump-version.sh user-tools-operator-v$JUPYTERLAB_GPU_IMAGE_TAG)
-    - export VSCODE_TAG=$(./scripts/bump-version.sh user-tools-operator-v$VSCODE_TAG)
-    - export RUNNER_IMAGE_TAG=$(./scripts/bump-version.sh user-tools-operator-v$RUNNER_IMAGE_TAG)
+    - export JUPYTERLAB_GPU_IMAGE_TAG=$(./scripts/bump-version.sh jupyterlab-gpu-image-v$JUPYTERLAB_GPU_IMAGE_TAG)
+    - export VSCODE_TAG=$(./scripts/bump-version.sh vscode-v$VSCODE_TAG)
+    - export RUNNER_IMAGE_TAG=$(./scripts/bump-version.sh runner-image-v$RUNNER_IMAGE_TAG)
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git remote add upstream https://${GITHUB_PUBLISH_USERNAME}:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
