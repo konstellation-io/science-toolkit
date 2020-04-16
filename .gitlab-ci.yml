@@ -7,6 +7,7 @@ stages:
   - semantic-release-helm
 
 include:
+  - local: common-science-requirements/.gitlab-ci.yml
   - local: .gitlab-ci-templates/trivy.yml
   - local: dashboard/.gitlab-ci.yml
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
