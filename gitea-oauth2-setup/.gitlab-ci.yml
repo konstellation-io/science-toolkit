@@ -1,3 +1,14 @@
+trivy-gitea-oauth2-setup:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/gitea-oauth2-setup"
+    PROJECT_PATH: "gitea-oauth2-setup"
+  only:
+    refs:
+      - master
+    changes:
+      - gitea-oauth2-setup/**/*
+
 release-gitea-oauth2-setup:
   stage: semantic-release
   image: node:12

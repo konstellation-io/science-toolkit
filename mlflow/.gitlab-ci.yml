@@ -1,3 +1,14 @@
+trivy-mlflow:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/mlflow"
+    PROJECT_PATH: "mlflow"
+  only:
+    refs:
+      - master
+    changes:
+      - mlflow/**/*
+
 release-mlflow-image:
   stage: semantic-release
   image: node:10

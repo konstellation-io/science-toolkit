@@ -1,3 +1,14 @@
+trivy-dashboard:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-dashboard"
+    PROJECT_PATH: "dashboard"
+  only:
+    refs:
+      - master
+    changes:
+      - dashboard/**/*
+
 release-dashboard:
   stage: semantic-release
   image: node:12

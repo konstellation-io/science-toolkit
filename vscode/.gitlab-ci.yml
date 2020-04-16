@@ -1,3 +1,14 @@
+trivy-vscode:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode"
+    PROJECT_PATH: "vscode"
+  only:
+    refs:
+      - master
+    changes:
+      - vscode/**/*
+
 release-vscode:
   stage: semantic-release
   image: node:12

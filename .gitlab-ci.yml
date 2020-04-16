@@ -1,4 +1,5 @@
 stages:
+  - test
   - semantic-release
   - publish
   - build
@@ -6,6 +7,7 @@ stages:
   - semantic-release-helm
 
 include:
+  - local: .gitlab-ci-templates/trivy.yml
   - local: dashboard/.gitlab-ci.yml
   - local: jupyterlab-gpu-image/.gitlab-ci.yml
   - local: runner-image/.gitlab-ci.yml
