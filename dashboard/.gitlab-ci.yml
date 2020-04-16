@@ -13,7 +13,11 @@ release-dashboard:
 
 trivy-dashboard:
   extends: .trivy-template
-  
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-dashboard"
+  only:
+    changes:
+      - dashboard/**/*
 
 publish-dashboard-image:
   stage: publish

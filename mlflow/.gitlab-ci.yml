@@ -11,6 +11,14 @@ release-mlflow-image:
     refs:
       - master
 
+trivy-mlflow:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/mlflow"
+  only:
+    changes:
+      - mlflow/**/*
+
 publish_mlflow_docker_image:
   stage: publish
   image: docker:latest
