@@ -6,13 +6,14 @@ trivy-user-tools-operator:
       entrypoint: ["env", "-u", "DOCKER_HOST"]
       command: ["dockerd-entrypoint.sh"]
   variables:
+    SDK_RELEASE_VERSION: v0.15.1
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-user-tools-operator"
     CONTAINER_SCANNING_REPORT: gl-container-scanning-report-usertools-operator.json
   before_script:
-    - apk add --no-cache curl bash
+    - apk add curl jq bash gettext git coreutils --update
     - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
     - echo $VERSION
     - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
