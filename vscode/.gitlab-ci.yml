@@ -3,11 +3,12 @@ trivy-vscode:
   variables:
     IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-vscode"
     PROJECT_PATH: "vscode"
+    CONTAINER_SCANNING_REPORT: gl-container-scanning-report-vscode.json
   before_script:
     - ./scripts/clean_and_copy.sh common-science-requirements vscode
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-6.json
+      container_scanning: gl-container-scanning-report-vscode.json
   only:
     refs:
       - master

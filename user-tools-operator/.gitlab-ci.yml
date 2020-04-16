@@ -9,7 +9,8 @@ trivy-user-tools-operator:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-user-tools-operator" 
+    IMAGE_PROJECT_NAME: "terminus7/sci-toolkit-user-tools-operator"
+    CONTAINER_SCANNING_REPORT: gl-container-scanning-report-usertools-operator.json
   before_script:
     - apk add --no-cache curl
     - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
@@ -33,7 +34,7 @@ trivy-user-tools-operator:
       - .trivycache/
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-5.json
+      container_scanning: gl-container-scanning-report-usertools-operator.json
   only:
     refs:
       - master

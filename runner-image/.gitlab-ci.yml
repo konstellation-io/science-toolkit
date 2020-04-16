@@ -3,11 +3,12 @@ trivy-runner-image:
   variables:
     IMAGE_PROJECT_NAME: "terminus7/runner-image"
     PROJECT_PATH: "runner-image"
+    CONTAINER_SCANNING_REPORT: gl-container-scanning-report-runner-image.json
   before_script:
-    - ./scripts/clean_and_copy.sh common-science-requirements vscode
+    - ./scripts/clean_and_copy.sh common-science-requirements runner-image
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-4.json
+      container_scanning: gl-container-scanning-report-runner-image.json
   only:
     refs:
       - master

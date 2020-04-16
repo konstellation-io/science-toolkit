@@ -3,9 +3,10 @@ trivy-mlflow:
   variables:
     IMAGE_PROJECT_NAME: "terminus7/mlflow"
     PROJECT_PATH: "mlflow"
+    CONTAINER_SCANNING_REPORT: gl-container-scanning-report-mlflow.json
   artifacts:
     reports:
-      container_scanning: gl-container-scanning-report-1.json
+      container_scanning: gl-container-scanning-report-mlflow.json
   only:
     refs:
       - master
