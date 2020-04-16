@@ -59,6 +59,7 @@ helm upgrade --install sci-toolkit --namespace sci-toolkit ./science-toolkit
 | `drone-runner.image.pullPolicy` | Policy of download Docker image in Kubernetes                                 | `IfNotPresent`            |
 | `drone-runner.namespace`        | This is the Kuberentes namespace where the pods are going to run on each task | `sci-toolkit              |
 
+
 ### VSCode
 
 | Parameter                        | Description                                                | Default    |
