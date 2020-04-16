@@ -8,7 +8,6 @@ release-runner-image:
   only:
     changes:
       - runner-image/**/*
-      - common-science-requirements/*
     refs:
       - master
 
