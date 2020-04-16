@@ -1,3 +1,14 @@
+trivy-runner-image:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/runner-image"
+    PROJECT_PATH: "runner-image"
+  only:
+    refs:
+      - master
+    changes:
+      - runner-image/**/*
+
 release-runner-image:
   stage: semantic-release
   image: node:10

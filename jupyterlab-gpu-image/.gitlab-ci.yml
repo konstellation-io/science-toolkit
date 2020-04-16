@@ -1,3 +1,14 @@
+trivy-jupyterlab-gpu-image:
+  extends: .trivy-template
+  variables:
+    IMAGE_PROJECT_NAME: "terminus7/jupyterlab-gpu"
+    PROJECT_PATH: "jupyterlab-gpu-image"
+  only:
+    refs:
+      - master
+    changes:
+      - jupyterlab-gpu-image/**/*
+
 release-jupyterlab-gpu-image:
   stage: semantic-release
   image: node:10
