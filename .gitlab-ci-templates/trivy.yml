@@ -28,7 +28,4 @@
   cache:
     paths:
       - .trivycache/
-  artifacts:
-    reports:
-      container_scanning: gl-container-scanning-report.json
   

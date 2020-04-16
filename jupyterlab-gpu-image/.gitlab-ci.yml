@@ -3,6 +3,11 @@ trivy-jupyterlab-gpu-image:
   variables:
     IMAGE_PROJECT_NAME: "terminus7/jupyterlab-gpu"
     PROJECT_PATH: "jupyterlab-gpu-image"
+  before_script:
+    - ./scripts/clean_and_copy.sh common-science-requirements vscode
+  artifacts:
+    reports:
+      container_scanning: gl-container-scanning-report-jupyterlab-gpu-image.json
   only:
     refs:
       - master
