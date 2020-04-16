@@ -24,7 +24,7 @@ trivy-user-tools-operator:
     # Build image
     - operator-sdk build $IMAGE_PROJECT_NAME:test
     # Build report
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $IMAGE_PROJECT_NAME:test
+    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o $CONTAINER_SCANNING_REPORT $IMAGE_PROJECT_NAME:test
     # Print report
     - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
     # Fail on high and critical vulnerabilities
