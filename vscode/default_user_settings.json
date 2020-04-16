@@ -1,0 +1,9 @@
+{
+  "workbench.startupEditor": "none",
+  "go.useLanguageServer": {
+    "default": true
+  },
+  "files.exclude": {
+    "**/{.bash*,.cache,.profile,.local,.minio.sys}": true
+  }
+}

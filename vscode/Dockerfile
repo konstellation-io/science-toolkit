@@ -1,22 +1,28 @@
-FROM codercom/code-server:3.0.1
+FROM codercom/code-server:3.1.0
 
 USER root
 
 ARG GO_VERSION=1.14.2
+ARG GOLANGCI_VERSION=1.24.0
 ENV GOROOT /usr/local/go
-ENV PATH=$GOROOT/bin:$PATH
+ENV GO111MODULE=on
+ENV GOPATH /go
+ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
-ADD ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
-ADD ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
-RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
+RUN mkdir /config
+
+ADD ./common-science-requirements/apt_get_libraries.txt /config/apt_get_libraries.txt
+ADD ./config/apt_get_libraries.txt /tmp/custom_apt_get_libraries.txt
+RUN cat /tmp/custom_apt_get_libraries.txt >> /config/apt_get_libraries.txt
 
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
         gcc \
         wget \
+        jq \
         vim \
         curl \
         xz-utils \
@@ -36,7 +42,7 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         python3-dev \
-        `cat apt_get_libraries.txt | xargs` && \
+        `cat /config/apt_get_libraries.txt | xargs` && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && \
     update-alternatives --set python /usr/bin/python3 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 2 && \
@@ -61,7 +67,8 @@ RUN mkdir -p /opt/oracle && \
 RUN wget https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.1004/Debian/clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
     dpkg -i clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
     apt-get update && \
-    apt-get install -y odbcinst
+    apt-get install -y odbcinst && \
+    rm clouderaimpalaodbc_2.6.4.1004-2_amd64.deb
 
 # Build unixodbx 2.3.7
 RUN cd /tmp && \
@@ -70,36 +77,46 @@ RUN cd /tmp && \
     cd unixODBC-2.3.7/ && \
     ./configure && \
     make && \
-    make install
+    make install && \
+    cd .. && rm unixODBC-2.3.7 -rf
 
 RUN pip install setuptools wheel && \
     pip install cython thriftpy
 
 # Install Libraries
-ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
-ADD ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
-RUN cat custom_frameworks_requirements.txt >> frameworks_requirements.txt
+ADD ./common-science-requirements/frameworks_requirements.txt /config/frameworks_requirements.txt
+ADD ./config/frameworks_requirements.txt /tmp/custom_frameworks_requirements.txt
+RUN cat /tmp/custom_frameworks_requirements.txt >> /config/frameworks_requirements.txt
 
-RUN pip install -r frameworks_requirements.txt
+RUN pip install -r /config/frameworks_requirements.txt
 
 # Install Libraries
-ADD ./common-science-requirements/requirements.txt requirements.txt
-ADD ./config/requirements.txt custom_requirements.txt
-RUN cat custom_requirements.txt >> requirements.txt
+ADD ./common-science-requirements/requirements.txt /config/requirements.txt
+ADD ./config/requirements.txt /tmp/custom_requirements.txt
+RUN cat /tmp/custom_requirements.txt >> /config/requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install -r /config/requirements.txt
 
 # Golang
 RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
     && tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz \
     && rm go$GO_VERSION.linux-amd64.tar.gz
 
+
+ADD ./config/go_packages.txt /config/go_packages.txt
+
+# Tools needed for VSCode Go Extension
+RUN go get -v $(cat /config/go_packages.txt)
+
+COPY default_user_settings.json /config/default_user_settings.json
+
+COPY demo /home/coder/demo
+
 COPY extensions /extensions
-RUN chown coder:coder /extensions
+RUN chown coder:coder /extensions /home/coder -R && rm /tmp/* -rf
 
 USER coder
 
+COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["dumb-init", "code-server", "--auth", "none", "--host", "0.0.0.0", \
-"--extensions-dir", "/extensions", "--disable-updates", "--disable-telemetry", \
-"/home/coder"]
+ENTRYPOINT ["/entrypoint.sh"]
