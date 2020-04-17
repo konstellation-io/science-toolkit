@@ -7,12 +7,23 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { COLORS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
+  groupContainer: {
+    height: '50%',
+  },
   group: {
     background: `linear-gradient(to bottom, ${COLORS.GROUP.TOP} 0%,${COLORS.GROUP.BOTTOM} 100%)`,
     padding: 16,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
   },
   subgroup: {
-    padding: 16,
+    height: '100%',
+    padding: '16px 0',
+  },
+  cardContainer: {
+    height: '100%',
   },
 }));
 
@@ -20,7 +31,7 @@ function Group({ children, title, xs, usernameSlug, toolsActive, loading }) {
   const classes = useStyles();
 
   return (
-    <Grid item xs={12} sm={xs}>
+    <Grid item xs={12} sm={xs} className={classes.groupContainer}>
       {loading ? (
         <Skeleton
           width={'100%'}
@@ -41,7 +52,7 @@ function Group({ children, title, xs, usernameSlug, toolsActive, loading }) {
             align='center'
           >
             {children.map((app) => (
-              <Grid item xs key={app.id}>
+              <Grid item xs key={app.id} className={classes.cardContainer}>
                 <Application
                   {...app}
                   usernameSlug={usernameSlug}

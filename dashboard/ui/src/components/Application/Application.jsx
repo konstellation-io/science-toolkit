@@ -13,10 +13,11 @@ import { getUrl } from '../../utils';
 const useStyles = makeStyles({
   root: {
     minWidth: 100,
-    maxWidth: 150,
+    maxWidth: '11vw',
     backgroundColor: COLORS.CARD,
     borderLeftWidth: 5,
     borderLeftStyle: 'solid',
+    height: '100%',
   },
   disabled: {
     pointerEvents: 'none',
@@ -35,15 +36,31 @@ const useStyles = makeStyles({
     fontSize: 20,
   },
   content: {
-    padding: '1vh',
+    padding: 0,
+    paddingLeft: 8,
+    '& p': {
+      marginBottom: 0,
+    },
+  },
+  button: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    alignContent: 'center',
+    justifyContent: 'space-around',
+    height: '100%',
+    padding: 10,
   },
   media: {
-    height: '15vh',
     backgroundSize: 'contain',
-    margin: '2vh',
+    width: '7vw',
+    '@media (max-height: 626px)': {
+      width: 'inherit',
+    },
+    height: '75%',
+    maxWidth: 110,
   },
 });
-
 const Application = ({
   title,
   active,
@@ -76,18 +93,20 @@ const Application = ({
   return (
     <Card className={`${classes.root} ${activeClass}`}>
       <Wrapper>
-        <CardActionArea className={appReady ? '' : classes.disabled}>
+        <CardActionArea
+          className={`${classes.button} ${appReady ? '' : classes.disabled}`}
+        >
           <CardMedia
             className={classes.media}
             image={icon}
             title='Contemplative Reptile'
           />
-          {!appReady && <WarningRoundedIcon className={classes.iconWarning} />}
           <CardContent className={classes.content}>
             <Typography gutterBottom variant='body1' component='p'>
               {title}
             </Typography>
           </CardContent>
+          {!appReady && <WarningRoundedIcon className={classes.iconWarning} />}
         </CardActionArea>
       </Wrapper>
     </Card>
