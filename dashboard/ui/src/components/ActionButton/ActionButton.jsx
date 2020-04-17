@@ -36,12 +36,12 @@ const theme = createMuiTheme({
 const useStyles = makeStyles({
   skeleton: {
     position: 'fixed',
-    bottom: 60,
+    bottom: 20,
     left: '5%',
   },
   container: {
     position: 'fixed',
-    bottom: 60,
+    bottom: 20,
     padding: '0 50px',
     width: '-webkit-fill-available',
     display: 'flex',

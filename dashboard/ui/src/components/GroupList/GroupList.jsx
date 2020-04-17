@@ -6,7 +6,9 @@ import { APPLICATION_GROUPS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    padding: '5vh',
+    height: '100%',
+    padding: '7vh',
+    paddingBottom: 60,
   },
 }));
 
@@ -18,7 +20,7 @@ function GroupList({ usernameSlug, toolsActive, loading }) {
   const groups = Object.values(APPLICATION_GROUPS);
 
   return (
-    <Grid container spacing={5} className={classes.container}>
+    <Grid container spacing={4} className={classes.container}>
       {groups.map((group, idx) => (
         <Group
           {...group}

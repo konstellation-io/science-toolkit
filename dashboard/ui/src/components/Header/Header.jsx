@@ -16,6 +16,9 @@ const useStyles = makeStyles({
   header: {
     backgroundColor: COLORS.HEADER,
   },
+  toolbar: {
+    minHeight: 'max(7.5vh, 50px)',
+  },
   title: {
     margin: 'auto',
   },
@@ -58,7 +61,7 @@ function Header({ username }) {
   return (
     <div>
       <AppBar position='static' className={classes.header}>
-        <Toolbar color='primary'>
+        <Toolbar color='primary' className={classes.toolbar}>
           <img src='/static/img/intelygenz-lab.png' alt='Kitten' height='30' />
           <Typography variant='h5' color='inherit' className={classes.title}>
             Intelygenz A.I. Science Toolkit
