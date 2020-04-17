@@ -1,8 +1,23 @@
 {
   "workbench.startupEditor": "none",
-  "go.useLanguageServer": {
-    "default": true
+  "go.useLanguageServer": true,
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
   },
+  "[go.mod]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "gopls": {
+    "usePlaceholders": true,
+    "staticcheck": false
+  },
+  "go.toolsGopath": "/go",
   "files.exclude": {
     "**/{.zsh*,.ssh,.bash*,.cache,.profile,.local,.config}": true,
     "**/{.minio.sys,.jupyter,.pylint*}": true
