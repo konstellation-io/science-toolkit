@@ -12,7 +12,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN mkdir /config
+RUN mkdir /config && mkdir /go
 
 ADD ./common-science-requirements/apt_get_libraries.txt /config/apt_get_libraries.txt
 ADD ./config/apt_get_libraries.txt /tmp/custom_apt_get_libraries.txt
@@ -104,15 +104,15 @@ RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
 
 ADD ./config/go_packages.txt /config/go_packages.txt
 
-# Tools needed for VSCode Go Extension
-RUN go get -v $(cat /config/go_packages.txt)
-
 COPY default_user_settings.json /config/default_user_settings.json
 
 COPY extensions /extensions
-RUN chown coder:coder /extensions /home/coder -R && rm /tmp/* -rf
+RUN chown coder:coder /go /extensions /home/coder -R && rm /tmp/* -rf
 
 USER coder
+
+# Tools needed for VSCode Go Extension
+RUN go get -v $(cat /config/go_packages.txt)
 
 COPY entrypoint.sh /entrypoint.sh
 
