@@ -58,7 +58,7 @@ drone:
 droneRunner:
   image:
     repository: terminus7/drone-runner-kube
-    tag: test-pvc
+    tag: latest
     pullPolicy: IfNotPresent
   namespace: sci-toolkit
 
