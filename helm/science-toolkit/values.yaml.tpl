@@ -92,3 +92,13 @@ mlflow:
     size: 10Gi
   s3: 
     bucket: mlflow-artifacts
+
+backup:
+  gitea:
+    enabled: false
+    schedule: "0 6 */1 * *" # every day at 6:00 AM
+  s3:
+    awsAccessKeyID: yourawskeyid
+    awsSecretAccessKey: yourawssecretkey
+    bucketName: yourS3BackupBucketName
+

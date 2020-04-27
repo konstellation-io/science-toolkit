@@ -1,14 +1,13 @@
-{{ if .Values.postgres.backup.enabled }}
+{{ if .Values.backup.gitea.enabled }}
 apiVersion: extensions/v1beta1
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: backup-gitea
   labels:
-    {{ include "runtime.labels" . | nindent 4 }}
     app: backup-gitea
 spec:
-  schedule: {{ .Values.cronjobs.backupPostgres.schedule | quote }}
+  schedule: {{ .Values.backup.gitea.schedule | quote }}
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 2
@@ -21,28 +20,27 @@ spec:
         spec:
           containers:
             - name: backup-gitea
-              image: terminus7/backup-gitea:latest
+              image: terminus7/toolkit-backup:latest
               imagePullPolicy: IfNotPresent
               envFrom:
                 - configMapRef:
-                    name: postgres-config
-
+                    name: gitea-config
                 - secretRef:
-                    name: {{ template "runtime.fullname" . }}-secret
+                    name: backup-secrets
               volumeMounts:
               - name: gitea-pvc
-                mountPath: "/dat"
+                mountPath: "/data"
               args:
                 - /bin/sh
                 - -c
                 - >-
-                  echo "postgres:5432:logs:{{ .Values.postgres.username }}:{{ .Values.postgres.password }}" > ~/.pgpass &&
+                  echo "postgres:5432:gitea:postgres:$DB_PASSWD" > ~/.pgpass && 
                   chmod 600 ~/.pgpass &&
                   mkdir backup_gitea_$(date +%Y%m%d) &&
                   tar zcvf backup_gitea_$(date +%Y%m%d)/data.tar.gz /data/ &&
                   pg_dump -h postgres -p 5432 -U postgres -d gitea -v -F c -f backup_gitea_$(date +%Y%m%d)/postgres_gitea.dump &&
                   tar zcvf backup_gitea_$(date +%Y%m%d).tar.gz backup_gitea_$(date +%Y%m%d) &&
-                  /root/.local/bin/aws s3 cp backup_gitea_$(date +%Y%m%d).tar.gz s3://science-toolkit-gitea-backup/backup_gitea_$(date +%Y%m%d).tar.gz &&
+                  /root/.local/bin/aws s3 cp backup_gitea_$(date +%Y%m%d).tar.gz s3://science-toolkit-gitea-backup/backup_gitea_$(date +%Y%m%d).tar.gz 
 
           {{- if .Values.imagePullSecrets }}
           imagePullSecrets:
@@ -56,27 +54,3 @@ spec:
                 claimName: gitea-pvc-gitea-0
           restartPolicy: OnFailure
 {{- end }}
-
-
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "gitea-backup"
-spec:
-  restartPolicy: "OnFailure"
-  containers:
-  - name: gitea-backup
-    image: "alpine"
-    command:
-      - /bin/sh
-      - "-c"
-      - "/bin/sleep 160m"
-    volumeMounts:
-      - name: gitea-pvc
-        mountPath: /data
-  volumes:
-    - name: gitea-pvc
-      persistentVolumeClaim:
-        claimName: gitea-pvc-gitea-0
-    

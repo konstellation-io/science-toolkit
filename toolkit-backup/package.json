@@ -1,5 +1,5 @@
 {
-    "name": "gitea-backup",
+    "name": "toolkit-backup",
     "repository": {
         "type": "git",
         "url": "https://github.com/intelygenz/science-toolkit.git"

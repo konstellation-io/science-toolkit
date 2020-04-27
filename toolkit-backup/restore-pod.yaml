@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restore
+  labels:
+    name: restore
+spec:
+  containers:
+    - name: restore
+      image: terminus7/toolkit-backup:latest
+      imagePullPolicy: IfNotPresent
+      command:
+      - /bin/sh
+      - "-c"
+      - "sleep 180m"
+      envFrom:
+        - configMapRef:
+            name: gitea-config
+        - secretRef:
+            name: backup-secrets
+      volumeMounts:
+      - name: gitea-pvc
+        mountPath: "/data"
+      resources:
+        limits:
+          memory: "512Mi"
+          cpu: "1000m"
+       
+  volumes:
+    - name: gitea-pvc
+      persistentVolumeClaim:
+        claimName: gitea-pvc-gitea-0
+  restartPolicy: OnFailure
