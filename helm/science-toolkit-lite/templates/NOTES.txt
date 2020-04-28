@@ -1,4 +1,0 @@
-The Science Toolkit Lite have been deployed successfully!!!
-
-
-helm upgrade --install sci-toolkit-lite --namespace sci-toolkit-lite helm/science-toolkit-lite 
