@@ -48,4 +48,3 @@ publish_toolkit-backup_docker_image:
     - docker rmi $IMAGE_PROJECT_NAME:$TAG
   only:
     - /^toolkit-backup-v\d*.\d*.\d*$/
-  when: manual
