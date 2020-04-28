@@ -37,7 +37,9 @@ spec:
                   echo "postgres:5432:gitea:postgres:$DB_PASSWD" > ~/.pgpass && 
                   chmod 600 ~/.pgpass &&
                   mkdir backup_gitea_$(date +%Y%m%d) &&
-                  tar zcvf backup_gitea_$(date +%Y%m%d)/data.tar.gz /data/ &&
+                  cd /data &&
+                  tar zcvf backup_gitea_$(date +%Y%m%d)/data.tar.gz --exclude './gitea/indexers' . &&
+                  cd / &&
                   pg_dump -h postgres -p 5432 -U postgres -d gitea -v -F c -f backup_gitea_$(date +%Y%m%d)/postgres_gitea.dump &&
                   tar zcvf backup_gitea_$(date +%Y%m%d).tar.gz backup_gitea_$(date +%Y%m%d) &&
                   /root/.local/bin/aws s3 cp backup_gitea_$(date +%Y%m%d).tar.gz s3://science-toolkit-gitea-backup/backup_gitea_$(date +%Y%m%d).tar.gz 
