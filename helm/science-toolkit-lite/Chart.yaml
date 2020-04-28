@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.0"
-description: Science Toolkit Lite
-name: science-toolkit-lite
-version: 0.1.0
