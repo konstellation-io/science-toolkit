@@ -31,6 +31,10 @@ backup:
 
 `kubectl -n toolkit apply -f restore-pod.yaml`
 
+* Open an interactive shell within the pod
+
+`kubectl -n toolkit exec -it restore /bin/sh`
+
 * Download the required backup from S3 Bucket
   
 `/root/.local/bin/aws s3 cp s3://science-toolkit-gitea-backup/backup_gitea_20200424.tar.gz .`
