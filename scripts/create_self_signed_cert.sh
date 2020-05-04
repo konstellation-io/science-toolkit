@@ -7,6 +7,7 @@ fi
 
 NAMESPACE=$1
 DEPLOY_NAME=$2
+DOMAIN=$3
 
 if [ -z "$NAMESPACE" ] || [ -z "$DEPLOY_NAME" ]; then
   echo "Variables NAMESPACE and DEPLOY_NAME is required"
@@ -29,7 +30,8 @@ rm -rf ${CA_CERTS_FOLDER}
 mkdir -p ${CA_CERTS_FOLDER}
 # The CAROOT env variable is used by mkcert to determine where to read/write files
 # Reference: https://github.com/FiloSottile/mkcert
-CAROOT=${CA_CERTS_FOLDER} mkcert -install
+CAROOT=${CA_CERTS_FOLDER} sudo /tmp/mkcert --install  *.$DOMAIN
 
-echo "Creating K8S secrets with the CA private keys (will be used by the cert-manager CA Issuer)"
-kubectl -n $NAMESPACE create secret tls $DEPLOY_NAME-ca-tls-secret --key=${CA_CERTS_FOLDER}/rootCA-key.pem --cert=${CA_CERTS_FOLDER}/rootCA.pem
+echo "Creating K8S secrets with the CA private keys"
+sudo kubectl -n $NAMESPACE create secret tls $DEPLOY_NAME-tls-secret --key=./_wildcard.toolkit.172.17.0.2.nip.io-key.pem --cert=./_wildcard.toolkit.172.17.0.2.nip.io.pem --dry-run -o yaml | kubectl apply -f -
+kubectl -n $NAMESPACE create secret generic $DEPLOY_NAME-tls-ca --from-file=$HOME/.local/share/mkcert/rootCA.pem --dry-run -o yaml | kubectl apply -f -

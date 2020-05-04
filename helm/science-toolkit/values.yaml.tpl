@@ -94,6 +94,7 @@ mlflow:
   s3:
     bucket: mlflow-artifacts
 
+<<<<<<< HEAD
 backup:
   gitea:
     enabled: false
@@ -109,6 +110,8 @@ cleaner:
   trashPath: /shared-storage/.trash
   threshold: 5 # minimun age of files to be removed
 
+=======
+>>>>>>> WIP: tls self-signed-cert
 tls:
   enable: false
   certManager: false

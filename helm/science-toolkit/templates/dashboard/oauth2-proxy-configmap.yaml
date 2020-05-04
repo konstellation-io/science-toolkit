@@ -6,9 +6,11 @@ data:
   oauth2_proxy.cfg: |+
     provider="gitea"
     cookie_secret="_csrf"
-    login_url="http://gitea.{{ .Values.domain }}/login/oauth/authorize"
-    redeem_url="http://gitea.{{ .Values.domain }}/login/oauth/access_token"
-    profile_url="http://gitea.{{ .Values.domain }}/api/v1/user"
-    redirect_url="http://app.{{ .Values.domain }}/oauth2/callback"
+    login_url="https://gitea.{{ .Values.domain }}/login/oauth/authorize"
+    redeem_url="https://gitea.{{ .Values.domain }}/login/oauth/access_token"
+    profile_url="https://gitea.{{ .Values.domain }}/api/v1/user"
+    redirect_url="https://app.{{ .Values.domain }}/oauth2/callback"
     cookie_secure=false
     cookie_samesite="none"
+    ssl_insecure_skip_verify=true
+    ssl_upstream_insecure_skip_verify=true

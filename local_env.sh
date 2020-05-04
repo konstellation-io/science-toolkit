@@ -23,6 +23,7 @@ export USER_TOOLS_OPERATOR_TAG=latest
 export OAUTH2_PROXY_TAG=latest
 
 export SKIP_BUILD=1
+export ENABLE_TLS=0
 check_requirements
 
 clean () {
@@ -51,6 +52,10 @@ while test $# -gt 0; do
         ;;
     *--docker-build*)
         export SKIP_BUILD=0
+        shift
+        ;;
+    *--tls*)
+        export ENABLE_TLS=1
         shift
         ;;
     *--clean* | *--semi-dracarys*)
@@ -112,7 +117,9 @@ fi
 echo "📚️ Create Namespace if not exist...\n"
 kubectl create ns ${NAMESPACE} --dry-run -o yaml | kubectl apply -f -
 
-./scripts/create_self_signed_cert.sh $NAMESPACE $DEPLOY_NAME
+if [ "$ENABLE_TLS" != "0" ]; then
+  ./scripts/create_self_signed_cert.sh $NAMESPACE $DEPLOY_NAME $DOMAIN
+fi
 
 echo "📦 Applying helm chart...\n"
 helm dep update helm/science-toolkit
@@ -120,8 +127,8 @@ helm upgrade \
   --wait \
   --install "${DEPLOY_NAME}" \
   --namespace "${NAMESPACE}" \
-  --set domain=toolkit.$IP.nip.io \
-  --set certManager.enable=true \
+  --set domain=$DOMAIN \
+  --set tls.enable=true \
   --timeout 60m \
   helm/science-toolkit
 
