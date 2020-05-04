@@ -9,5 +9,7 @@ data:
     login_url="https://gitea.{{ .Values.domain }}/login/oauth/authorize"
     redeem_url="https://gitea.{{ .Values.domain }}/login/oauth/access_token"
     profile_url="https://gitea.{{ .Values.domain }}/api/v1/user"
-    cookie_secure=false
+    cookie_secure=true
     cookie_samesite="none"
+    ssl_insecure_skip_verify=true
+    ssl_upstream_insecure_skip_verify=true
