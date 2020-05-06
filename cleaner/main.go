@@ -1,32 +1,80 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
 )
 
-func main() {
-	trashPath := "./.trash"
-	var trashFiles []string
-	var trashDirs []string
+var threshold int
+var trashPath string
+var debug bool
 
-	var daysThreshold = int(0)
+func main() {
+	flag.IntVar(&threshold, "threshold", 5, "Specify the minimum age of the trash items to be removed.")
+	flag.StringVar(&trashPath, "path", "./trash", "Specify the root path of the trash folder to be cleaned.")
+	flag.BoolVar(&debug, "debug", false, "Set debug mode to get more detailed log of deleted files.")
+	flag.Parse()
+	log.Printf("Start cleaning with the following values: \n - threshold = %v \n - trashPath = %v", threshold, trashPath)
+
 	loc, _ := time.LoadLocation("UTC")
 	now := time.Now().In(loc)
 
-	err := filepath.Walk(trashPath, func(path string, info os.FileInfo, err error) error {
+	// Check if trasPath exist
+	if _, err := os.Stat(trashPath); os.IsNotExist(err) {
+		log.Fatalf("The folder to clean does not exist: %v", trashPath)
+	}
 
-		diff := now.Sub(info.ModTime())
-		days := int(diff.Hours() / 24)
+	// Get the list of files and folders within the trashFolder to be removed because fit the threshold
+	itemsToRemove := listToRemove(threshold, trashPath, now)
 
-		if days >= daysThreshold {
+	// Iterate the list of items to remove to remove these recursively
+	for _, v := range itemsToRemove {
+		removeTrashItem(v)
+	}
+}
 
-			if info.IsDir() {
-				trashDirs = append(trashDirs, path)
-			} else {
-				trashFiles = append(trashFiles, path)
+func checkAgeThreshold(threshold int, now time.Time, fileAge time.Time) bool {
+	diff := now.Sub(fileAge)
+	days := int(diff.Hours() / 24)
+
+	if days >= threshold {
+		return true
+	}
+
+	return false
+}
+
+func listToRemove(threshold int, trashPath string, now time.Time) []string {
+	trashItems, err := ioutil.ReadDir(trashPath)
+	var itemsToRemove []string
+	if err != nil {
+		log.Fatalf("Problems listing files within trash folder: %v", err)
+	}
+	for _, trashItem := range trashItems {
+
+		fileAge := trashItem.ModTime()
+
+		if checkAgeThreshold(threshold, now, fileAge) {
+			itemsToRemove = append(itemsToRemove, fmt.Sprint(trashPath, "/", trashItem.Name()))
+		}
+
+	}
+	return itemsToRemove
+}
+
+func removeTrashItem(itemToRemove string) {
+
+	err := filepath.Walk(itemToRemove, func(path string, info os.FileInfo, err error) error {
+
+		if !info.IsDir() {
+			os.Remove(info.Name())
+			if debug {
+				log.Printf("File deleted: %v \n", info.Name())
 			}
 		}
 		return nil
@@ -34,20 +82,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("---------Files----------------")
-	for _, trashFile := range trashFiles {
-		fmt.Println("Remove file: ", trashFile)
-		os.Remove(trashFile)
-
-	}
-
-	fmt.Println("---------Folders----------------")
-	for _, trashDir := range trashDirs {
-		if trashDir != trashPath {
-			fmt.Println("Remove folder: ", trashDir)
-			os.RemoveAll(trashDir)
-		}
-
-	}
+	os.RemoveAll(itemToRemove)
+	log.Printf("Element deleted: %v", itemToRemove)
 }
