@@ -97,9 +97,15 @@ mlflow:
 backup:
   gitea:
     enabled: false
-    schedule: "0 6 */1 * *" # every day at 6:00 AM
+    schedule: "0 1 * * 0" # every sunday at 1:00 AM
   s3:
     awsAccessKeyID: yourawskeyid
     awsSecretAccessKey: yourawssecretkey
     bucketName: yourS3BackupBucketName
+
+cleaner:
+  enabled: false
+  schedule: "0 1 * * 0" # every sunday at 1:00 AM
+  trashPath: /shared-storage/.trash
+  threshold: 5 # minimun age of files to be removed
 
