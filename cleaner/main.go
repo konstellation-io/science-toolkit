@@ -76,7 +76,6 @@ func listToRemove(threshold int, trashPath string, now time.Time) []string {
 func removeTrashItem(itemToRemove string, wg *sync.WaitGroup) {
 
 	defer wg.Done()
-	fmt.Println("----------------work group -------------------")
 	err := filepath.Walk(itemToRemove, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			log.Fatalf("Error calling list files to remove: %v", err)
