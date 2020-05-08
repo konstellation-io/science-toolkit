@@ -90,6 +90,7 @@ mlflow:
   host: mlflow
   volume:
     size: 10Gi
+    storageClassName: standard
   s3: 
     bucket: mlflow-artifacts
 
