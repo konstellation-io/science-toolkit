@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 )
 
@@ -16,7 +17,7 @@ var debug bool
 
 func main() {
 	flag.IntVar(&threshold, "threshold", 5, "Specify the minimum age of the trash items to be removed.")
-	flag.StringVar(&trashPath, "path", "./trash", "Specify the root path of the trash folder to be cleaned.")
+	flag.StringVar(&trashPath, "path", "./.trash", "Specify the root path of the trash folder to be cleaned.")
 	flag.BoolVar(&debug, "debug", false, "Set debug mode to get more detailed log of deleted files.")
 	flag.Parse()
 	log.Printf("Start cleaning with the following values: \n - threshold = %v \n - trashPath = %v", threshold, trashPath)
@@ -24,18 +25,23 @@ func main() {
 	loc, _ := time.LoadLocation("UTC")
 	now := time.Now().In(loc)
 
-	// Check if trasPath exist
+	// Check if trashPath exist
 	if _, err := os.Stat(trashPath); os.IsNotExist(err) {
 		log.Fatalf("The folder to clean does not exist: %v", trashPath)
 	}
 
-	// Get the list of files and folders within the trashFolder to be removed because fit the threshold
+	// Get the list of files and folders within the trashPath to be removed because fit the threshold
 	itemsToRemove := listToRemove(threshold, trashPath, now)
 
 	// Iterate the list of items to remove to remove these recursively
+	var wg sync.WaitGroup
+
 	for _, v := range itemsToRemove {
-		removeTrashItem(v)
+		wg.Add(1)
+		go removeTrashItem(v, &wg)
 	}
+
+	wg.Wait()
 }
 
 func checkAgeThreshold(threshold int, now time.Time, fileAge time.Time) bool {
@@ -67,10 +73,14 @@ func listToRemove(threshold int, trashPath string, now time.Time) []string {
 	return itemsToRemove
 }
 
-func removeTrashItem(itemToRemove string) {
+func removeTrashItem(itemToRemove string, wg *sync.WaitGroup) {
 
+	defer wg.Done()
+	fmt.Println("----------------work group -------------------")
 	err := filepath.Walk(itemToRemove, func(path string, info os.FileInfo, err error) error {
-
+		if err != nil {
+			log.Fatalf("Error calling list files to remove: %v", err)
+		}
 		if !info.IsDir() {
 			os.Remove(info.Name())
 			if debug {

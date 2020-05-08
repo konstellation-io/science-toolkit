@@ -1,10 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
-	"log"
-	"os"
-	"os/exec"
 	"testing"
 	"time"
 )
@@ -47,17 +45,35 @@ func TestListToRemove(t *testing.T) {
 }
 
 func TestRemoveTrashItem(t *testing.T) {
+
 	trashPath := "./testdata_tmp"
-	cmd := exec.Command("cp", "-r", "testdata", "testdata_tmp")
-	log.Printf("Copying testdata to test remove items")
-	cmd.Run()
-	itemToRemove := "./testdata_tmp/dir1"
-	removeTrashItem(itemToRemove)
-	itemsList, _ := ioutil.ReadDir(trashPath)
+	createTestFolder(t, trashPath)
+	// defer os.RemoveAll(trashPath)
+	// cmd := exec.Command("cp", "-r", "testdata", "testdata_tmp")
+	// log.Printf("Copying testdata to test remove items")
+	// cmd.Run()
+	// itemToRemove := "./testdata_tmp/dir1"
+	// var wg sync.WaitGroup
+	// wg.Add(1)
+	// go removeTrashItem(itemToRemove, &wg)
+	// fmt.Println("-------------------- AFTER GO ROUTINE --------------")
+	// wg.Wait()
 
-	if len(itemsList) != 5 {
-		t.Error("The number of items removed differ from expected.")
+	// itemsList, _ := ioutil.ReadDir(trashPath)
+
+	// if len(itemsList) != 5 {
+	// 	t.Error("The number of items removed differ from expected.")
+	// }
+
+}
+
+func createTestFolder(t *testing.T, trashPath string) {
+	t.Helper()
+	dir, err := ioutil.TempDir("", "dir*")
+	fmt.Printf("--------------- TMP DIR: %v", dir)
+
+	_, err = ioutil.TempFile(dir, "data_set_*")
+	if err != nil {
+		t.Fatal(err)
 	}
-
-	os.RemoveAll(trashPath)
 }
