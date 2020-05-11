@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"sync"
 	"time"
@@ -66,7 +66,7 @@ func listToRemove(threshold time.Duration, trashPath string, now time.Time) []st
 		fileAge := trashItem.ModTime()
 
 		if checkAgeThreshold(threshold, now, fileAge) {
-			itemsToRemove = append(itemsToRemove, fmt.Sprint(trashPath, "/", trashItem.Name()))
+			itemsToRemove = append(itemsToRemove, path.Join(trashPath, trashItem.Name()))
 		}
 
 	}
