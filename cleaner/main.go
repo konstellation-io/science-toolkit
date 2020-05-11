@@ -11,12 +11,12 @@ import (
 	"time"
 )
 
-var threshold int
+var threshold time.Duration
 var trashPath string
 var debug bool
 
 func main() {
-	flag.IntVar(&threshold, "threshold", 5, "Specify the minimum age of the trash items to be removed.")
+	flag.DurationVar(&threshold, "threshold", 120*time.Hour, "Specify the minimum age of the trash items to be removed.")
 	flag.StringVar(&trashPath, "path", "./.trash", "Specify the root path of the trash folder to be cleaned.")
 	flag.BoolVar(&debug, "debug", false, "Set debug mode to get more detailed log of deleted files.")
 	flag.Parse()
@@ -44,18 +44,18 @@ func main() {
 	wg.Wait()
 }
 
-func checkAgeThreshold(threshold int, now time.Time, fileAge time.Time) bool {
-	diff := now.Sub(fileAge)
-	days := int(diff.Hours() / 24)
+func checkAgeThreshold(threshold time.Duration, now time.Time, fileAge time.Time) bool {
 
-	if days >= threshold {
+	diff := now.Sub(fileAge)
+
+	if diff >= threshold {
 		return true
 	}
 
 	return false
 }
 
-func listToRemove(threshold int, trashPath string, now time.Time) []string {
+func listToRemove(threshold time.Duration, trashPath string, now time.Time) []string {
 	trashItems, err := ioutil.ReadDir(trashPath)
 	var itemsToRemove []string
 	if err != nil {

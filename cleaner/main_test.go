@@ -18,12 +18,12 @@ func TestCheckAgeThreshold(t *testing.T) {
 
 	// Check that not list files newer than daysThreshold
 
-	daysThreshold := 3
+	var daysThreshold time.Duration = 72 * time.Hour
 	if checkAgeThreshold(daysThreshold, now, fileAge) {
 		t.Error("With this threshold this file should not be set as true.")
 	}
 
-	daysThreshold = 1
+	daysThreshold = 24 * time.Hour
 	if !checkAgeThreshold(daysThreshold, now, fileAge) {
 		t.Error("With this threshold this file should be set as true.")
 	}
@@ -35,12 +35,12 @@ func TestListToRemove(t *testing.T) {
 	now := time.Now().In(loc)
 	trashPath := "./testdata"
 
-	threshold := 2
+	threshold := 48 * time.Hour
 	if len(listToRemove(threshold, trashPath, now)) != 0 {
 		t.Error("The list of files to be removed does not match with expected.")
 	}
 
-	threshold = 0
+	threshold = 0 * time.Hour
 	if len(listToRemove(threshold, trashPath, now)) != 6 {
 		t.Error("The list of files to be removed does not match with expected.")
 	}
