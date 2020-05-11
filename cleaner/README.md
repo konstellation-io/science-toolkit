@@ -20,10 +20,9 @@ Usage of ./cleaner:
   -debug
         Set debug mode to get more detailed log of deleted files.
   -path string
-        Specify the root path of the trash folder to be cleaned. (default "./trash")
-  -threshold int
-        Specify the minimum age of the trash items to be removed. (default 5)
-
+        Specify the root path of the trash folder to be cleaned. (default "./.trash")
+  -threshold duration
+        The minimum age of the items to be removed. (default 120h0m0s)
 ```
 
 # Docker image
