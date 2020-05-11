@@ -31,7 +31,7 @@ func main() {
 
 	// Check if trashPath exist
 	if _, err := os.Stat(trashPath); os.IsNotExist(err) {
-		log.Fatalf("The folder to clean does not exist: %v", trashPath)
+		log.Fatalf("The folder to clean does not exist: %s", err)
 	}
 
 	// Get the list of files and folders within the trashPath to be removed because fit the threshold
@@ -79,7 +79,7 @@ func removeTrashItem(wg *sync.WaitGroup, itemToRemove string, debug bool) {
 
 	err := filepath.Walk(itemToRemove, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			log.Fatalf("Error calling list files to remove: %v", err)
+			log.Fatalf("Error calling list files to remove: %s", err)
 		}
 		if !info.IsDir() {
 			os.Remove(info.Name())
@@ -90,7 +90,7 @@ func removeTrashItem(wg *sync.WaitGroup, itemToRemove string, debug bool) {
 		return nil
 	})
 	if err != nil {
-		log.Fatalf("Error calling list files to remove: %v", err)
+		log.Fatalf("Error calling list files to remove: %s", err)
 	}
 
 	if debug {
@@ -99,6 +99,6 @@ func removeTrashItem(wg *sync.WaitGroup, itemToRemove string, debug bool) {
 
 	err = os.RemoveAll(itemToRemove)
 	if err != nil {
-		log.Fatalf("Error calling list files to remove: %v", err)
+		log.Fatalf("Error calling list files to remove: %s", err)
 	}
 }
