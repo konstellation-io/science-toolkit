@@ -1,0 +1,44 @@
+{{ if .Values.cleaner.enabled }}
+apiVersion: extensions/v1beta1
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cleaner
+  labels:
+    app: cleaner
+spec:
+  schedule: {{ .Values.cleaner.schedule | quote }}
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 2
+  startingDeadlineSeconds: 60 # 1min
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      activeDeadlineSeconds: 86400 # 1day
+      template:
+        spec:
+          containers:
+            - name: cleaner
+              image: terminus7/cleaner:latest
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+              - name: {{ .Values.sharedVolume.name }}
+                mountPath: /shared-storage
+              args:
+                - /bin/sh
+                - -c
+                - >-
+                  /usr/local/bin/cleaner -path={{ .Values.cleaner.trashPath }} --threshold={{ .Values.cleaner.threshold }}
+          {{- if .Values.imagePullSecrets }}
+          imagePullSecrets:
+          {{- range .Values.imagePullSecrets  }}
+          - name: {{ . }}
+          {{- end }}
+          {{- end }}
+          volumes:
+            - name: {{ .Values.sharedVolume.name }}
+              persistentVolumeClaim:
+                claimName: {{ .Values.sharedVolume.name }}-claim
+          restartPolicy: OnFailure
+{{- end }}

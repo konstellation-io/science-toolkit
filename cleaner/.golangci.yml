@@ -1,0 +1,11 @@
+linters:
+  enable-all: true
+  disable: 
+    - testpackage
+# all available settings of specific linters
+linters-settings:
+  unparam:
+    check-exported: true
+  funlen:
+    lines: 120
+    statements: 80
