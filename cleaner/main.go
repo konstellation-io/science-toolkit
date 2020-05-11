@@ -11,12 +11,16 @@ import (
 	"time"
 )
 
-var threshold time.Duration
-var trashPath string
-var debug bool
+const defaultThreshold time.Duration = 120 * time.Hour
 
 func main() {
-	flag.DurationVar(&threshold, "threshold", 120*time.Hour, "Specify the minimum age of the trash items to be removed.")
+	var (
+		threshold time.Duration
+		trashPath string
+		debug     bool
+	)
+
+	flag.DurationVar(&threshold, "threshold", defaultThreshold, "The minimum age of the items to be removed.")
 	flag.StringVar(&trashPath, "path", "./.trash", "Specify the root path of the trash folder to be cleaned.")
 	flag.BoolVar(&debug, "debug", false, "Set debug mode to get more detailed log of deleted files.")
 	flag.Parse()
@@ -38,44 +42,41 @@ func main() {
 
 	for _, v := range itemsToRemove {
 		wg.Add(1)
-		go removeTrashItem(v, &wg)
+
+		go removeTrashItem(&wg, v, debug)
 	}
 
 	wg.Wait()
 }
 
 func checkAgeThreshold(threshold time.Duration, now time.Time, fileAge time.Time) bool {
-
 	diff := now.Sub(fileAge)
 
-	if diff >= threshold {
-		return true
-	}
-
-	return false
+	return diff >= threshold
 }
 
 func listToRemove(threshold time.Duration, trashPath string, now time.Time) []string {
-	trashItems, err := ioutil.ReadDir(trashPath)
 	var itemsToRemove []string
+
+	trashItems, err := ioutil.ReadDir(trashPath)
 	if err != nil {
 		log.Fatalf("Problems listing files within trash folder: %v", err)
 	}
-	for _, trashItem := range trashItems {
 
+	for _, trashItem := range trashItems {
 		fileAge := trashItem.ModTime()
 
 		if checkAgeThreshold(threshold, now, fileAge) {
 			itemsToRemove = append(itemsToRemove, path.Join(trashPath, trashItem.Name()))
 		}
-
 	}
+
 	return itemsToRemove
 }
 
-func removeTrashItem(itemToRemove string, wg *sync.WaitGroup) {
-
+func removeTrashItem(wg *sync.WaitGroup, itemToRemove string, debug bool) {
 	defer wg.Done()
+
 	err := filepath.Walk(itemToRemove, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			log.Fatalf("Error calling list files to remove: %v", err)
@@ -89,8 +90,15 @@ func removeTrashItem(itemToRemove string, wg *sync.WaitGroup) {
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error calling list files to remove: %v", err)
 	}
-	os.RemoveAll(itemToRemove)
-	log.Printf("Element deleted: %v", itemToRemove)
+
+	if debug {
+		log.Printf("Element deleted: %v", itemToRemove)
+	}
+
+	err = os.RemoveAll(itemToRemove)
+	if err != nil {
+		log.Fatalf("Error calling list files to remove: %v", err)
+	}
 }

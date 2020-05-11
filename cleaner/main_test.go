@@ -27,7 +27,6 @@ func TestCheckAgeThreshold(t *testing.T) {
 	if !checkAgeThreshold(daysThreshold, now, fileAge) {
 		t.Error("With this threshold this file should be set as true.")
 	}
-
 }
 
 func TestListToRemove(t *testing.T) {
@@ -44,18 +43,20 @@ func TestListToRemove(t *testing.T) {
 	if len(listToRemove(threshold, trashPath, now)) != 6 {
 		t.Error("The list of files to be removed does not match with expected.")
 	}
-
 }
 
 func TestRemoveTrashItem(t *testing.T) {
-
 	trashPath := "./testdata_tmp"
-	dir := createTestFolder(t, trashPath)
+	dirs := createTestFolder(t, trashPath)
+	dir := dirs[0]
 
 	defer os.RemoveAll(trashPath)
+
 	var wg sync.WaitGroup
+
 	wg.Add(1)
-	go removeTrashItem(dir, &wg)
+
+	go removeTrashItem(&wg, dir, false)
 	wg.Wait()
 
 	itemsList, _ := ioutil.ReadDir(trashPath)
@@ -63,23 +64,31 @@ func TestRemoveTrashItem(t *testing.T) {
 	if len(itemsList) != 3 {
 		t.Error("The number of items removed differ from expected.")
 	}
-
 }
 
-func createTestFolder(t *testing.T, trashPath string) (tmpDir string) {
+func createTestFolder(t *testing.T, trashPath string) []string {
 	t.Helper()
-	os.Mkdir(trashPath, 0777)
+
+	err := os.Mkdir(trashPath, 0777)
+	if err != nil {
+		t.Fatalf("Error creating testFolder: %s", err)
+	}
+
+	var tmpDir []string
+
 	for i := 0; i < 4; i++ {
 		dir, err := ioutil.TempDir(trashPath, "*")
 		if err != nil {
 			log.Printf("Can not create temp dir")
 		}
+
 		_, err = ioutil.TempFile(dir, "data_set_*")
 		if err != nil {
 			t.Fatal(err)
 		}
-		tmpDir = dir
-	}
-	return tmpDir
 
+		tmpDir = append(tmpDir, dir)
+	}
+
+	return tmpDir
 }
