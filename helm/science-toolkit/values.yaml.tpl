@@ -54,6 +54,7 @@ drone:
     size: 10Gi
     storageClassName: standard
   rpcSecret: runner-shared-secret
+  pluginSecret: d97d8ee407af1002fa2449f578bb47a9
 
 droneRunner:
   image:
