@@ -5,7 +5,7 @@
 
 Your release is named {{ .Release.Name }}.
 
-Now open your browser at: 🌎 https://app.{{ .Values.domain }}
+Now open your browser at: 🌎 {{ include "protocol" }}://app.{{ .Values.domain }}
 
 Thank you for installing {{ .Chart.Name | upper }}.
 

@@ -7,3 +7,4 @@ helm/values-*.yaml
 gh-pages
 user-tools-operator/helm-charts/usertools/templates/statefulset.yaml
 !vscode/extensions/**
+.certs
