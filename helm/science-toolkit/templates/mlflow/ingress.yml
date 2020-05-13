@@ -5,10 +5,12 @@ metadata:
   labels:
     app:  {{ .Values.mlflow.name }}
 spec:
+  {{ if .Values.tls.enable -}}
   tls:
     - hosts:
         - {{ .Values.mlflow.host }}.{{ .Values.domain }}
-      secretName: {{ .Release.Name }}-tls-secret
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: {{ .Values.mlflow.host }}.{{ .Values.domain }}
       http:

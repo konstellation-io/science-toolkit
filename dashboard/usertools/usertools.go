@@ -108,7 +108,7 @@ func (m *UserTools) checkOrCreateToolsSecrets(u *user.User) error {
 		return fmt.Errorf("check %s tool secret: %w", toolName, err)
 	}
 	if !exist {
-		callbackURL := fmt.Sprintf("http://%s-code.%s/oauth2/callback", u.GetUsernameSlug(), m.config.BaseDomainName)
+		callbackURL := fmt.Sprintf("https://%s-code.%s/oauth2/callback", u.GetUsernameSlug(), m.config.BaseDomainName)
 		data := map[string]string{}
 		data["DEPLOYMENT_SECRET_NAME"] = u.GetSecretName(toolName)
 		data["OAUTH2_CREDENTIALS_PREFIX"] = "CODESERVER"
@@ -129,7 +129,7 @@ func (m *UserTools) checkOrCreateToolsSecrets(u *user.User) error {
 		return fmt.Errorf("check %s tool secret: %w", toolName, err)
 	}
 	if !exist {
-		callbackURL := fmt.Sprintf("http://%s-jupyter.%s/oauth2/callback", u.GetUsernameSlug(), m.config.BaseDomainName)
+		callbackURL := fmt.Sprintf("https://%s-jupyter.%s/oauth2/callback", u.GetUsernameSlug(), m.config.BaseDomainName)
 		data := map[string]string{}
 		data["DEPLOYMENT_SECRET_NAME"] = u.GetSecretName(toolName)
 		data["OAUTH2_CREDENTIALS_PREFIX"] = "JUPYTER"

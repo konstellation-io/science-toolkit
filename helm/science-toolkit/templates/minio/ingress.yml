@@ -7,10 +7,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
 
 spec:
+  {{ if .Values.tls.enable -}}
   tls:
     - hosts:
         - minio.{{ .Values.domain }}
-      secretName: {{ .Release.Name }}-tls-secret
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: minio.{{ .Values.domain }}
       http:

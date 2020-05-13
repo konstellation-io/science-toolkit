@@ -5,8 +5,8 @@ metadata:
   labels:
     app:  gitea-configmap
 data:
-  GITEA_URL: {{ printf "https://gitea.%s" .Values.domain }}
-  GITEA_OAUTH2_AUTHORIZE_URL: {{ printf "https://gitea.%s/login/oauth/authorize" .Values.domain }}
-  GITEA_OAUTH2_TOKEN_URL: {{ printf "https://gitea.%s/login/oauth/access_token" .Values.domain }}
-  GITEA_OAUTH2_USERDATA_URL: {{ printf "https://gitea.%s/api/v1/user" .Values.domain }}
+  GITEA_URL: {{ printf "%s://gitea.%s" ( include "protocol" . ) .Values.domain }}
+  GITEA_OAUTH2_AUTHORIZE_URL: {{ printf "%s://gitea.%s/login/oauth/authorize" ( include "protocol" . ) .Values.domain }}
+  GITEA_OAUTH2_TOKEN_URL: {{ printf "%s://gitea.%s/login/oauth/access_token" ( include "protocol" . ) .Values.domain }}
+  GITEA_OAUTH2_USERDATA_URL: {{ printf "%s://gitea.%s/api/v1/user" ( include "protocol" . ) .Values.domain }}
 

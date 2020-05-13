@@ -34,6 +34,9 @@ type Config struct {
 
 		IsInsideCluster bool
 	} `yaml:"kubernetes"`
+
+	CertManager string `yaml:"tls" envconfig:"TOOLKIT_CERT_MANAGER"`
+	TLS         string `yaml:"tls" envconfig:"TOOLKIT_TLS"`
 }
 
 // NewConfig will read the config.yml file and override values with env vars.

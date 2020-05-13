@@ -118,7 +118,7 @@ echo "📚️ Create Namespace if not exist...\n"
 kubectl create ns ${NAMESPACE} --dry-run -o yaml | kubectl apply -f -
 
 if [ "$ENABLE_TLS" != "0" ]; then
-  ./scripts/create_self_signed_cert.sh $NAMESPACE $DEPLOY_NAME $DOMAIN
+  ./scripts/create_self_signed_cert.sh $NAMESPACE $DOMAIN
 fi
 
 echo "📦 Applying helm chart...\n"

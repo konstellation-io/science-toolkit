@@ -117,4 +117,8 @@ tls:
   certManager: false
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
+<<<<<<< HEAD
     email: user@email.com
+=======
+    email: user@email.com
+>>>>>>> feat: add tls configuration

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
@@ -150,6 +151,11 @@ func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, u *user.U
 // CreateUserTools creates a new crd of type UserTools for the given user
 func (r *ResourceManager) CreateUserTools(user *user.User) error {
 	serverName := user.GetResourceName()
+	tls, err := strconv.ParseBool(r.config.TLS)
+	if err != nil {
+		return err
+	}
+
 	definition := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       "UserTools",
@@ -172,11 +178,12 @@ func (r *ResourceManager) CreateUserTools(user *user.User) error {
 				"sharedVolume": map[string]string{
 					"name": r.config.VSCode.SharedVolume.Name,
 				},
+				"tls": tls,
 			},
 		},
 	}
 	fmt.Println("Creating users tools: ", definition.Object)
-	_, err := r.codeClient.Namespace(r.config.Kubernetes.Namespace).Create(definition, metav1.CreateOptions{})
+	_, err = r.codeClient.Namespace(r.config.Kubernetes.Namespace).Create(definition, metav1.CreateOptions{})
 	if err != nil {
 		return err
 	}

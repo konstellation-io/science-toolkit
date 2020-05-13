@@ -6,12 +6,13 @@ metadata:
 {{ include "user-tools.labels" . | indent 4 }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
 spec:
   tls:
     - hosts:
         - {{ .Values.usernameSlug }}-code.{{ .Values.domain }}
         - {{ .Values.usernameSlug }}-jupyter.{{ .Values.domain }}
-      secretName: {{ .Release.Name }}-tls-secret
+      secretName: {{ .Values.domain }}-tls-secret
   rules:
     - host: {{ .Values.usernameSlug }}-code.{{ .Values.domain }}
       http:

@@ -1,0 +1,13 @@
+{{- if  .Values.tls.certManager }}
+  apiVersion: cert-manager.io/v1alpha2
+  kind: Issuer
+  metadata:
+    name: {{ .Values.domain }}-issuer
+  spec:
+    acme:
+      server: {{ .Values.tls.acme.server }}
+      email: {{ .Values.tls.acme.email }}
+      privateKeySecretRef:
+        name: {{ .Values.domain }}-tls-secret
+      http01: {}
+{{- end }}

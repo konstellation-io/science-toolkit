@@ -5,10 +5,12 @@ metadata:
   labels:
     app:  drone
 spec:
+  {{ if .Values.tls.enable -}}
   tls:
     - hosts:
         - drone.{{ .Values.domain }}
-      secretName: {{ .Release.Name }}-tls-secret
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: drone.{{ .Values.domain }}
       http:

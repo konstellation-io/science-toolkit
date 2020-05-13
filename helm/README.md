@@ -66,3 +66,42 @@ helm upgrade --install sci-toolkit --namespace sci-toolkit ./science-toolkit
 | `vscode.password`                | Default password for vscode                                | `123456`   |
 | `vscode.volume.size`             | Size for the vscode config volume                          | `10Gi`     |
 | `vscode.volume.storageClassName` | The Kubernetes Storage Class Name whe to create the volume | `standard` |
+
+### Cert Manager
+| Parameter                 | Description                                                                            | Default                                  |
+| ------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `certManager.enabled`     | Enable Cert Manager to validate certificates                                           | `false`                                  |
+| `certManager.acme.server` | Default certificate authority server to validate certificates, more instructions below | `acme-v02.api.letsencrypt.org/directory` |
+| `certManager.acme.email`  | Default email for the certificate owner                                                | `user@email.com`                         |
+
+You can fill in the field `certManager.acme.server` with one of the following values depend of your environment:
+
+**Production environment**
+```
+  certManager:
+    acme:
+        server: https://acme-v02.api.letsencrypt.org/directory
+```
+Rate limit of 50 per day on certificates request with a week block if the limit is passed.[+ info](https://letsencrypt.org/docs/rate-limits/)
+
+No web-browser action required.
+
+**Staging environment** 
+```
+  certManager:
+    acme:
+        server: https://acme-staging-v02.api.letsencrypt.org/directory
+```
+Rate limit of 1500 each three hours on certificates request.[+ Info](https://letsencrypt.org/docs/staging-environment/)
+
+
+
+This option needs the following action from user to set-up the staging certification authority.
+
+#### How add the fake certificate on chrome
+- Download the certificate [Fake Certificate](https://letsencrypt.org/certs/fakeleintermediatex1.pem)
+- Go to settings -> Search Certificates -> Manage Certificates -> Issuers Entities
+- Import the previous certificate.
+- Enable the first option.
+- Reload the https://app.<your-domain> page
+- You have a certificate for any science-toolkit domain.
