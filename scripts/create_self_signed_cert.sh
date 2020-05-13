@@ -26,8 +26,8 @@ else
   chmod +x .certs/mkcert
 fi
 
-TRUST_STORES=nss sudo .certs/mkcert --install  *.$DOMAIN
-sudo mv _wildcard.* .certs/toolkit
+TRUST_STORES=nss .certs/mkcert --install  *.$DOMAIN
+mv _wildcard.* .certs/toolkit
 
 echo "Creating K8S secrets with the CA private keys"
-sudo kubectl -n $NAMESPACE create secret tls $DOMAIN-tls-secret --key=$CA_CERTS_FOLDER/_wildcard.$DOMAIN-key.pem --cert=$CA_CERTS_FOLDER/_wildcard.$DOMAIN.pem --dry-run -o yaml | kubectl apply -f -
+kubectl -n $NAMESPACE create secret tls $DOMAIN-tls-secret --key=$CA_CERTS_FOLDER/_wildcard.$DOMAIN-key.pem --cert=$CA_CERTS_FOLDER/_wildcard.$DOMAIN.pem --dry-run -o yaml | kubectl apply -f -
