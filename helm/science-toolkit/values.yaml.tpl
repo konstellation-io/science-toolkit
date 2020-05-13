@@ -110,9 +110,9 @@ cleaner:
   threshold: 5 # minimun age of files to be removed
 
 tls:
-  enable: false
-  certManager: false
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: user@email.com
-
+  enabled: false
+  certManager:
+    enabled: false
+    acme:
+      server: https://acme-v02.api.letsencrypt.org/directory
+      email: user@email.com

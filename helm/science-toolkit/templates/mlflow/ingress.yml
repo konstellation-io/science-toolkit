@@ -5,7 +5,7 @@ metadata:
   labels:
     app:  {{ .Values.mlflow.name }}
 spec:
-  {{ if .Values.tls.enable -}}
+  {{ if .Values.tls.enabled -}}
   tls:
     - hosts:
         - {{ .Values.mlflow.host }}.{{ .Values.domain }}

@@ -5,7 +5,7 @@ metadata:
   labels:
     app:  drone
 spec:
-  {{ if .Values.tls.enable -}}
+  {{ if .Values.tls.enabled -}}
   tls:
     - hosts:
         - drone.{{ .Values.domain }}
