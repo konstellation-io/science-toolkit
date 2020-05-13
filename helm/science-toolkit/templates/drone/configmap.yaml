@@ -6,7 +6,7 @@ metadata:
     app:  drone-config
 data:
   DRONE_GITEA_SKIP_VERIFY: "true"
-  DRONE_GITEA_SERVER: {{ include "protocol" }}://gitea.{{ .Values.domain }}
+  DRONE_GITEA_SERVER: {{ printf "%s://gitea.%s" ( include "protocol" . ) .Values.domain }}
   DRONE_GIT_ALWAYS_AUTH: "false"
   DRONE_RUNNER_CAPACITY: "2"
   DRONE_SERVER_PROTO: https
