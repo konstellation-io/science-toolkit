@@ -10,7 +10,7 @@ data:
     redeem_url="{{ printf "%s://gitea.%s/login/oauth/access_token" ( include "protocol" . ) .Values.domain }}"
     profile_url="{{ printf "%s://gitea.%s/api/v1/user" ( include "protocol" . ) .Values.domain }}"
     redirect_url="{{ printf "%s://mlflow.%s/oauth2/callback" ( include "protocol" . ) .Values.domain }}"
-    cookie_secure=true
+    cookie_secure={{ ternary "true" "false" .Values.tls.enabled }}
     cookie_samesite="none"
     ssl_insecure_skip_verify=true
     ssl_upstream_insecure_skip_verify=true

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strconv"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
@@ -174,7 +173,7 @@ func (r *ResourceManager) CreateUserTools(user *user.User) error {
 				"sharedVolume": map[string]string{
 					"name": r.config.VSCode.SharedVolume.Name,
 				},
-				"tls": strconv.FormatBool(r.config.TLS),
+				"tls": r.config.TLS,
 			},
 		},
 	}
