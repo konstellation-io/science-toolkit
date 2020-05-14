@@ -1,11 +1,11 @@
 domain: toolkit.local
 username: user.name
 usernameSlug: user-name
-tls:
-  enabled: false
 storage:
   size: 10Gi
   className: standard
 
 sharedVolume:
   name: ""
+
+tls: false

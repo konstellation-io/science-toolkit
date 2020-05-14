@@ -9,6 +9,9 @@ description: >
 ## Pre-requisites
 
 The same requisites you need to install it locally.
+```
+$path/to/repo> apt install libnss3-tools
+```
 
 
 ## Installation variant

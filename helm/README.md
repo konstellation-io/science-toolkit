@@ -66,3 +66,57 @@ helm upgrade --install sci-toolkit --namespace sci-toolkit ./science-toolkit
 | `vscode.password`                | Default password for vscode                                | `123456`   |
 | `vscode.volume.size`             | Size for the vscode config volume                          | `10Gi`     |
 | `vscode.volume.storageClassName` | The Kubernetes Storage Class Name whe to create the volume | `standard` |
+
+### TLS 
+| Parameter                     | Description                                                                            | Default                                  |
+| ----------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `tls.enabled`                 | Enable TLS to use a secure layer                                                       | `false`                                  |
+
+If you use cert manager to generate a required certificate add this parameters
+#### Cert Manager
+| Parameter                     | Description                                                                            | Default                                  |
+| ----------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `tls.certManager.enabled`     | Enable Cert Manager to validate certificates                                           | `false`                                  |
+| `tls.certManager.acme.server` | Default certificate authority server to validate certificates, more instructions below | `acme-v02.api.letsencrypt.org/directory` |
+| `tls.certManager.acme.email`  | Default email for the certificate owner                                                | `user@email.com`                         |
+
+You can fill in the field `certManager.acme.server` with one of the following values depend of your environment:
+
+**Production environment**
+```
+  certManager:
+    acme:
+        server: https://acme-v02.api.letsencrypt.org/directory
+```
+Rate limit of 50 per day on certificates request with a week block if the limit is passed.[+ info](https://letsencrypt.org/docs/rate-limits/)
+
+No web-browser action required.
+
+**Staging environment** 
+```
+  certManager:
+    acme:
+        server: https://acme-staging-v02.api.letsencrypt.org/directory
+```
+Rate limit of 1500 each three hours on certificates request.[+ Info](https://letsencrypt.org/docs/staging-environment/)
+
+This option needs the following action from user to set-up the staging certification authority.
+
+#### How add the fake certificate on chrome
+- Download the certificate [Fake Certificate](https://letsencrypt.org/certs/fakeleintermediatex1.pem)
+- Go to settings -> Search Certificates -> Manage Certificates -> Issuers Entities
+- Import the previous certificate.
+- Enable the first option.
+- Reload the https://app.<your-domain> page
+- You have a certificate for any science-toolkit domain.
+
+#### Route 53
+
+Custom configuration to integrate Cert Manager with Route 53
+
+| Parameter                                       | Description                                  | Default                                  |
+| ----------------------------------------------- | -------------------------------------------- | ---------------------------------------- |
+| `tls.certManager.dns01.route53.region`          | AWS Region                                   | `your aws region`                        |
+| `tls.certManager.dns01.route53.hostedZoneID`    | AWS Hosted  Zone ID                          | `your aws hosted zone`                   |
+| `tls.certManager.dns01.route53.secretAccessKey` | AWS Access Key                               | `your aws access key`                    |
+| `tls.certManager.dns01.route53.accessKeyID`     | AWS Access Key ID                            | `your aws access key ID`                 |                  

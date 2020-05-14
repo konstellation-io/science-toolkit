@@ -1,11 +1,16 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: dashboard
   annotations:
     kubernetes.io/ingress.class: "nginx"
-
 spec:
+  {{ if .Values.tls.enabled -}}
+  tls:
+    - hosts:
+        - app.{{ .Values.domain }}
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: app.{{ .Values.domain }}
       http:

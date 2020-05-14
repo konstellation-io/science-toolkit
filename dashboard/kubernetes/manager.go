@@ -150,6 +150,7 @@ func (r *ResourceManager) WaitForUserToolsRunning(ctx context.Context, u *user.U
 // CreateUserTools creates a new crd of type UserTools for the given user
 func (r *ResourceManager) CreateUserTools(user *user.User) error {
 	serverName := user.GetResourceName()
+
 	definition := &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       "UserTools",
@@ -172,6 +173,7 @@ func (r *ResourceManager) CreateUserTools(user *user.User) error {
 				"sharedVolume": map[string]string{
 					"name": r.config.VSCode.SharedVolume.Name,
 				},
+				"tls": r.config.TLS,
 			},
 		},
 	}

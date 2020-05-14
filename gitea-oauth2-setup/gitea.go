@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -16,7 +17,7 @@ type Credentials struct {
 }
 
 func checkGitea(url, username, password string) bool {
-
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/user", url), nil)
 	if err != nil {
 		log.Printf("error calling Gitea: %w \n", err)

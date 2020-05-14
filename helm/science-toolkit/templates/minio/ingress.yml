@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: minio
@@ -7,6 +7,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
 
 spec:
+  {{ if .Values.tls.enabled -}}
+  tls:
+    - hosts:
+        - minio.{{ .Values.domain }}
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: minio.{{ .Values.domain }}
       http:

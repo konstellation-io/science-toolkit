@@ -7,3 +7,4 @@ server:
   port: "4000"
 kubernetes:
   namespace: toolkit
+tls: false

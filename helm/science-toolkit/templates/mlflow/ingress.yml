@@ -1,10 +1,16 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ .Values.mlflow.name }}-ingress
   labels:
     app:  {{ .Values.mlflow.name }}
 spec:
+  {{ if .Values.tls.enabled -}}
+  tls:
+    - hosts:
+        - {{ .Values.mlflow.host }}.{{ .Values.domain }}
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: {{ .Values.mlflow.host }}.{{ .Values.domain }}
       http:

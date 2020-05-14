@@ -1,0 +1,25 @@
+{{ if  .Values.tls.certManager.enabled }}
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ .Values.domain }}-issuer
+spec:
+  acme:
+    server: {{ .Values.tls.certManager.acme.server }}
+    email: {{ .Values.tls.certManager.acme.email }}
+    privateKeySecretRef:
+      name: {{ .Values.domain }}-tls-secret
+    solvers:
+      {{ if hasKey .Values.tls.certManager "dns01" -}}
+      - dns01:
+          route53:
+            region: {{ .Values.tls.certManager.dns01.route53.region }}
+            accessKeyID: {{ .Values.tls.certManager.dns01.route53.accessKeyID }}
+            hostedZoneID: {{ .Values.tls.certManager.dns01.route53.hostedZoneID }}
+            secretAccessKeySecretRef:
+              name: aws-secret
+              key: AWS_SECRET_ACCESS_KEY
+    {{ else -}}
+      - http01: {}
+    {{ end -}}
+{{ end }}

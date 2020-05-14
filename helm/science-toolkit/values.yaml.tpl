@@ -91,7 +91,7 @@ mlflow:
   volume:
     size: 10Gi
     storageClassName: standard
-  s3: 
+  s3:
     bucket: mlflow-artifacts
 
 backup:
@@ -109,3 +109,10 @@ cleaner:
   trashPath: /shared-storage/.trash
   threshold: 5 # minimun age of files to be removed
 
+tls:
+  enabled: false
+  certManager:
+    enabled: false
+    acme:
+      server: https://acme-v02.api.letsencrypt.org/directory
+      email: user@email.com

@@ -54,3 +54,10 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Add the protocol part to the uri
+*/}}
+{{- define "protocol" -}}
+  {{ ternary "https" "http" .Values.tls }}
+{{- end -}}
