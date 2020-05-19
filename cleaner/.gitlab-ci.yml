@@ -5,9 +5,11 @@ test-cleaner:
     - cd cleaner
     - go test ./... -v -cover
   only:
+    refs:
+      - master
     changes:
       - cleaner/**/*
-
+    
 trivy-cleaner:
   extends: .trivy-template
   variables:

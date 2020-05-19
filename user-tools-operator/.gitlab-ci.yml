@@ -43,6 +43,7 @@ trivy-user-tools-operator:
       - master
     changes:
       - user-tools-operator/**/*
+  when: manual
 
 release-user-tools-operator:
   stage: semantic-release
