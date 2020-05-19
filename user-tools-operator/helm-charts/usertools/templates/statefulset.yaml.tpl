@@ -53,6 +53,9 @@ spec:
         - name: {{ .Chart.Name }}-vscode
           image: terminus7/sci-toolkit-vscode:${VSCODE_TAG}
           imagePullPolicy: IfNotPresent
+          envFrom:
+          - secretRef:
+              name: tools-secret
           volumeMounts:
             - name: user-pvc
               mountPath: /home/coder
@@ -63,6 +66,9 @@ spec:
         - name: {{ .Chart.Name }}-jupyter
           image: terminus7/jupyterlab-gpu:${JUPYTERLAB_GPU_IMAGE_TAG}
           imagePullPolicy: IfNotPresent
+          envFrom:
+          - secretRef:
+              name: tools-secret
           env:
             - name: JUPYTER_ENABLE_LAB
               value: "yes"
