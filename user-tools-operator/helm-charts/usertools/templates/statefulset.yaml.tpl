@@ -56,8 +56,6 @@ spec:
           envFrom:
           - secretRef:
               name: tools-secret
-          - configMapRef:
-              name: tools-configmap
           volumeMounts:
             - name: user-pvc
               mountPath: /home/coder
@@ -71,8 +69,6 @@ spec:
           envFrom:
           - secretRef:
               name: tools-secret
-          - configMapRef:
-              name: tools-configmap
           env:
             - name: JUPYTER_ENABLE_LAB
               value: "yes"
