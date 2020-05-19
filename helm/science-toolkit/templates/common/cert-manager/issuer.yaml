@@ -8,7 +8,7 @@ spec:
     server: {{ .Values.tls.certManager.acme.server }}
     email: {{ .Values.tls.certManager.acme.email }}
     privateKeySecretRef:
-      name: {{ .Values.domain }}-tls-secret
+      name: {{ .Values.domain }}-acme-tls-secret
     solvers:
       {{ if hasKey .Values.tls.certManager "dns01" -}}
       - dns01:
