@@ -120,3 +120,4 @@ Custom configuration to integrate Cert Manager with Route 53
 | `tls.certManager.dns01.route53.hostedZoneID`    | AWS Hosted  Zone ID                          | `your aws hosted zone`                   |
 | `tls.certManager.dns01.route53.secretAccessKey` | AWS Access Key                               | `your aws access key`                    |
 | `tls.certManager.dns01.route53.accessKeyID`     | AWS Access Key ID                            | `your aws access key ID`                 |                  
+
