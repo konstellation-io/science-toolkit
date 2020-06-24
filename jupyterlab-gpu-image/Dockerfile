@@ -151,20 +151,22 @@ ENV PATH /home/$NB_USER/.local/bin:$PATH
 
 USER root
 
-# Install Libraries
+# Install basic modules
+RUN pip install setuptools wheel && \
+    pip install cython thriftpy
+
+# Install frameworks
 ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
 ADD ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
 RUN cat custom_frameworks_requirements.txt >> frameworks_requirements.txt
 
 RUN pip install -r frameworks_requirements.txt
 
-# Install Libraries
+# Install requirements
 ADD ./common-science-requirements/requirements.txt requirements.txt
 ADD ./config/requirements.txt custom_requirements.txt
 RUN cat custom_requirements.txt >> requirements.txt
 
-RUN pip install setuptools wheel && \
-    pip install cython thriftpy
 
 RUN pip install -r requirements.txt
 

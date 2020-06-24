@@ -1,4 +1,4 @@
-FROM ubuntu:18
+FROM ubuntu:18.04 
 
 USER root
 ENV LC_ALL C.UTF-8
