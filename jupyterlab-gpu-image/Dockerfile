@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu18.04
+FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 
 ARG GO_VERSION=1.14.2
 ARG NODE_VERSION=10.16.3
