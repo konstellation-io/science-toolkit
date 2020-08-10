@@ -219,5 +219,150 @@ user-tools-operator-54d5c79c65-qhvws     1/1     Running   &lt;span style=&#34;c
       </description>
     </item>
     
+    <item>
+      <title>Docs: Installation on restricted environment</title>
+      <link>https://intelygenz.github.io/science-toolkit/docs/installation/restricted-environment/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://intelygenz.github.io/science-toolkit/docs/installation/restricted-environment/</guid>
+      <description>
+        
+        
+        &lt;h1 id=&#34;context&#34;&gt;Context&lt;/h1&gt;
+&lt;p&gt;Sometimes there are project where the data are very sensitive and the access to those is only posible from a very
+restricted environment, withut Internet access and with traced remote access to the Science Toolkit via VDI, VPN, etc..&lt;/p&gt;
+&lt;p&gt;To achieve the installation of Science Toolkit on these kind of environment is necesary to upload the Docker images through the required security protocols of the organization where th Science Toolkit is going to be deployed, that means that we need to pass all the Docker images as files instead of URL of a Docker registry to be downloaded by the Helm installation process.&lt;/p&gt;
+&lt;h2 id=&#34;how-to-export-the-science-toolkit-docker-images&#34;&gt;How to export the Science Toolkit Docker images&lt;/h2&gt;
+&lt;p&gt;The first step is to deploy the local environment running in a local machine the script from the repository root &lt;code&gt;./local_env.sh&lt;/code&gt;. This scrip will deploy in a Minikube environment the Science Toolkit.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;./local_env.sh
+Disable custom kubeconfig environment
+😄  &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;toolkit&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; minikube v1.12.1 on Ubuntu 20.04
+    ▪ &lt;span style=&#34;color:#000&#34;&gt;MINIKUBE_PROFILE&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;toolkit
+✨  Using the docker driver based on user configuration
+👍  Starting control plane node toolkit in cluster toolkit
+🎉  minikube 1.12.2 is available! Download it: https://github.com/kubernetes/minikube/releases/tag/v1.12.2
+💡  To disable this notice, run: &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;minikube config set WantUpdateNotification false&amp;#39;&lt;/span&gt;
+
+🔥  Creating docker container &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#000&#34;&gt;CPUs&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;4, &lt;span style=&#34;color:#000&#34;&gt;Memory&lt;/span&gt;&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;8192MB&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;)&lt;/span&gt; ...
+🐳  Preparing Kubernetes v1.15.4 on Docker 19.03.2 ...
+    ▪ apiserver.authorization-mode&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;RBAC
+    &amp;gt; kubectl.sha1: &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;41&lt;/span&gt; B / &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;41&lt;/span&gt; B &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;----------------------------&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; 100.00% ? p/s 0s
+    &amp;gt; kubeadm.sha1: &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;41&lt;/span&gt; B / &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;41&lt;/span&gt; B &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;----------------------------&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; 100.00% ? p/s 0s
+    &amp;gt; kubelet.sha1: &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;41&lt;/span&gt; B / &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;41&lt;/span&gt; B &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;----------------------------&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; 100.00% ? p/s 0s
+    &amp;gt; kubeadm: 38.32 MiB / 38.32 MiB &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;---------------&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; 100.00% 22.69 MiB p/s 2s
+    &amp;gt; kubectl: 40.99 MiB / 40.99 MiB &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;---------------&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; 100.00% 20.24 MiB p/s 2s
+    &amp;gt; kubelet: 114.15 MiB / 114.15 MiB &lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;-------------&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; 100.00% 32.58 MiB p/s 4s
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: default-storageclass, storage-provisioner
+🏄  Done! kubectl is now configured to use &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;toolkit&amp;#34;&lt;/span&gt;
+
+❗  /usr/local/bin/kubectl is version 1.18.0, which may be incompatible with Kubernetes 1.15.4.
+💡  You can also use &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;minikube kubectl -- get pods&amp;#39;&lt;/span&gt; to invoke a matching version
+🔎  Verifying ingress addon...
+🌟  The &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;ingress&amp;#39;&lt;/span&gt; addon is enabled
+🌟  The &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;dashboard&amp;#39;&lt;/span&gt; addon is enabled
+🔎  Verifying registry addon...
+🌟  The &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;registry&amp;#39;&lt;/span&gt; addon is enabled
+🌟  The &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;storage-provisioner&amp;#39;&lt;/span&gt; addon is enabled
+🌟  The &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;metrics-server&amp;#39;&lt;/span&gt; addon is enabled
+Replacing env to &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;./user-tools-operator/helm-charts/usertools/templates/statefulset.yaml.tpl&amp;#39;&lt;/span&gt; into &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;./user-tools-operator/helm-charts/usertools/templates/statefulset.yaml&amp;#39;&lt;/span&gt;
+Replacing env to &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;./helm/science-toolkit/values.yaml.tpl&amp;#39;&lt;/span&gt; into &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;./helm/science-toolkit/values.yaml&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;stable&amp;#34;&lt;/span&gt; has been added to your repositories
+📚️ Create Namespace &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; not exist...
+
+W0810 11:24:32.286701  &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;726844&lt;/span&gt; helpers.go:535&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt; --dry-run is deprecated and can be replaced with --dry-run&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;=&lt;/span&gt;client.
+namespace/toolkit created
+📦 Applying helm chart...
+
+Hang tight &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;while&lt;/span&gt; we grab the latest from your chart repositories...
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;jfelten&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;rimusz&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;science-toolkit&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;influxdata&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;aws&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;konstellation-ce&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;jetstack&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;konstellation-io&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;gitlab&amp;#34;&lt;/span&gt; chart repository
+...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;stable&amp;#34;&lt;/span&gt; chart repository
+Update Complete. ⎈Happy Helming!⎈
+Saving &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;1&lt;/span&gt; charts
+Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+Deleting outdated charts
+Release &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;toolkit&amp;#34;&lt;/span&gt; does not exist. Installing it now.
+NAME: toolkit
+LAST DEPLOYED: Mon Aug &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;10&lt;/span&gt; 11:24:37 &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;2020&lt;/span&gt;
+NAMESPACE: toolkit
+STATUS: deployed
+REVISION: &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;1&lt;/span&gt;
+TEST SUITE: None
+NOTES:
+----
+
+🌠 Konstellation Science Toolkit Installed
+&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;##############################&lt;/span&gt;
+
+Your release is named toolkit.
+
+Now open your browser at: 🌎 http://app.toolkit.172.17.0.3.nip.io
+
+Thank you &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;for&lt;/span&gt; installing SCIENCE-TOOLKIT.
+
+----
+
+✔️  Done.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once that the Science Toolkit is deployed in our local machine on top of Minikue we have to login and start de &lt;code&gt;Users Toolks&lt;/code&gt; in order to download all the Docker images required to perform trainings and write experiments. When the Users Tooll are up and running run the script &lt;code&gt;./scripts/export_images.sh&lt;/code&gt;. This script will create a folder called &lt;code&gt;toolkit_images&lt;/code&gt; where will export all the docker images as &lt;code&gt;.tgz&lt;/code&gt; files and will create a &lt;code&gt;.tar.gz&lt;/code&gt; with all the images.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#204a87&#34;&gt;cd&lt;/span&gt; scripts/
+./export_images.sh
+⏳ Check &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#204a87&#34;&gt;local&lt;/span&gt; Minikube environment is running Science Toolkit...
+✔ Done
+⏳ Getting images to be exported...
+✔ Done
+⏳ Creating &lt;span style=&#34;color:#204a87&#34;&gt;export&lt;/span&gt; folder and cleaning &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;if&lt;/span&gt; present...
+✔ Done
+⏳ Exporting Science Toolkit Docker images...
+0: Exporting Docker image drone/drone:1.7.0 ...
+1: Exporting Docker image drone/kubernetes-secrets:latest ...
+2: Exporting Docker image minio/minio:RELEASE.2019-08-07T01-59-21Z ...
+3: Exporting Docker image postgres:12.1 ...
+4: Exporting Docker image terminus7/drone-runner-kube:latest ...
+5: Exporting Docker image terminus7/gitea:oauth ...
+6: Exporting Docker image terminus7/gitea-oauth2-setup:latest ...
+7: Exporting Docker image terminus7/jupyterlab-gpu:2.2.15 ...
+8: Exporting Docker image terminus7/mlflow:latest ...
+9: Exporting Docker image terminus7/oauth2-proxy:latest ...
+10: Exporting Docker image terminus7/sci-toolkit-dashboard:latest ...
+11: Exporting Docker image terminus7/sci-toolkit-user-tools-operator:latest ...
+12: Exporting Docker image terminus7/sci-toolkit-vscode:1.4.6 ...
+✔ Done
+⏳ Creating &lt;span style=&#34;color:#204a87&#34;&gt;export&lt;/span&gt; tar.gz file...
+tar: Removing leading &lt;span style=&#34;color:#4e9a06&#34;&gt;`&lt;/span&gt;/&lt;span style=&#34;color:#a40000&#34;&gt;&amp;#39;&lt;/span&gt; from member names
+/github/science-toolkit/scripts/toolkit_images/
+/github/science-toolkit/scripts/toolkit_images/terminus7-drone-runner-kube:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-gitea:oauth.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-sci-toolkit-user-tools-operator:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-sci-toolkit-dashboard:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-gitea-oauth2-setup:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-sci-toolkit-vscode:1.4.6.gz
+/github/science-toolkit/scripts/toolkit_images/drone-drone:1.7.0.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-oauth2-proxy:latest.gz
+/github/science-toolkit/scripts/toolkit_images/drone-kubernetes-secrets:latest.gz
+/github/science-toolkit/scripts/toolkit_images/minio-minio:RELEASE.2019-08-07T01-59-21Z.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-mlflow:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-jupyterlab-gpu:2.2.15.gz
+/github/science-toolkit/scripts/toolkit_images/postgres:12.1.gz
+✔ Done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;how-to-import-the-docker-images-in-each-kubernetes-host&#34;&gt;How to import the Docker images in each Kubernetes host&lt;/h2&gt;
+&lt;p&gt;In order to import all the previously exported Docker images just follow the below steps.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;tar zxvf toolkit_images.tar.gz
+&lt;span style=&#34;color:#204a87&#34;&gt;cd&lt;/span&gt; toolkit_images/
+&lt;span style=&#34;color:#8f5902;font-style:italic&#34;&gt;# the next command is just for one images, repeat it for each image&lt;/span&gt;
+docker import terminus7-gitea-oauth2-setup:latest.gz terminus7/gitea-oauth2-setup:latest
+&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;[&lt;/span&gt;...&lt;span style=&#34;color:#ce5c00;font-weight:bold&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+      </description>
+    </item>
+    
   </channel>
 </rss>

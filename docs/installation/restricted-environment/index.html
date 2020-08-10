@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.66.0" />
+
+<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/science-toolkit/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/science-toolkit/favicons/android-192x192.png" sizes="192x192">
+
+<title>Installation on restricted environment | Science Toolkit</title><meta property="og:title" content="Installation on restricted environment" />
+<meta property="og:description" content="How to start the Science Toolkit on a restricted environment
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://intelygenz.github.io/science-toolkit/docs/installation/restricted-environment/" />
+
+<meta itemprop="name" content="Installation on restricted environment">
+<meta itemprop="description" content="How to start the Science Toolkit on a restricted environment
+">
+
+<meta itemprop="wordCount" content="858">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Installation on restricted environment"/>
+<meta name="twitter:description" content="How to start the Science Toolkit on a restricted environment
+"/>
+
+
+
+
+
+<link rel="preload" href="/science-toolkit/scss/main.min.818a933df0186c907f1faea6730835dd5fa01c3b53af36bb68396dc80a2d3c45.css" as="style">
+<link href="/science-toolkit/scss/main.min.818a933df0186c907f1faea6730835dd5fa01c3b53af36bb68396dc80a2d3c45.css" rel="stylesheet" integrity="">
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script
+  src="https://unpkg.com/lunr@2.3.8/lunr.min.js"
+  integrity="sha384-vRQ9bDyE0Wnu+lMfm57BlYLO0/XauFuKpVsZPs7KEDwYKktWi5+Kz3MP8++DFlRY"
+  crossorigin="anonymous"></script>
+
+
+    <title>Installation on restricted environment | Science Toolkit</title>
+  </head>
+  <body class="td-page">
+    <header>
+      
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar">
+        <a class="navbar-brand" href="/science-toolkit/">
+		<span class="navbar-logo"></span><span class="text-uppercase font-weight-bold">Science Toolkit</span>
+	</a>
+	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+		<ul class="navbar-nav mt-2 mt-lg-0">
+			
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/science-toolkit/about/" ><span>About</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link active" href="/science-toolkit/docs/" ><span class="active">Docs</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/science-toolkit/community/" ><span>Community</span></a>
+			</li>
+			
+			
+			
+		</ul>
+	</div>
+	<div class="navbar-nav d-none d-lg-block">
+
+
+<input
+  type="search"
+  class="form-control td-search-input"
+  placeholder="&#xf002; Search this site…"
+  aria-label="Search this site…"
+  autocomplete="off"
+  
+  data-offline-search-index-json-src="/science-toolkit/offline-search-index.96b68b37e4286e183397184f6d2d08cc8cfab859e3dc67ee720622608fd177aee5ecc2106ad112db8553fbd3827b7bcd758fcc476cb7c820a1b1b5b2b7d26a34.json"
+  data-offline-search-base-href="/"
+>
+
+</div>
+</nav>
+
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            
+
+
+
+
+<div id="td-sidebar-menu" class="td-sidebar__inner">
+  
+  <nav class="collapse td-sidebar-nav pt-2 pl-4" id="td-section-nav">
+    
+    
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/" class="align-left pl-0 pr-2 td-sidebar-link td-sidebar-link__section">Docs</a>
+  </li>
+  <ul>
+    <li class="collapse show" id="science-toolkitdocs">
+      
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/overview/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Overview</a>
+  </li>
+  <ul>
+    <li class="collapse " id="science-toolkitdocsoverview">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/getting-started/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Getting Started</a>
+  </li>
+  <ul>
+    <li class="collapse " id="science-toolkitdocsgetting-started">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/components/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Components</a>
+  </li>
+  <ul>
+    <li class="collapse " id="science-toolkitdocscomponents">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/installation/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Installation</a>
+  </li>
+  <ul>
+    <li class="collapse show" id="science-toolkitdocsinstallation">
+      
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-science-toolkitdocsinstallationminikube" href="/science-toolkit/docs/installation/minikube/">Installation on Minikube</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-science-toolkitdocsinstallationeks" href="/science-toolkit/docs/installation/eks/">Installation on EKS</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page  active" id="m-science-toolkitdocsinstallationrestricted-environment" href="/science-toolkit/docs/installation/restricted-environment/">Installation on restriced environment</a>
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/contribution-guidelines/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
+  </li>
+  <ul>
+    <li class="collapse " id="science-toolkitdocscontribution-guidelines">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/science-toolkit/docs/development/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Development</a>
+  </li>
+  <ul>
+    <li class="collapse " id="science-toolkitdocsdevelopment">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+    </li>
+  </ul>
+</ul>
+
+  </nav>
+</div>
+
+
+
+
+          </div>
+          <div class="d-none d-xl-block col-xl-2 td-toc d-print-none">
+            
+
+
+
+
+
+
+<div class="td-page-meta ml-2 pb-1 pt-2 mb-0">
+
+
+
+
+
+<a href="https://github.com/intelygenz/science-toolkit/edit/master/docs-markdown/content/en/docs/installation/restricted-environment.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
+<a href="https://github.com/intelygenz/science-toolkit/issues/new?title=Installation%20on%20restricted%20environment" target="_blank"><i class="fab fa-github fa-fw"></i> Create documentation issue</a>
+
+
+<a href="https://github.com/intelygenz/science-toolkit/issues/new" target="_blank"><i class="fas fa-tasks fa-fw"></i> Create project issue</a>
+
+</div>
+
+
+
+
+
+
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-to-export-the-science-toolkit-docker-images">How to export the Science Toolkit Docker images</a></li>
+    <li><a href="#how-to-import-the-docker-images-in-each-kubernetes-host">How to import the Docker images in each Kubernetes host</a></li>
+  </ul>
+</nav>
+
+
+
+          </div>
+          <main class="col-12 col-md-9 col-xl-8 pl-md-5" role="main">
+            
+  
+
+            <nav aria-label="breadcrumb" class="d-none d-md-block d-print-none">
+	<ol class="breadcrumb spb-1">
+		
+
+
+
+
+
+
+
+
+
+
+<li class="breadcrumb-item" >
+	<a href="https://intelygenz.github.io/science-toolkit/docs/">Docs</a>
+</li>
+
+
+
+
+<li class="breadcrumb-item" >
+	<a href="https://intelygenz.github.io/science-toolkit/docs/installation/">Installation</a>
+</li>
+
+
+
+
+<li class="breadcrumb-item active" aria-current="page">
+	<a href="https://intelygenz.github.io/science-toolkit/docs/installation/restricted-environment/">Installation on restriced environment</a>
+</li>
+
+	</ol>
+</nav	>
+
+            
+<div class="td-content">
+	<h1>Installation on restricted environment</h1>
+	<div class="lead">How to start the Science Toolkit on a restricted environment</div>
+	<h1 id="context">Context</h1>
+<p>Sometimes there are project where the data are very sensitive and the access to those is only posible from a very
+restricted environment, withut Internet access and with traced remote access to the Science Toolkit via VDI, VPN, etc..</p>
+<p>To achieve the installation of Science Toolkit on these kind of environment is necesary to upload the Docker images through the required security protocols of the organization where th Science Toolkit is going to be deployed, that means that we need to pass all the Docker images as files instead of URL of a Docker registry to be downloaded by the Helm installation process.</p>
+<h2 id="how-to-export-the-science-toolkit-docker-images">How to export the Science Toolkit Docker images</h2>
+<p>The first step is to deploy the local environment running in a local machine the script from the repository root <code>./local_env.sh</code>. This scrip will deploy in a Minikube environment the Science Toolkit.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./local_env.sh
+Disable custom kubeconfig environment
+😄  <span style="color:#ce5c00;font-weight:bold">[</span>toolkit<span style="color:#ce5c00;font-weight:bold">]</span> minikube v1.12.1 on Ubuntu 20.04
+    ▪ <span style="color:#000">MINIKUBE_PROFILE</span><span style="color:#ce5c00;font-weight:bold">=</span>toolkit
+✨  Using the docker driver based on user configuration
+👍  Starting control plane node toolkit in cluster toolkit
+🎉  minikube 1.12.2 is available! Download it: https://github.com/kubernetes/minikube/releases/tag/v1.12.2
+💡  To disable this notice, run: <span style="color:#4e9a06">&#39;minikube config set WantUpdateNotification false&#39;</span>
+
+🔥  Creating docker container <span style="color:#ce5c00;font-weight:bold">(</span><span style="color:#000">CPUs</span><span style="color:#ce5c00;font-weight:bold">=</span>4, <span style="color:#000">Memory</span><span style="color:#ce5c00;font-weight:bold">=</span>8192MB<span style="color:#ce5c00;font-weight:bold">)</span> ...
+🐳  Preparing Kubernetes v1.15.4 on Docker 19.03.2 ...
+    ▪ apiserver.authorization-mode<span style="color:#ce5c00;font-weight:bold">=</span>RBAC
+    &gt; kubectl.sha1: <span style="color:#0000cf;font-weight:bold">41</span> B / <span style="color:#0000cf;font-weight:bold">41</span> B <span style="color:#ce5c00;font-weight:bold">[</span>----------------------------<span style="color:#ce5c00;font-weight:bold">]</span> 100.00% ? p/s 0s
+    &gt; kubeadm.sha1: <span style="color:#0000cf;font-weight:bold">41</span> B / <span style="color:#0000cf;font-weight:bold">41</span> B <span style="color:#ce5c00;font-weight:bold">[</span>----------------------------<span style="color:#ce5c00;font-weight:bold">]</span> 100.00% ? p/s 0s
+    &gt; kubelet.sha1: <span style="color:#0000cf;font-weight:bold">41</span> B / <span style="color:#0000cf;font-weight:bold">41</span> B <span style="color:#ce5c00;font-weight:bold">[</span>----------------------------<span style="color:#ce5c00;font-weight:bold">]</span> 100.00% ? p/s 0s
+    &gt; kubeadm: 38.32 MiB / 38.32 MiB <span style="color:#ce5c00;font-weight:bold">[</span>---------------<span style="color:#ce5c00;font-weight:bold">]</span> 100.00% 22.69 MiB p/s 2s
+    &gt; kubectl: 40.99 MiB / 40.99 MiB <span style="color:#ce5c00;font-weight:bold">[</span>---------------<span style="color:#ce5c00;font-weight:bold">]</span> 100.00% 20.24 MiB p/s 2s
+    &gt; kubelet: 114.15 MiB / 114.15 MiB <span style="color:#ce5c00;font-weight:bold">[</span>-------------<span style="color:#ce5c00;font-weight:bold">]</span> 100.00% 32.58 MiB p/s 4s
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: default-storageclass, storage-provisioner
+🏄  Done! kubectl is now configured to use <span style="color:#4e9a06">&#34;toolkit&#34;</span>
+
+❗  /usr/local/bin/kubectl is version 1.18.0, which may be incompatible with Kubernetes 1.15.4.
+💡  You can also use <span style="color:#4e9a06">&#39;minikube kubectl -- get pods&#39;</span> to invoke a matching version
+🔎  Verifying ingress addon...
+🌟  The <span style="color:#4e9a06">&#39;ingress&#39;</span> addon is enabled
+🌟  The <span style="color:#4e9a06">&#39;dashboard&#39;</span> addon is enabled
+🔎  Verifying registry addon...
+🌟  The <span style="color:#4e9a06">&#39;registry&#39;</span> addon is enabled
+🌟  The <span style="color:#4e9a06">&#39;storage-provisioner&#39;</span> addon is enabled
+🌟  The <span style="color:#4e9a06">&#39;metrics-server&#39;</span> addon is enabled
+Replacing env to <span style="color:#4e9a06">&#39;./user-tools-operator/helm-charts/usertools/templates/statefulset.yaml.tpl&#39;</span> into <span style="color:#4e9a06">&#39;./user-tools-operator/helm-charts/usertools/templates/statefulset.yaml&#39;</span>
+Replacing env to <span style="color:#4e9a06">&#39;./helm/science-toolkit/values.yaml.tpl&#39;</span> into <span style="color:#4e9a06">&#39;./helm/science-toolkit/values.yaml&#39;</span>
+<span style="color:#4e9a06">&#34;stable&#34;</span> has been added to your repositories
+📚️ Create Namespace <span style="color:#204a87;font-weight:bold">if</span> not exist...
+
+W0810 11:24:32.286701  <span style="color:#0000cf;font-weight:bold">726844</span> helpers.go:535<span style="color:#ce5c00;font-weight:bold">]</span> --dry-run is deprecated and can be replaced with --dry-run<span style="color:#ce5c00;font-weight:bold">=</span>client.
+namespace/toolkit created
+📦 Applying helm chart...
+
+Hang tight <span style="color:#204a87;font-weight:bold">while</span> we grab the latest from your chart repositories...
+...Successfully got an update from the <span style="color:#4e9a06">&#34;jfelten&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;rimusz&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;science-toolkit&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;influxdata&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;aws&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;konstellation-ce&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;jetstack&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;konstellation-io&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;gitlab&#34;</span> chart repository
+...Successfully got an update from the <span style="color:#4e9a06">&#34;stable&#34;</span> chart repository
+Update Complete. ⎈Happy Helming!⎈
+Saving <span style="color:#0000cf;font-weight:bold">1</span> charts
+Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+Deleting outdated charts
+Release <span style="color:#4e9a06">&#34;toolkit&#34;</span> does not exist. Installing it now.
+NAME: toolkit
+LAST DEPLOYED: Mon Aug <span style="color:#0000cf;font-weight:bold">10</span> 11:24:37 <span style="color:#0000cf;font-weight:bold">2020</span>
+NAMESPACE: toolkit
+STATUS: deployed
+REVISION: <span style="color:#0000cf;font-weight:bold">1</span>
+TEST SUITE: None
+NOTES:
+----
+
+🌠 Konstellation Science Toolkit Installed
+<span style="color:#8f5902;font-style:italic">##############################</span>
+
+Your release is named toolkit.
+
+Now open your browser at: 🌎 http://app.toolkit.172.17.0.3.nip.io
+
+Thank you <span style="color:#204a87;font-weight:bold">for</span> installing SCIENCE-TOOLKIT.
+
+----
+
+✔️  Done.
+
+</code></pre></div><p>Once that the Science Toolkit is deployed in our local machine on top of Minikue we have to login and start de <code>Users Toolks</code> in order to download all the Docker images required to perform trainings and write experiments. When the Users Tooll are up and running run the script <code>./scripts/export_images.sh</code>. This script will create a folder called <code>toolkit_images</code> where will export all the docker images as <code>.tgz</code> files and will create a <code>.tar.gz</code> with all the images.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#204a87">cd</span> scripts/
+./export_images.sh
+⏳ Check <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">local</span> Minikube environment is running Science Toolkit...
+✔ Done
+⏳ Getting images to be exported...
+✔ Done
+⏳ Creating <span style="color:#204a87">export</span> folder and cleaning <span style="color:#204a87;font-weight:bold">if</span> present...
+✔ Done
+⏳ Exporting Science Toolkit Docker images...
+0: Exporting Docker image drone/drone:1.7.0 ...
+1: Exporting Docker image drone/kubernetes-secrets:latest ...
+2: Exporting Docker image minio/minio:RELEASE.2019-08-07T01-59-21Z ...
+3: Exporting Docker image postgres:12.1 ...
+4: Exporting Docker image terminus7/drone-runner-kube:latest ...
+5: Exporting Docker image terminus7/gitea:oauth ...
+6: Exporting Docker image terminus7/gitea-oauth2-setup:latest ...
+7: Exporting Docker image terminus7/jupyterlab-gpu:2.2.15 ...
+8: Exporting Docker image terminus7/mlflow:latest ...
+9: Exporting Docker image terminus7/oauth2-proxy:latest ...
+10: Exporting Docker image terminus7/sci-toolkit-dashboard:latest ...
+11: Exporting Docker image terminus7/sci-toolkit-user-tools-operator:latest ...
+12: Exporting Docker image terminus7/sci-toolkit-vscode:1.4.6 ...
+✔ Done
+⏳ Creating <span style="color:#204a87">export</span> tar.gz file...
+tar: Removing leading <span style="color:#4e9a06">`</span>/<span style="color:#a40000">&#39;</span> from member names
+/github/science-toolkit/scripts/toolkit_images/
+/github/science-toolkit/scripts/toolkit_images/terminus7-drone-runner-kube:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-gitea:oauth.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-sci-toolkit-user-tools-operator:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-sci-toolkit-dashboard:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-gitea-oauth2-setup:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-sci-toolkit-vscode:1.4.6.gz
+/github/science-toolkit/scripts/toolkit_images/drone-drone:1.7.0.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-oauth2-proxy:latest.gz
+/github/science-toolkit/scripts/toolkit_images/drone-kubernetes-secrets:latest.gz
+/github/science-toolkit/scripts/toolkit_images/minio-minio:RELEASE.2019-08-07T01-59-21Z.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-mlflow:latest.gz
+/github/science-toolkit/scripts/toolkit_images/terminus7-jupyterlab-gpu:2.2.15.gz
+/github/science-toolkit/scripts/toolkit_images/postgres:12.1.gz
+✔ Done
+</code></pre></div><h2 id="how-to-import-the-docker-images-in-each-kubernetes-host">How to import the Docker images in each Kubernetes host</h2>
+<p>In order to import all the previously exported Docker images just follow the below steps.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tar zxvf toolkit_images.tar.gz
+<span style="color:#204a87">cd</span> toolkit_images/
+<span style="color:#8f5902;font-style:italic"># the next command is just for one images, repeat it for each image</span>
+docker import terminus7-gitea-oauth2-setup:latest.gz terminus7/gitea-oauth2-setup:latest
+<span style="color:#ce5c00;font-weight:bold">[</span>...<span style="color:#ce5c00;font-weight:bold">]</span>
+</code></pre></div>
+	
+	
+	<div class="text-muted mt-5 pt-3 border-top">Last modified January 1, 0001
+</div>
+</div>
+
+
+          </main>
+        </div>
+      </div>
+      
+<footer class="bg-dark py-5 row d-print-none">
+  <div class="container-fluid mx-sm-5">
+    <div class="row">
+      <div class="col-6 col-sm-4 text-xs-center order-sm-2">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Twitter" aria-label="Twitter">
+    <a class="text-white" target="_blank" href="https://twitter.com/intelygenz">
+      <i class="fab fa-twitter"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-6 col-sm-4 text-right text-xs-center order-sm-3">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Github" aria-label="Github">
+    <a class="text-white" target="_blank" href="https://github.com/intelygenz/science-toolkit">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-12 col-sm-4 text-center py-2 order-sm-2">
+        <small class="text-white">&copy; 2020 Intelygenz AI All Rights Reserved</small>
+        
+	
+		<p class="mt-2"><a href="/science-toolkit/about/">About Science Toolkits</a></p>
+	
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+<script src="/science-toolkit/js/main.min.3587468abafd7ee678f61330f7c574ba0376f12451f11e076f2283f1e0504095.js" integrity="sha256-NYdGirr9fuZ49hMw98V0ugN28SRR8R4HbyKD8eBQQJU=" crossorigin="anonymous"></script>
+
+
+
+  </body>
+</html>
