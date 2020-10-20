@@ -1,1 +1,2 @@
 language-pack-es
+libgl1-mesa-glx
