@@ -103,7 +103,7 @@ if [ "$SKIP_BUILD" != "1" ]; then
 fi
 
 # Helm v3 needs this the base repo to be added manually
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
+helm repo add stable https://charts.helm.sh/stable
 
 export SDK_RELEASE_VERSION="v0.13.0"
 export OPERATOR_SDK_INSTALLED=$(cmd_installed operator-sdk)
@@ -131,6 +131,7 @@ helm upgrade \
   --namespace "${NAMESPACE}" \
   --set domain=$DOMAIN \
   --set tls.enabled=$ENABLE_TLS \
+  --set minio.securityContext.runAsUser=0 \
   --timeout 60m \
   helm/science-toolkit
 

@@ -9,11 +9,11 @@ data:
   DRONE_GITEA_SERVER: {{ printf "%s://gitea.%s" ( include "protocol" . ) .Values.domain }}
   DRONE_GIT_ALWAYS_AUTH: "false"
   DRONE_RUNNER_CAPACITY: "2"
-  DRONE_SERVER_PROTO: https
+  DRONE_SERVER_PROTO: {{ printf "%s" ( include "protocol" . ) }}
   DRONE_SERVER_HOST: drone.{{ .Values.domain }}
   DRONE_TLS_AUTOCERT: "false"
   DRONE_RPC_HOST: drone.{{ .Values.domain }}
-  DRONE_RPC_PROTO: https
+  DRONE_RPC_PROTO: {{ printf "%s" ( include "protocol" . ) }}
   DRONE_RPC_SECRET: {{ .Values.drone.rpcSecret }}
   DRONE_NAMESPACE_DEFAULT: {{ .Release.Namespace }}
   DRONE_LOGS_DEBUG: "true"
