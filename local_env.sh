@@ -131,6 +131,7 @@ helm upgrade \
   --namespace "${NAMESPACE}" \
   --set domain=$DOMAIN \
   --set tls.enabled=$ENABLE_TLS \
+  --set minio.securityContext.runAsUser=0 \
   --timeout 60m \
   helm/science-toolkit
 
