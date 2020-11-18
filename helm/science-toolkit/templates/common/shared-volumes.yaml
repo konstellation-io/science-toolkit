@@ -10,9 +10,10 @@ spec:
   accessModes:
   - ReadWriteMany
   storageClassName: {{ .Values.sharedVolume.storageClassName }}
+  {{ if .Values.sharedVolume.path -}}
   hostPath:
     path: {{ .Values.sharedVolume.path }}
-
+  {{- end }}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

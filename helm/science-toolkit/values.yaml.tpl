@@ -4,7 +4,6 @@ sharedVolume:
   name: received-data
   storageClassName: standard
   size: 10Gi
-  path: /sci-toolkit/received-data
 
 dashboard:
   image:
