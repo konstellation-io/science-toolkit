@@ -21,11 +21,11 @@ spec:
               name: aws-secret
               key: AWS_SECRET_ACCESS_KEY
           {{ else -}}
-          cloudDNS:
-            project: {{ .Values.tls.certManager.dns01.cloudDNS.project }}
+          clouddns:
+            project: {{ .Values.tls.certManager.dns01.clouddns.project }}
             serviceAccountSecretRef:
-              name: {{ .Values.tls.certManager.dns01.cloudDNS.serviceAccountSecretRef.name }}
-              key: {{ .Values.tls.certManager.dns01.cloudDNS.serviceAccountSecretRef.key }}  
+              name: {{ .Values.tls.certManager.dns01.clouddns.serviceAccountSecretRef.name }}
+              key: {{ .Values.tls.certManager.dns01.clouddns.serviceAccountSecretRef.key }}  
           {{ end -}}
     {{ else -}}
       - http01: {}
