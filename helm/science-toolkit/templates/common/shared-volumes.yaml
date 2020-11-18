@@ -1,4 +1,4 @@
-{{ if .Values.sharedVolume.path -}}
+{{ if .Values.sharedVolume.path }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -13,7 +13,7 @@ spec:
   storageClassName: {{ .Values.sharedVolume.storageClassName }}
   hostPath:
     path: {{ .Values.sharedVolume.path }}
-{{- end }}
+{{ end }}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
