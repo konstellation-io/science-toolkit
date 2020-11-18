@@ -7,9 +7,12 @@ kind: Deployment
 metadata:
   name: {{ .Values.mlflow.name }}
   labels:
-    app:  {{ .Values.mlflow.name }}
+    app: {{ .Values.mlflow.name }}
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.mlflow.name }}
   template:
     metadata:
       labels:

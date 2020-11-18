@@ -11,6 +11,9 @@ metadata:
 spec:
   serviceName: "drone"
   replicas: 1
+  selector:
+    matchLabels:
+      app: drone
   template:
     metadata:
       labels:
