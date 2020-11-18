@@ -73,17 +73,17 @@ export const APPLICATION_GROUPS = {
 };
 
 export const COLORS = {
-  HEADER: '#27444d',
+  HEADER: '#000',
   BG: {
-    BOTTOM: '#253c54',
-    MIDDLE: '#304469',
-    TOP: '#2f5f68',
+    BOTTOM: '#0D0E11',
+    MIDDLE: '#0D0E11',
+    TOP: '#0D0E11',
   },
   GROUP: {
-    BOTTOM: '#2c3d52',
-    TOP: '#2a4a54',
+    BOTTOM: '#202125',
+    TOP: '#151619',
   },
-  CARD: '#506372',
+  CARD: '#121317',
   OK: {
     DEFAULT: '#8fd14f',
     HIGHLIGHT: '#7cb940',
@@ -94,6 +94,7 @@ export const COLORS = {
     HIGHLIGHT: '#c13317',
     DARK: '#66414D',
   },
+  SKELETON: '#151619',
   WARNING: '#f5a31b',
   FONT: '#feffe8',
 };

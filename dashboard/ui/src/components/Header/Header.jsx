@@ -1,30 +1,34 @@
-import React from 'react';
+import { APPLICATIONS, COLORS } from '../../constants';
+
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
+import PersonIcon from '@material-ui/icons/Person';
+import React from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Skeleton from '@material-ui/lab/Skeleton';
-import PersonIcon from '@material-ui/icons/Person';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
-import { COLORS, APPLICATIONS } from '../../constants';
 import { getUrl } from '../../utils';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   header: {
     backgroundColor: COLORS.HEADER,
   },
+  icon: {
+    marginRight: 'auto'
+  },
   toolbar: {
     minHeight: 'max(7.5vh, 50px)',
   },
-  title: {
-    margin: 'auto',
-  },
   skeleton: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row'
+  },
+  skeletonEl: {
+    backgroundColor: COLORS.SKELETON,
   },
   settingsIcon: {
     color: COLORS.FONT,
@@ -34,7 +38,7 @@ const useStyles = makeStyles({
   avatar: {
     width: 35,
     height: 35,
-    marginRight: 12,
+    marginRight: 12
   },
 });
 
@@ -52,9 +56,10 @@ function Header({ username }) {
         height={35}
         variant='circle'
         style={{ marginRight: 8 }}
+        className={classes.skeletonEl}
         animation='wave'
       />
-      <Skeleton width={90} height={36} animation='wave' />
+      <Skeleton width={90} height={36} animation='wave' className={classes.skeletonEl} />
     </div>
   );
 
@@ -62,10 +67,7 @@ function Header({ username }) {
     <div>
       <AppBar position='static' className={classes.header}>
         <Toolbar color='primary' className={classes.toolbar}>
-          <img src='/static/img/intelygenz-lab.png' alt='Kitten' height='30' />
-          <Typography variant='h5' color='inherit' className={classes.title}>
-            Intelygenz A.I. Science Toolkit
-          </Typography>
+          <img src='/static/img/logo-vertical-kdl.png' className={classes.icon} alt='KDL' height='45' />
           {username ? (
             <>
               <Avatar

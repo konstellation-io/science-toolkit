@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import MuiAlert from '@material-ui/lab/Alert';
-import Snackbar from '@material-ui/core/Snackbar';
-import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
-import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { ThemeProvider, createMuiTheme, Button } from '@material-ui/core';
+import { Button, ThemeProvider, createMuiTheme } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+
 import { COLORS } from '../../constants';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import MuiAlert from '@material-ui/lab/Alert';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Snackbar from '@material-ui/core/Snackbar';
+import Typography from '@material-ui/core/Typography';
+import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 
 const theme = createMuiTheme({
   palette: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
     position: 'fixed',
     bottom: 20,
     left: '5%',
+    backgroundColor: COLORS.SKELETON
   },
   container: {
     position: 'fixed',
@@ -104,7 +106,7 @@ function getButtonLabel(active, loading) {
   const startLabel = loading ? 'STARTING' : 'START';
   const stopLabel = loading ? 'STOPPING' : 'STOP';
 
-  return `${active ? stopLabel : startLabel} USER TOOLS`;
+  return `${active ? stopLabel : startLabel} PRIVATE TOOLS`;
 }
 
 function ActionButton({
@@ -143,7 +145,7 @@ function ActionButton({
     setOpen(false);
   };
 
-  const actionInfoTextBase = 'User tools are ';
+  const actionInfoTextBase = 'Your private tools are ';
 
   const buttonColor = active ? 'primary' : 'secondary';
   const iconColor = active ? 'secondary' : 'error';
