@@ -11,6 +11,9 @@ metadata:
 spec:
   serviceName: "gitea"
   replicas: 1
+  selector:
+    matchLabels:
+      app: gitea
   template:
     metadata:
       labels:
