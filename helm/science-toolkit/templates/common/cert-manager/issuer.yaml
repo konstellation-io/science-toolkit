@@ -10,7 +10,7 @@ spec:
     privateKeySecretRef:
       name: {{ .Values.domain }}-acme-tls-secret
     solvers:
-      {{ if hasKey .Values.tls.certManager.dns01 "route53" -}}
+      {{ if hasKey .Values.tls.certManager "dns01" -}}
       - dns01:
           route53:
             region: {{ .Values.tls.certManager.dns01.route53.region }}
