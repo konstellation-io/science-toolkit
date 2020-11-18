@@ -1,39 +1,40 @@
-import React from 'react';
+import { COLORS } from '../../constants';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
+import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Link from '@material-ui/core/Link';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { COLORS } from '../../constants';
+import WarningRoundedIcon from '@material-ui/icons/WarningRounded';
 import { getUrl } from '../../utils';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
     minWidth: 100,
     maxWidth: '11vw',
     backgroundColor: COLORS.CARD,
-    borderLeftWidth: 5,
-    borderLeftStyle: 'solid',
+    borderTopWidth: 8,
+    borderTopStyle: 'solid',
     height: '100%',
+    boxShadow: '0 0 6px 1px black'
   },
   disabled: {
     pointerEvents: 'none',
   },
   active: {
-    borderLeftColor: COLORS.OK.DEFAULT,
+    borderTopColor: COLORS.OK.DEFAULT,
   },
   inactive: {
-    borderLeftColor: COLORS.ERROR.DEFAULT,
+    borderTopColor: COLORS.ERROR.DEFAULT,
   },
   iconWarning: {
     position: 'absolute',
     top: 6,
     right: 8,
     color: COLORS.WARNING,
-    fontSize: 20,
+    fontSize: 26,
   },
   content: {
     padding: 0,
@@ -58,7 +59,7 @@ const useStyles = makeStyles({
       width: 'inherit',
     },
     height: '75%',
-    maxWidth: 110,
+    maxWidth: 110
   },
 });
 const Application = ({

@@ -1,14 +1,17 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
 import Application from '../Application/Application';
-import Skeleton from '@material-ui/lab/Skeleton';
 import { COLORS } from '../../constants';
+import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   groupContainer: {
     height: '50%',
+  },
+  skeleton: {
+    backgroundColor: COLORS.SKELETON
   },
   group: {
     background: `linear-gradient(to bottom, ${COLORS.GROUP.TOP} 0%,${COLORS.GROUP.BOTTOM} 100%)`,
