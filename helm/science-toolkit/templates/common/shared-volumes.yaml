@@ -6,11 +6,11 @@ spec:
   capacity:
     storage: {{ .Values.sharedVolume.size }}
   # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
-  volumeMode: Filesystem
   accessModes:
   - ReadWriteMany
   storageClassName: {{ .Values.sharedVolume.storageClassName }}
   {{ if .Values.sharedVolume.path -}}
+  volumeMode: Filesystem
   hostPath:
     path: {{ .Values.sharedVolume.path }}
   {{- end }}
