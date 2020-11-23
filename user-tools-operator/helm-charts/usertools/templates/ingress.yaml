@@ -23,14 +23,34 @@ spec:
     - host: {{ .Values.usernameSlug }}-code.{{ .Values.domain }}
       http:
         paths:
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: {{ include "user-tools.fullname" . }}-code
+                port:
+                  number: 80
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
           - path: /
             backend:
               serviceName: {{ include "user-tools.fullname" . }}-code
               servicePort: http
+          {{ end }} 
     - host: {{ .Values.usernameSlug }}-jupyter.{{ .Values.domain }}
       http:
         paths:
-            - path: /
-              backend:
-                serviceName: {{ include "user-tools.fullname" . }}-jupyter
-                servicePort: http
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: {{ include "user-tools.fullname" . }}-jupyter
+                port:
+                  number: 80
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+          - path: /
+            backend:
+              serviceName: {{ include "user-tools.fullname" . }}-jupyter
+              servicePort: http
+          {{ end }} 
