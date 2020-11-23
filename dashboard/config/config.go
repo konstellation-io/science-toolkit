@@ -20,6 +20,9 @@ type Config struct {
 	} `yaml:"server"`
 
 	VSCode struct {
+		Ingress struct {
+			Type string `yaml:"type" envconfig:"TOOLKIT_INGRESS_TYPE"`
+		}
 		Storage struct {
 			Size      string `yaml:"size" envconfig:"TOOLKIT_VSCODE_STORAGE_SIZE"`
 			ClassName string `yaml:"className" envconfig:"TOOLKIT_VSCODE_STORAGE_CLASSNAME"`
