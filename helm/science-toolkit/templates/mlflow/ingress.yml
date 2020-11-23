@@ -1,4 +1,8 @@
+{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+apiVersion: networking.k8s.io/v1
+{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
 apiVersion: networking.k8s.io/v1beta1
+{{ end }}
 kind: Ingress
 metadata:
   name: {{ .Values.mlflow.name }}-ingress
@@ -15,7 +19,17 @@ spec:
     - host: {{ .Values.mlflow.host }}.{{ .Values.domain }}
       http:
         paths:
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: {{ .Values.mlflow.name }}
+                port:
+                  number: 8080
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
           - path: /
             backend:
               serviceName: {{ .Values.mlflow.name }}
               servicePort: 8080
+          {{ end }} 

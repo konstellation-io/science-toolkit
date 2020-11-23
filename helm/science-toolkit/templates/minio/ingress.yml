@@ -1,11 +1,16 @@
+{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+apiVersion: networking.k8s.io/v1
+{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
 apiVersion: networking.k8s.io/v1beta1
+{{ end }}
 kind: Ingress
 metadata:
   name: minio
   annotations:
+    {{ if eq .Values.ingress.type "nginx" }}
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
-
+    {{ end }}
 spec:
   {{ if .Values.tls.enabled -}}
   tls:
@@ -17,7 +22,17 @@ spec:
     - host: minio.{{ .Values.domain }}
       http:
         paths:
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: {{ .Release.Name }}-minio
+                port:
+                  number: 9000
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
           - path: /
             backend:
               serviceName: {{ .Release.Name }}-minio
               servicePort: 9000
+          {{ end }} 

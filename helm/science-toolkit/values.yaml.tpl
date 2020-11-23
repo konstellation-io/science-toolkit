@@ -1,5 +1,8 @@
 domain: toolkit.local
 
+ingress:
+  type: nginx
+  
 sharedVolume:
   name: received-data
   storageClassName: standard
