@@ -1,6 +1,6 @@
-{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
 apiVersion: networking.k8s.io/v1
-{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
 apiVersion: networking.k8s.io/v1beta1
 {{ end }}
 kind: Ingress
@@ -21,7 +21,7 @@ spec:
     - host: gitea.{{ .Values.domain }}
       http:
         paths:
-          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
           - pathType: Prefix
             path: "/"
             backend:
@@ -29,7 +29,7 @@ spec:
                 name: gitea
                 port:
                   number: 80
-          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           - path: /
             backend:
               serviceName: gitea

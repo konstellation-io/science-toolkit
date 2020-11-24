@@ -1,6 +1,6 @@
-{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
 apiVersion: networking.k8s.io/v1
-{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
 apiVersion: networking.k8s.io/v1beta1
 {{ end }}
 kind: Ingress
@@ -14,16 +14,18 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "1000000m"
     {{ end }}
 spec:
+  {{ if .Values.tls -}}
   tls:
     - hosts:
         - {{ .Values.usernameSlug }}-code.{{ .Values.domain }}
         - {{ .Values.usernameSlug }}-jupyter.{{ .Values.domain }}
       secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
   rules:
     - host: {{ .Values.usernameSlug }}-code.{{ .Values.domain }}
       http:
         paths:
-          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
           - pathType: Prefix
             path: "/"
             backend:
@@ -31,7 +33,7 @@ spec:
                 name: {{ include "user-tools.fullname" . }}-code
                 port:
                   number: 80
-          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           - path: /
             backend:
               serviceName: {{ include "user-tools.fullname" . }}-code
@@ -40,7 +42,7 @@ spec:
     - host: {{ .Values.usernameSlug }}-jupyter.{{ .Values.domain }}
       http:
         paths:
-          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
           - pathType: Prefix
             path: "/"
             backend:
@@ -48,7 +50,7 @@ spec:
                 name: {{ include "user-tools.fullname" . }}-jupyter
                 port:
                   number: 80
-          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           - path: /
             backend:
               serviceName: {{ include "user-tools.fullname" . }}-jupyter
