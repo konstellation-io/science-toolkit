@@ -163,7 +163,10 @@ func (r *ResourceManager) CreateUserTools(user *user.User) error {
 				},
 			},
 			"spec": map[string]interface{}{
-				"domain":       r.config.BaseDomainName,
+				"domain": r.config.BaseDomainName,
+				"ingress": map[string]string{
+					"type": r.config.VSCode.Ingress.Type,
+				},
 				"username":     user.Username,
 				"usernameSlug": user.GetUsernameSlug(),
 				"storage": map[string]string{

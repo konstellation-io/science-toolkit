@@ -1,7 +1,7 @@
 apiVersion: sci-toolkit.konstellation.io/v1alpha1
 kind: UserTools
 metadata:
-  name: gustavo
+  name: john-doe
 spec:
   # Default values copied from <project_dir>/helm-charts/usertools/values.yaml
   
@@ -10,14 +10,15 @@ spec:
   # Declare variables to be passed into your templates.
 
   domain: toolkit.local
-  username: gustavo
+  ingress:
+    type: "nginx"
+  username: john-doe
 
   storage:
     size: 10Gi
-    className: standard
+    className: standar
 
   sharedVolume:
     name: ""
 
-  tls:
-    enabled: false
+  tls: false

@@ -1,6 +1,12 @@
 domain: toolkit.local
+
+ingress:
+  type: "nginx"
+
 username: user.name
+
 usernameSlug: user-name
+
 storage:
   size: 10Gi
   className: standard

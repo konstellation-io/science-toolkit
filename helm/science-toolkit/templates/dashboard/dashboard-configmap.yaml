@@ -8,5 +8,6 @@ data:
   TOOLKIT_VSCODE_STORAGE_SIZE: {{ .Values.vscode.storage.size }}
   TOOLKIT_VSCODE_STORAGE_CLASSNAME: {{ .Values.vscode.storage.storageClassName }}
   TOOLKIT_BASE_DOMAIN_NAME: {{ .Values.domain }}
+  TOOLKIT_INGRESS_TYPE: {{ .Values.ingress.type }}
   TOOLKIT_SHARED_VOLUME: {{ .Values.sharedVolume.name }}
   TOOLKIT_TLS: "{{ .Values.tls.enabled }}"

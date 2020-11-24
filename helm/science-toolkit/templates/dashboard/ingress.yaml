@@ -1,9 +1,15 @@
+{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+apiVersion: networking.k8s.io/v1
+{{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
 apiVersion: networking.k8s.io/v1beta1
+{{ end }}
 kind: Ingress
 metadata:
   name: dashboard
   annotations:
+    {{ if eq .Values.ingress.type "nginx" }}
     kubernetes.io/ingress.class: "nginx"
+    {{ end }}
 spec:
   {{ if .Values.tls.enabled -}}
   tls:
@@ -15,7 +21,17 @@ spec:
     - host: app.{{ .Values.domain }}
       http:
         paths:
+          {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: dashboard
+                port:
+                  number: 80
+          {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
           - path: /
             backend:
               serviceName: dashboard
               servicePort: http
+          {{ end }} 
