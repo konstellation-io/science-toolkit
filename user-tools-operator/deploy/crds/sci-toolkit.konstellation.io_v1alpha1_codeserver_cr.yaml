@@ -1,7 +1,7 @@
 apiVersion: sci-toolkit.konstellation.io/v1alpha1
 kind: UserTools
 metadata:
-  name: jhon-doe
+  name: john-doe
 spec:
   # Default values copied from <project_dir>/helm-charts/usertools/values.yaml
   
@@ -12,7 +12,7 @@ spec:
   domain: toolkit.local
   ingress:
     type: "nginx"
-  username: jhon-doe
+  username: john-doe
 
   storage:
     size: 10Gi
