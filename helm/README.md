@@ -29,6 +29,7 @@ helm upgrade --install sci-toolkit --namespace sci-toolkit ./science-toolkit
 | Parameter | Description                                                     | Default         |
 | --------- | --------------------------------------------------------------- | --------------- |
 | `domain`  | This is the base DNS name for all the components in the toolkit | `toolkit.local` |
+| `ingress.type`  | Define which Ingress Controller is deployed on your Kubernetes cluster | `nginx` |
 
 ### Gitea
 
