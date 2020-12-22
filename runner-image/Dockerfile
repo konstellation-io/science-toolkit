@@ -95,4 +95,6 @@ RUN cat custom_requirements.txt >> requirements.txt
 RUN pip install setuptools wheel && \
       pip install cython thriftpy
 
+RUN pip install --upgrade pip
+
 RUN pip install -r requirements.txt

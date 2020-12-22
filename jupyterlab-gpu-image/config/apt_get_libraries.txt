@@ -1,1 +1,6 @@
 language-pack-es
+llvm-10
+llvm-10-dev
+llvm-10-runtime
+llvm-10-tools
+libllvm-10-ocaml-dev

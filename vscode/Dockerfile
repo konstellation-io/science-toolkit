@@ -2,7 +2,7 @@ FROM codercom/code-server:3.1.0
 
 USER root
 
-ARG GO_VERSION=1.14.2
+ARG GO_VERSION=1.15.2
 ARG GOLANGCI_VERSION=1.24.0
 ENV GOROOT /usr/local/go
 ENV GO111MODULE=on
@@ -95,6 +95,8 @@ ADD ./common-science-requirements/requirements.txt /config/requirements.txt
 ADD ./config/requirements.txt /tmp/custom_requirements.txt
 RUN cat /tmp/custom_requirements.txt >> /config/requirements.txt
 
+RUN pip install --upgrade pip
+
 RUN pip install -r /config/requirements.txt
 
 # Golang
@@ -113,6 +115,7 @@ USER coder
 
 # Tools needed for VSCode Go Extension
 RUN go get -v $(cat /config/go_packages.txt)
+RUN go get -v golang.org/x/tools/gopls
 
 COPY entrypoint.sh /entrypoint.sh
 

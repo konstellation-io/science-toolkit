@@ -89,7 +89,7 @@ The output should look like:
   Update Complete. ⎈Happy Helming!⎈
   Saving 2 charts
   Downloading jupyterhub from repo https://jupyterhub.github.io/helm-chart/
-  Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+  Downloading minio from repo https://charts.helm.sh/stable
   Deleting outdated charts
   Release "toolkit" does not exist. Installing it now.
   NAME: toolkit

@@ -18,7 +18,7 @@ In order to install Science Toolkit needs the following tools:
 ## Add helm dependencies repos
 
 ```bash
-$ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+$ helm repo add stable https://charts.helm.sh/stable
 $ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 $ helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/
 $ helm repo update

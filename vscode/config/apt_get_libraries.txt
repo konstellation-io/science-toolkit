@@ -1,0 +1,12 @@
+python3.7-dev
+python3.7
+python3-pip
+libffi-dev 
+unixodbc
+unixodbc-dev
+libgtk2.0-dev
+llvm-7
+llvm-7-dev
+llvm-7-runtime
+llvm-7-tools
+libllvm-7-ocaml-dev

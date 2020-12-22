@@ -72,7 +72,7 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈Happy Helming!⎈
 Saving 1 charts
-Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+Downloading minio from repo https://charts.helm.sh/stable
 Deleting outdated charts
 Release "toolkit" does not exist. Installing it now.
 NAME: toolkit
