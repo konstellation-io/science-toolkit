@@ -100,7 +100,7 @@ $&amp;gt; kubectl version
   Update Complete. ⎈Happy Helming!⎈
   Saving 2 charts
   Downloading jupyterhub from repo https://jupyterhub.github.io/helm-chart/
-  Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+  Downloading minio from repo https://charts.helm.sh/stable
   Deleting outdated charts
   Release &amp;quot;toolkit&amp;quot; does not exist. Installing it now.
   NAME: toolkit
@@ -287,7 +287,7 @@ Hang tight &lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;while&lt;/
 ...Successfully got an update from the &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;stable&amp;#34;&lt;/span&gt; chart repository
 Update Complete. ⎈Happy Helming!⎈
 Saving &lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;1&lt;/span&gt; charts
-Downloading minio from repo https://kubernetes-charts.storage.googleapis.com
+Downloading minio from repo https://charts.helm.sh/stable
 Deleting outdated charts
 Release &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;toolkit&amp;#34;&lt;/span&gt; does not exist. Installing it now.
 NAME: toolkit
