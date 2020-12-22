@@ -1,14 +1,12 @@
 notebook==6.0.1
 jupyterhub==1.0.0
-jupyterlab==1.1.4
+jupyterlab==2.2.9
 bokeh==2.0.1
 ipywidgets==7.5.1
-jupyter-archive==0.6.2
-jupyter-tensorboard==0.2.0
 jupyterlab-dash==0.1.0a3
-jupyterlab-git==0.10.0
+jupyterlab-git==0.23.2
 jupytext==1.4.1
 nbdime==2.0.0
 nbresuse==0.3.3
 tensorflow==2.0.0b1 # needed to have tensorboard features
-tqdm==4.36.1
+tqdm==4.38.0

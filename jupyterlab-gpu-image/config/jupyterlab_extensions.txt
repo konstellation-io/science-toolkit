@@ -6,6 +6,6 @@
 @lckr/jupyterlab_variableinspector
 @telamonian/theme-darcula
 jupyter-matplotlib
-jupyterlab-dash@0.1.0-alpha.3
+jupyterlab-dash
 jupyterlab-jupytext
 jupyterlab_tensorboard

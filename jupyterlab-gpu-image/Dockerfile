@@ -1,7 +1,7 @@
 FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 
 ARG GO_VERSION=1.14.2
-ARG NODE_VERSION=10.16.3
+ARG NODE_VERSION=14.4.0
 ARG YARN_VERSION=1.19.1
 
 ARG NB_USER="jovyan"
@@ -167,7 +167,8 @@ ADD ./common-science-requirements/requirements.txt requirements.txt
 ADD ./config/requirements.txt custom_requirements.txt
 RUN cat custom_requirements.txt >> requirements.txt
 
-
+RUN ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
@@ -177,11 +178,10 @@ RUN jupyter notebook --generate-config
 # Install Jupyterlab Extensions
 ADD ./config/jupyterlab_extensions.txt jupyterlab_extensions.txt
 
-RUN rm -rf /home/$NB_USER/.cache/yarn && \
-    jupyter labextension install `cat jupyterlab_extensions.txt | xargs`
+RUN jupyter labextension install `cat jupyterlab_extensions.txt | xargs`
 
-RUN jupyter serverextension enable --py jupyterlab_git && \
-    jupyter serverextension enable --py jupyter_archive
+RUN jupyter serverextension enable --py jupyterlab_git
+    
 
 RUN jupyter lab build && \
     fix-permissions /home/$NB_USER
