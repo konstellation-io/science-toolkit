@@ -38,7 +38,7 @@ generate-helm-chart:
     GITHUB_TOKEN: $GITHUB_TOKEN
     GITLAB_USER_NAME: $GITLAB_USER_NAME
     GITLAB_USER_EMAIL: $GITLAB_USER_EMAIL
-    COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
+    COMPONENT_TAGS_PROJECT_ID: "konstellation-io/science-toolkit"
   before_script:
     - apk add git --update
     - export DOCKER_COMMAND="docker run
@@ -64,11 +64,11 @@ generate-helm-chart:
     - helm dep update helm/science-toolkit
     - mkdir /tmp/helm-chart
     - helm package helm/science-toolkit --version $CHART_VERSION -d /tmp/helm-chart
-    - /usr/local/bin/helm-chart-releaser upload  -o intelygenz -r science-toolkit -p /tmp/helm-chart --token $GITHUB_TOKEN
-    - git remote add upstream https://${GITHUB_PUBLISH_USERNAME}:${GITHUB_PUBLISH_TOKEN}@github.com/intelygenz/science-toolkit.git
+    - /usr/local/bin/helm-chart-releaser upload  -o konstellation-io -r science-toolkit -p /tmp/helm-chart --token $GITHUB_TOKEN
+    - git remote add upstream https://${GITHUB_PUBLISH_USERNAME}:${GITHUB_PUBLISH_TOKEN}@github.com/konstellation-io/science-toolkit.git
     - git fetch upstream
     - git checkout gh-pages
-    - /usr/local/bin/helm-chart-releaser index -o intelygenz -r science-toolkit -c https://intelygenz.github.io/science-toolkit/helm-chart -i helm-chart/index.yaml -p /tmp/helm-chart
+    - /usr/local/bin/helm-chart-releaser index -o konstellation-io -r science-toolkit -c https://konstellation-io.github.io/science-toolkit/helm-chart -i helm-chart/index.yaml -p /tmp/helm-chart
     - git add helm-chart/index.yaml
     - git config --global user.email "${GITLAB_USER_EMAIL}" && git config --global user.name "${GITLAB_USER_NAME}"
     - git commit -m "add chart version $CHART_VERSION"
