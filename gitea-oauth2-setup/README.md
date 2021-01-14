@@ -3,7 +3,7 @@
 This Docker image has been intended to run as an initContainer within a Kubernetes pod. In the start up this container conecto to Gitea server and create an Oauth2 Application api keys.
 
 This component is part of a toolkit used to simplify the data scientists daily work. 
-For more details check out the [Science Toolkit documentation](https://intelygenz.github.io/science-toolkit/)
+For more details check out the [Science Toolkit documentation](https://konstellation-io.github.io/science-toolkit/)
 
 
 ## Run

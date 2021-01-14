@@ -20,14 +20,14 @@ In order to install Science Toolkit needs the following tools:
 ```bash
 $ helm repo add stable https://charts.helm.sh/stable
 $ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-$ helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/
+$ helm repo add science-toolkit https://konstellation-io.github.io/science-toolkit/helm-chart/
 $ helm repo update
 ```
 
 
 ## Setting up chart values
 
-Make a copy of [sample-values.yaml](https://github.com/intelygenz/science-toolkit/tree/master/helm/example-values.yaml) and change what you need to deploy Science Toolkit on top of a Minikube local environment.
+Make a copy of [sample-values.yaml](https://github.com/konstellation-io/science-toolkit/tree/master/helm/example-values.yaml) and change what you need to deploy Science Toolkit on top of a Minikube local environment.
 
 Basically you need to set some credentials for different components. Only change your storage class name if your cluster have something different from `standard`.
 

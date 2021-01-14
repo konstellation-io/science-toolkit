@@ -5,7 +5,7 @@ Custom Visual Studio Code Docker image with preconfigured extensions.
 This is based on already existing [Docker image](https://hub.docker.com/r/codercom/code-server)
 
 This component is part of a toolkit used to simplify the data scientists daily work. 
-For more details check out the [Science Toolkit documentation](https://intelygenz.github.io/science-toolkit/)
+For more details check out the [Science Toolkit documentation](https://konstellation-io.github.io/science-toolkit/)
 
 ## Run
 

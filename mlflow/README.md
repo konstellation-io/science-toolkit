@@ -3,7 +3,7 @@
 This repo hold the creation of Docker image to run MLFlow Tracking Server.
 
 This component is part of a toolkit used to simplify the data scientists daily work.
-For more details check out the [Science Toolkit documentation](https://intelygenz.github.io/science-toolkit/)
+For more details check out the [Science Toolkit documentation](https://konstellation-io.github.io/science-toolkit/)
 
 
 ## Run it

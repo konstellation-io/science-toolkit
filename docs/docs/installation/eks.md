@@ -66,7 +66,7 @@ Add the CNAME wildcard entry like this.
 ### Add helm repo 
 
 ```bash
-helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/ 
+helm repo add science-toolkit https://konstellation-io.github.io/science-toolkit/helm-chart/ 
 helm repo update
 ```
 
