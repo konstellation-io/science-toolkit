@@ -1,11 +1,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Science Toolkit – Overview</title>
-    <link>https://intelygenz.github.io/science-toolkit/docs/overview/</link>
+    <link>https://konstellation-io.github.io/science-toolkit/docs/overview/</link>
     <description>Recent content in Overview on Science Toolkit</description>
     <generator>Hugo -- gohugo.io</generator>
     
-	  <atom:link href="https://intelygenz.github.io/science-toolkit/docs/overview/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://konstellation-io.github.io/science-toolkit/docs/overview/index.xml" rel="self" type="application/rss+xml" />
     
     
       

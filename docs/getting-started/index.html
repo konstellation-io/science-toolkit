@@ -7,7 +7,7 @@
 
 <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 
-<link rel="alternate" type="application/rss&#43;xml" href="https://intelygenz.github.io/science-toolkit/docs/getting-started/index.xml">
+<link rel="alternate" type="application/rss&#43;xml" href="https://konstellation-io.github.io/science-toolkit/docs/getting-started/index.xml">
 
 
 <link rel="shortcut icon" href="/favicons/favicon.ico" >
@@ -25,7 +25,7 @@
 <meta property="og:description" content="What does your user need to know to try your project?
 " />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://intelygenz.github.io/science-toolkit/docs/getting-started/" />
+<meta property="og:url" content="https://konstellation-io.github.io/science-toolkit/docs/getting-started/" />
 
 <meta itemprop="name" content="Getting Started">
 <meta itemprop="description" content="What does your user need to know to try your project?
@@ -110,7 +110,7 @@
   aria-label="Search this site…"
   autocomplete="off"
   
-  data-offline-search-index-json-src="/science-toolkit/offline-search-index.da14152be9cfec433bca200fde773ec1bd176f73443bc9cf476032e8d52b68ed1d1b2333e45a832a8009c98cb15cf08792be95129c2e04290f7f7ad2f45348d8.json"
+  data-offline-search-index-json-src="/science-toolkit/offline-search-index.f4791ffd6b3874c1902c0177b3c30e670ce84af6a54045e233f6da7b9b5e0338d0c1c3acceef5296479860f40d87f0ca9abb52154bc86eadc049df768a0ec52e.json"
   data-offline-search-base-href="/"
 >
 
@@ -372,14 +372,14 @@
 
 
 <li class="breadcrumb-item" >
-	<a href="https://intelygenz.github.io/science-toolkit/docs/">Docs</a>
+	<a href="https://konstellation-io.github.io/science-toolkit/docs/">Docs</a>
 </li>
 
 
 
 
 <li class="breadcrumb-item active" aria-current="page">
-	<a href="https://intelygenz.github.io/science-toolkit/docs/getting-started/">Getting Started</a>
+	<a href="https://konstellation-io.github.io/science-toolkit/docs/getting-started/">Getting Started</a>
 </li>
 
 	</ol>
@@ -402,10 +402,10 @@
 <h2 id="add-helm-dependencies-repos">Add helm dependencies repos</h2>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm repo add stable https://charts.helm.sh/stable
 $ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-$ helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/
+$ helm repo add science-toolkit https://konstellation-io.github.io/science-toolkit/helm-chart/
 $ helm repo update
 </code></pre></div><h2 id="setting-up-chart-values">Setting up chart values</h2>
-<p>Make a copy of <a href="https://github.com/intelygenz/science-toolkit/tree/master/helm/example-values.yaml">sample-values.yaml</a> and change what you need to deploy Science Toolkit on top of a Minikube local environment.</p>
+<p>Make a copy of <a href="https://github.com/konstellation-io/science-toolkit/tree/master/helm/example-values.yaml">sample-values.yaml</a> and change what you need to deploy Science Toolkit on top of a Minikube local environment.</p>
 <p>Basically you need to set some credentials for different components. Only change your storage class name if your cluster have something different from <code>standard</code>.</p>
 <h2 id="installation">Installation</h2>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm upgrade <span style="color:#4e9a06">\
@@ -497,7 +497,7 @@ where your ingress controller is listening, and set this domain in the <code>val
         
       </div>
       <div class="col-12 col-sm-4 text-center py-2 order-sm-2">
-        <small class="text-white">&copy; 2020 Intelygenz AI All Rights Reserved</small>
+        <small class="text-white">&copy; 2021 Intelygenz AI All Rights Reserved</small>
         
 	
 		<p class="mt-2"><a href="/science-toolkit/about/">About Science Toolkits</a></p>

@@ -1,11 +1,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Science Toolkit – Documentation</title>
-    <link>https://intelygenz.github.io/science-toolkit/docs/</link>
+    <link>https://konstellation-io.github.io/science-toolkit/docs/</link>
     <description>Recent content in Documentation on Science Toolkit</description>
     <generator>Hugo -- gohugo.io</generator>
     
-	  <atom:link href="https://intelygenz.github.io/science-toolkit/docs/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="https://konstellation-io.github.io/science-toolkit/docs/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -15,10 +15,10 @@
     
     <item>
       <title>Docs: Installation on Minikube</title>
-      <link>https://intelygenz.github.io/science-toolkit/docs/installation/minikube/</link>
+      <link>https://konstellation-io.github.io/science-toolkit/docs/installation/minikube/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://intelygenz.github.io/science-toolkit/docs/installation/minikube/</guid>
+      <guid>https://konstellation-io.github.io/science-toolkit/docs/installation/minikube/</guid>
       <description>
         
         
@@ -140,10 +140,10 @@ $&amp;gt; kubectl version
     
     <item>
       <title>Docs: Installation on EKS</title>
-      <link>https://intelygenz.github.io/science-toolkit/docs/installation/eks/</link>
+      <link>https://konstellation-io.github.io/science-toolkit/docs/installation/eks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://intelygenz.github.io/science-toolkit/docs/installation/eks/</guid>
+      <guid>https://konstellation-io.github.io/science-toolkit/docs/installation/eks/</guid>
       <description>
         
         
@@ -181,7 +181,7 @@ nginx-ingress-controller   LoadBalancer   10.100.147.xxx   a92e831a9825e4751ae71
 &lt;/ul&gt;
 &lt;h1 id=&#34;installation-steps&#34;&gt;Installation steps&lt;/h1&gt;
 &lt;h3 id=&#34;add-helm-repo&#34;&gt;Add helm repo&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm repo add science-toolkit https://intelygenz.github.io/science-toolkit/helm-chart/ 
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm repo add science-toolkit https://konstellation-io.github.io/science-toolkit/helm-chart/ 
 helm repo update
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;setup-storage-class&#34;&gt;Setup storage class&lt;/h3&gt;
 &lt;p&gt;You can show the actual values with this command:&lt;/p&gt;
@@ -221,10 +221,10 @@ user-tools-operator-54d5c79c65-qhvws     1/1     Running   &lt;span style=&#34;c
     
     <item>
       <title>Docs: Installation on restricted environment</title>
-      <link>https://intelygenz.github.io/science-toolkit/docs/installation/restricted-environment/</link>
+      <link>https://konstellation-io.github.io/science-toolkit/docs/installation/restricted-environment/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://intelygenz.github.io/science-toolkit/docs/installation/restricted-environment/</guid>
+      <guid>https://konstellation-io.github.io/science-toolkit/docs/installation/restricted-environment/</guid>
       <description>
         
         
