@@ -9,6 +9,7 @@ dgl==0.5.3
 facets-overview==1.0.0
 flake8==3.8.4
 gensim==3.8.3
+git+https://github.com/palash1992/GEM.git
 h5py==3.1.0
 imbalanced-learn==0.7.0
 impyla==0.16.3
@@ -30,6 +31,7 @@ Pillow==8.1.0
 pyarrow==2.0.0
 pylint==2.6.0
 pymongo==3.11.2
+PyMySQL==1.0.2
 pyodbc==4.0.30
 pytest==6.2.1
 python-igraph==0.8.3
