@@ -9,7 +9,6 @@ dgl==0.5.3
 facets-overview==1.0.0
 flake8==3.8.4
 gensim==3.8.3
-git+https://github.com/palash1992/GEM.git
 h5py==3.1.0
 imbalanced-learn==0.7.0
 impyla==0.16.3
