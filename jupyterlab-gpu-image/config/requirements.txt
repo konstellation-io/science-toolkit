@@ -9,4 +9,4 @@ jupytext==1.4.1
 nbdime==2.0.0
 nbresuse==0.3.3
 tensorflow==2.0.0b1 # needed to have tensorboard features
-tqdm==4.38.0
+tqdm==4.48.2
