@@ -11,6 +11,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
@@ -192,7 +193,18 @@ func (r *ResourceManager) CreateUserTools(user *user.User) error {
 
 // DeleteUserTools deletes a crd of type UserTools
 func (r ResourceManager) DeleteUserTools(user *user.User) error {
-	return r.codeClient.Namespace(r.config.Kubernetes.Namespace).Delete(user.GetResourceName(), &metav1.DeleteOptions{})
+	fmt.Println("Deleting tools")
+	err := r.codeClient.Namespace(r.config.Kubernetes.Namespace).Delete(user.GetResourceName(), &metav1.DeleteOptions{})
+	if err != nil {
+		return err
+	}
+	result, err := r.codeClient.Namespace(r.config.Kubernetes.Namespace).Patch(user.GetResourceName(), types.MergePatchType, []byte("{\"metadata\":{\"finalizers\":[]}}"), metav1.PatchOptions{})
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Apply path to remove finalizers result: %s", result.Object)
+	return nil
+
 }
 
 // WaitUserToolsRunning waits until the UserTools pod is running
