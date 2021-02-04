@@ -50,7 +50,7 @@ postgres:
 drone:
   image:
     repository: drone/drone
-    tag: 1.9.2
+    tag: 1.10.1
     pullPolicy: IfNotPresent
   storage:
     size: 10Gi
@@ -61,7 +61,7 @@ drone:
 droneRunner:
   image:
     repository: drone/drone-runner-kube
-    tag: 1.0.0-beta.5
+    tag: 1.0.0-beta.6
     pullPolicy: IfNotPresent
   namespace: sci-toolkit
 
