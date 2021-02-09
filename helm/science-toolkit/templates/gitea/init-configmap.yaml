@@ -108,7 +108,7 @@ data:
           --config /data/gitea/conf/app.ini \
           --admin >> /data/gitea/create_user.log
         echo "User created"
-        curl -v -X POST "http://localhost:3000/api/v1/admin/users/toolkit-admin/orgs" \
+        curl -v -X POST "http://localhost:3000/api/v1/admin/users/{{ .Values.gitea.admin.username }}/orgs" \
           -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} \
           -H "Content-Type: application/json" \
           -H  "accept: application/json" \
