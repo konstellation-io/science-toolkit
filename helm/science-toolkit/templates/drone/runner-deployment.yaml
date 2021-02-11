@@ -16,6 +16,15 @@ spec:
     spec:
       serviceAccountName: drone-runner
       containers:
+      - name: secrets
+        image: drone/kubernetes-secrets:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: SECRET_KEY
+          value: {{ .Values.drone.pluginSecret }}
+        - name:   KUBERNETES_NAMESPACE
+          value: {{ .Release.Namespace }}
       - image: {{ .Values.droneRunner.image.repository }}:{{ .Values.droneRunner.image.tag }}
         name: drone-runner
         envFrom:

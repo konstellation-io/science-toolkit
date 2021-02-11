@@ -7,6 +7,12 @@ metadata:
 spec:
   clusterIP: None
   ports:
+    # drone-secrets container
+    - name: drone-secrets
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+    # drone-runner container
     - name: http
       port: 80
       targetPort: 80
