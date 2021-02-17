@@ -98,6 +98,9 @@ if [ "$SKIP_BUILD" != "1" ]; then
 #  docker build -t terminus7/sci-toolkit-runner:latest runner-image
 #  rm -rf runner-image/common-science-requirements
 
+  build_header "mlflow"
+  docker build -t terminus7/mlflow:latest mlflow
+
   build_header "gitea-oauth2-setup"
   docker build -t terminus7/gitea-oauth2-setup:latest gitea-oauth2-setup
 fi

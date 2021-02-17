@@ -1,4 +1,8 @@
+{{ if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1/CustomResourceDefinition" }}
+apiVersion: apiextensions.k8s.io/v1
+{{ else if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1beta1/CustomResourceDefinition" }}
 apiVersion: apiextensions.k8s.io/v1beta1
+{{ end }}
 kind: CustomResourceDefinition
 metadata:
   name: usertools.sci-toolkit.konstellation.io
@@ -14,3 +18,45 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
+{{ if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1/CustomResourceDefinition" }}
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              domain:
+                description: domain name
+                type: string
+              ingress:
+                type: object
+                properties:
+                  type:
+                    description: ingress type
+                    type: string
+              sharedVolume:
+                type: object
+                properties:
+                  name:
+                    description: name of shared volume
+                    type: string
+              storage:
+                type: object
+                properties:
+                  className:
+                    description: name of the storage class
+                    type: string
+                  size:
+                    description: size of the storage
+                    type: string
+              tls:
+                description: enable or disable tls
+                type: boolean
+              username:
+                description: username to create tools
+                type: string
+              usernameSlug:
+                description: username slug to create tools
+                type: string
+{{ end }}

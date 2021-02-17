@@ -1,7 +1,7 @@
 #!/bin/sh
 
 MINIKUBE_MEMORY=8192 #Mb
-MINIKUBE_KUBERNETES_VERSION=1.15.4
+MINIKUBE_KUBERNETES_VERSION=1.18.12
 MINIKUBE_CPUS=4
 MINIKUBE_DRIVER=docker
 MINIKUBE_DISK_SIZE='40GB'
@@ -18,7 +18,6 @@ startMinikube() {
       --kubernetes-version=$MINIKUBE_KUBERNETES_VERSION \
       --disk-size=$MINIKUBE_DISK_SIZE \
       --vm-driver=$MINIKUBE_DRIVER \
-      --extra-config=apiserver.authorization-mode=RBAC
 
     minikube addons enable ingress
     minikube addons enable dashboard
