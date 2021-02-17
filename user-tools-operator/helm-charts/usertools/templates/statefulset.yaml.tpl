@@ -67,6 +67,11 @@ spec:
             - name: {{ .Values.sharedVolume.name }}
               mountPath: /home/coder/shared-storage
           {{- end }}
+          {{- if .Values.kdl.enabled }}
+            - name: {{ .Values.username }}-ssh-keys
+              mountPath: /home/coder/.ssh/
+              readOnly: true
+          {{- end }}
         - name: {{ .Chart.Name }}-jupyter
           image: terminus7/jupyterlab-gpu:${JUPYTERLAB_GPU_IMAGE_TAG}
           imagePullPolicy: IfNotPresent
@@ -85,6 +90,11 @@ spec:
           {{- if .Values.sharedVolume.name }}
             - name: {{ .Values.sharedVolume.name }}
               mountPath: /home/jovyan/shared-storage
+          {{- end }}
+          {{- if .Values.kdl.enabled }}
+            - name: {{ .Values.username }}-ssh-keys
+              mountPath: /home/jovyan/.ssh/
+              readOnly: true
           {{- end }}
         - name: {{ .Chart.Name }}-vscode-proxy
           image: terminus7/oauth2-proxy:latest
@@ -172,6 +182,14 @@ spec:
         - name: {{ .Values.sharedVolume.name }}
           persistentVolumeClaim:
             claimName: {{ .Values.sharedVolume.name }}-claim
+        {{- end }}
+        {{ if .Values.kdl.enabled -}}
+        - name: {{ .Values.username }}-ssh-keys
+          secret:
+            secretName: {{ .Values.username }}-ssh-keys
+            items:
+            - key: KDL_USER_PRIVATE_SSH_KEY
+              path: id_rsa
         {{- end }}
   volumeClaimTemplates:
     - metadata:
