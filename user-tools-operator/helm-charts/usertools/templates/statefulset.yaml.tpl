@@ -68,7 +68,7 @@ spec:
               mountPath: /home/coder/shared-storage
           {{- end }}
           {{- if .Values.kdl.enabled }}
-            - name: {{ .Values.usernameSlug }}-ssh-keys
+            - name: {{ .Values.username }}-ssh-keys
               mountPath: /home/coder/.ssh/
               readOnly: true
           {{- end }}
@@ -92,7 +92,7 @@ spec:
               mountPath: /home/jovyan/shared-storage
           {{- end }}
           {{- if .Values.kdl.enabled }}
-            - name: {{ .Values.usernameSlug }}-ssh-keys
+            - name: {{ .Values.username }}-ssh-keys
               mountPath: /home/jovyan/.ssh/
               readOnly: true
           {{- end }}
@@ -184,9 +184,9 @@ spec:
             claimName: {{ .Values.sharedVolume.name }}-claim
         {{- end }}
         {{ if .Values.kdl.enabled -}}
-        - name: {{ .Values.usernameSlug }}-ssh-keys
+        - name: {{ .Values.username }}-ssh-keys
           secret:
-            secretName: {{ .Values.usernameSlug }}-ssh-keys
+            secretName: {{ .Values.username }}-ssh-keys
             items:
             - key: KDL_USER_PRIVATE_SSH_KEY
               path: id_rsa
