@@ -21,6 +21,6 @@ data:
   DRONE_TRACE: "true"
   DRONE_DATABASE_DRIVER: postgres
   DRONE_DATABASE_DATASOURCE: postgres://postgres:test@postgres:5432/drone?sslmode=disable
-  DRONE_USER_CREATE: username:{{ .Values.gitea.admin.username }},admin:true
+  DRONE_USER_CREATE: username:{{ .Values.gitea.admin.username }},admin:true,token:{{ randAlphaNum 32 }}
   DRONE_SECRET_PLUGIN_ENDPOINT: http://localhost:3000
   DRONE_SECRET_PLUGIN_TOKEN: {{ .Values.drone.pluginSecret }}
