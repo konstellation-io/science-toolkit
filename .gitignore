@@ -9,3 +9,6 @@ user-tools-operator/helm-charts/usertools/templates/statefulset.yaml
 !vscode/extensions/**
 .certs
 scripts/toolkit_images/**
+jupyterlab-gpu-image/common-science-requirements/*
+runner-image/common-science-requirements/*
+vscode/common-science-requirements/*
