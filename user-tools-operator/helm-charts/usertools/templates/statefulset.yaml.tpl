@@ -97,20 +97,16 @@ spec:
               readOnly: true
           {{- end }}
         - name: {{ .Chart.Name }}-vscode-proxy
-          image: terminus7/oauth2-proxy:latest
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.0.1-amd64
           imagePullPolicy: IfNotPresent
           args:
-            - "-config"
-            - "/etc/oauth2_proxy.cfg"
-            - "-email-domain"
-            - "*"
-            - "-redirect-url"
-            - "{{ printf "%s://%s-code.%s/oauth2/callback" ( include "protocol" . ) .Values.usernameSlug .Values.domain }}"
-            - "-upstream"
-            - "http://127.0.0.1:8080/"
-            - "-pass-user-headers"
-            - "-set-xauthrequest"
-            - "-skip-provider-button"
+            - "--config=/etc/oauth2_proxy.cfg"
+            - "--email-domain=*"
+            - "--redirect-url={{ printf "%s://%s-code.%s/oauth2/callback" ( include "protocol" . ) .Values.usernameSlug .Values.domain }}"
+            - "--upstream=http://127.0.0.1:8080/"
+            - "--pass-user-headers=true"
+            - "--set-xauthrequest=true"
+            - "--skip-provider-button=true"
           env:
             - name: OAUTH2_PROXY_GITEA_USER
               value: "{{ .Values.username }}"
@@ -135,22 +131,17 @@ spec:
               containerPort: 4180
               protocol: TCP
         - name: {{ .Chart.Name }}-jupyter-proxy
-          image: terminus7/oauth2-proxy:latest
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.0.1-amd64
           imagePullPolicy: IfNotPresent
           args:
-            - "-config"
-            - "/etc/oauth2_proxy.cfg"
-            - "-email-domain"
-            - "*"
-            - "-redirect-url"
-            - "{{ printf "%s://%s-jupyter.%s/oauth2/callback" ( include "protocol" . ) .Values.usernameSlug .Values.domain }}"
-            - "-upstream"
-            - "http://127.0.0.1:8888/"
-            - "-pass-user-headers"
-            - "-set-xauthrequest"
-            - "-skip-provider-button"
-            - "-http-address"
-            - "0.0.0.0:4181"
+            - "--config=/etc/oauth2_proxy.cfg"
+            - "--email-domain=*"
+            - "--redirect-url={{ printf "%s://%s-jupyter.%s/oauth2/callback" ( include "protocol" . ) .Values.usernameSlug .Values.domain }}"
+            - "--upstream=http://127.0.0.1:8888/"
+            - "--pass-user-headers=true"
+            - "--set-xauthrequest=true"
+            - "--skip-provider-button"
+            - "--http-address=0.0.0.0:4181"
           env:
             - name: OAUTH2_PROXY_GITEA_USER
               value: "{{ .Values.username }}"
