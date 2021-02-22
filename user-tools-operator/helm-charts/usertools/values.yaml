@@ -18,3 +18,9 @@ sharedVolume:
   name: ""
 
 tls: false
+
+oauth2Proxy:
+  image:
+    repository: quay.io/oauth2-proxy/oauth2-proxy
+    tag: v7.0.1-amd64
+    pullPolicy: IfNotPresent
