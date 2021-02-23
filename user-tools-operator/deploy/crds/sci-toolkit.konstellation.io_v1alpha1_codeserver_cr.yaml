@@ -10,6 +10,8 @@ spec:
   # Declare variables to be passed into your templates.
 
   domain: toolkit.local
+  kdl:
+    enabled: false
   ingress:
     type: "nginx"
   username: john-doe

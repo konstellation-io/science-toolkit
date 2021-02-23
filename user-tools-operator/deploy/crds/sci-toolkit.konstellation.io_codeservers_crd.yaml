@@ -29,6 +29,12 @@ spec:
               domain:
                 description: domain name
                 type: string
+              kdl:
+                type: object
+                properties:
+                  enabled:
+                    description: if Science Toolkit is managed by KDL
+                    type: boolean
               ingress:
                 type: object
                 properties:
