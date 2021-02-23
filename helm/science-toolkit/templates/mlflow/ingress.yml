@@ -8,6 +8,10 @@ metadata:
   name: {{ .Values.mlflow.name }}-ingress
   labels:
     app:  {{ .Values.mlflow.name }}
+  annotations:
+    {{ if eq .Values.ingress.type "nginx" }}
+    kubernetes.io/ingress.class: "nginx"
+    {{ end }}
 spec:
   {{ if .Values.tls.enabled -}}
   tls:

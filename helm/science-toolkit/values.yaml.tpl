@@ -37,8 +37,9 @@ userToolsOperator:
 
 oauth2Proxy:
   image:
-    # using latest because this is not generated on this monorepo.
-    tag: latest
+    repository: quay.io/oauth2-proxy/oauth2-proxy
+    tag: v7.0.1-amd64
+    pullPolicy: IfNotPresent
 
 postgres:
   dbName: gitea

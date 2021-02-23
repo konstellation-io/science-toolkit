@@ -46,17 +46,14 @@ spec:
           ports:
             - containerPort: 3000
         - name: dashboard-proxy
-          image: "terminus7/oauth2-proxy:{{ .Values.oauth2Proxy.image.tag }}"
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.oauth2Proxy.image.repository }}:{{ .Values.oauth2Proxy.image.tag }}
+          imagePullPolicy: {{ .Values.oauth2Proxy.image.pullPolicy }}
           args:
-            - "-config"
-            - "/etc/oauth2_proxy.cfg"
-            - "-email-domain"
-            - "*"
-            - "-upstream"
-            - "http://127.0.0.1:4000/"
-            - "-pass-user-headers"
-            - "-skip-provider-button"
+            - "--config=/etc/oauth2_proxy.cfg"
+            - "--email-domain=*"
+            - "--upstream=http://127.0.0.1:4000/"
+            - "--pass-user-headers=true"
+            - "--skip-provider-button=true"
           env:
             - name: OAUTH2_PROXY_HTTP_ADDRESS
               value: "0.0.0.0:3000"
