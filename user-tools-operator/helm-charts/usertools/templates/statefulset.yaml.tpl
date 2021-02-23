@@ -97,8 +97,8 @@ spec:
               readOnly: true
           {{- end }}
         - name: {{ .Chart.Name }}-vscode-proxy
-          image: quay.io/oauth2-proxy/oauth2-proxy:v7.0.1-amd64
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.oauth2Proxy.image.repository }}:{{ .Values.oauth2Proxy.image.tag }}
+          imagePullPolicy: {{ .Values.oauth2Proxy.image.pullPolicy }}
           args:
             - "--config=/etc/oauth2_proxy.cfg"
             - "--email-domain=*"
