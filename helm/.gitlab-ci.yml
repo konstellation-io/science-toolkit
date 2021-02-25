@@ -74,9 +74,7 @@ generate-helm-chart:
     - git commit -m "add chart version $CHART_VERSION"
     - git push upstream
     # create tag in deploy-science-toolkit gitlab IGZ repo.
-    - git clone https://oauth2:${GITLAB_IGZ_TOKEN}@gitlab.intelygenz.com/t7-team/infrastructure/deploy-science-toolkit.git && cd deploy-science-toolkit
-    - git tag $CHART_VERSION || true
-    - git push --tags || true
+    - eval curl --request POST --header "${NOTIFY_TOKEN}" ${NOTIFY_URL}${CHART_VERSION} >/dev/null 2>&1
   artifacts:
     when: on_failure
     paths:
