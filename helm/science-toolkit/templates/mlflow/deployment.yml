@@ -38,6 +38,20 @@ spec:
         - name: {{ .Values.mlflow.name }}
           image: {{ .Values.mlflow.image.repository }}:{{ .Values.mlflow.image.tag }}
           imagePullPolicy: {{ .Values.mlflow.image.pullPolicy }}
+          {{- if .Values.kdl.enabled }}
+          args:
+          - server
+          - --backend-store-uri
+          - sqlite:///mlflow.db
+          - --default-artifact-root
+          - s3://$ARTIFACTS_BUCKET
+          - --host
+          - 0.0.0.0
+          - --static-prefix
+          - /mlflow
+          command:
+          - mlflow
+          {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ .Values.mlflow.name }}-config
