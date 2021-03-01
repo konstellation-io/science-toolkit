@@ -1,5 +1,8 @@
 domain: toolkit.local
 
+kdl:
+  enabled: false
+
 ingress:
   type: nginx
   
