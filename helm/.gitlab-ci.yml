@@ -73,6 +73,7 @@ generate-helm-chart:
     - git config --global user.email "${GITLAB_USER_EMAIL}" && git config --global user.name "${GITLAB_USER_NAME}"
     - git commit -m "add chart version $CHART_VERSION"
     - git push upstream
+    - eval curl --request POST --header "${NOTIFY_TOKEN}" ${NOTIFY_URL}${CHART_VERSION} >/dev/null 2>&1
   artifacts:
     when: on_failure
     paths:
