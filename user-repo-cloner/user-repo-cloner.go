@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/konstellation-io/kdl-server/app/api/pkg/mongodb"
 	"github.com/konstellation-io/kre/libs/simplelogger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	ssh2 "golang.org/x/crypto/ssh"
 	"os"
 	"strings"
 	"time"
@@ -63,7 +65,7 @@ func getUserId(userName string, mongodbClient *mongo.Client, cfg config.Config) 
 		primitive.E{Key: "_id", Value: 1},
 	}
 	findOptions := options.FindOne().SetProjection(projection)
-	err := userCollection.FindOne(context.TODO(), bson.M{"username": userName}, findOptions).Decode(&userID)
+	err := userCollection.FindOne(context.Background(), bson.M{"username": userName}, findOptions).Decode(&userID)
 	if err != nil {
 		return primitive.ObjectID{}, err
 	}
@@ -87,7 +89,7 @@ func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.C
 		}
 	}
 
-	logger.Info("Done!")
+	logger.Info("Repos already updated!")
 }
 
 func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, cfg config.Config) ([]bson.M, error) {
@@ -119,13 +121,27 @@ func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg c
 		return
 	}
 
-	_, err := git.PlainClone(path, false, &git.CloneOptions{
+	auth, err := ssh.NewPublicKeysFromFile("git", "/home/angel.tabar/.ssh/id_rsa", "")
+	if err != nil {
+		logger.Error("error with rsa key")
+	}
+
+	auth.HostKeyCallback = ssh2.InsecureIgnoreHostKey()
+
+	_, err = git.PlainClone(path, false, &git.CloneOptions{
 		URL:      repoUrl,
 		Progress: os.Stdout,
+		Auth:     auth,
 	})
 
 	if err != nil {
 		logger.Errorf("Error cloning repository: %s", err)
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			err := os.Remove(path)
+			if err != nil {
+				logger.Errorf("Error deleting repo folder: %s", err)
+			}
+		}
 	} else {
 		logger.Infof("Repository %s successfully created", repoName)
 	}
