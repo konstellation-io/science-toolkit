@@ -11,93 +11,113 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
+	"strings"
 	"time"
-)
-
-const (
-	mongoURI        = "mongodb://admin:123456@localhost:27017"
-	mongodbName     = "kdl"
-	projectCollName = "projects"
-	userId          = "603f7cfd95c136dd743fc525"
-	repoNameKey     = "internal_repo_name"
-	repoUrlGeneric  = "git@github.com:konstellation-io/%s.git"
-	pathGeneric     = "/home/angel.tabar/Escritorio/tmp/%s"
+	"user-repo-cloner/config"
 )
 
 func main() {
+	cfg := config.NewConfig()
+
 	var level simplelogger.LogLevel
 
-	// cfg := config.NewConfig()
-	// switch strings.ToLower(cfg.LogLevel) {
-	// case "debug":
-	// 	level = simplelogger.LevelDebug
-	// case "info":
-	// 	level = simplelogger.LevelInfo
-	// case "warn":
-	// 	level = simplelogger.LevelWarn
-	// case "error":
-	// 	level = simplelogger.LevelError
-	// }
+	switch strings.ToLower(cfg.LogLevel) {
+	case "debug":
+		level = simplelogger.LevelDebug
+	case "info":
+		level = simplelogger.LevelInfo
+	case "warn":
+		level = simplelogger.LevelWarn
+	case "error":
+		level = simplelogger.LevelError
+	}
 
-	level = simplelogger.LevelInfo
 	logger := simplelogger.New(level)
 	mongoDriver := mongodb.NewMongoDB(logger)
 
-	ticker := time.NewTicker(5 * time.Second)
-
-	mongodbClient, err := mongoDriver.Connect(mongoURI)
+	mongodbClient, err := mongoDriver.Connect(cfg.MongoDB.URI)
 	if err != nil {
 		logger.Errorf("Error connecting to MongoDB: %s", err)
 		os.Exit(1)
 	}
 	defer mongoDriver.Disconnect()
 
-	projectCollection := mongodbClient.Database(mongodbName).Collection(projectCollName)
-
-	for range ticker.C {
-		checkNewRepos(projectCollection, logger)
+	userID, err := getUserId(cfg.UsrName, mongodbClient, cfg)
+	if err != nil {
+		logger.Errorf("Error retrieving user %s: %s", cfg.UsrName, err)
+		os.Exit(1)
 	}
 
+	projectCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.ProjectsCollName)
+	ticker := time.NewTicker(time.Duration(cfg.CheckFrequencySeconds) * time.Second)
+	for range ticker.C {
+		checkAndCloneNewRepos(userID, projectCollection, logger, cfg)
+	}
 }
 
-func checkNewRepos(projectCollection *mongo.Collection, logger simplelogger.SimpleLoggerInterface) {
-	ctx := context.Background()
-	idFromHex, err := primitive.ObjectIDFromHex(userId)
-	if err != nil {
-		logger.Errorf("Error converting userId: %s", err)
-	}
+func getUserId(userName string, mongodbClient *mongo.Client, cfg config.Config) (primitive.ObjectID, error) {
+	userCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.UsersCollName)
 
+	var userID bson.M
 	projection := bson.D{
-		{repoNameKey, 1},
+		primitive.E{Key: "_id", Value: 1},
 	}
-	findOptions := options.Find().SetProjection(projection)
-	cursor, err := projectCollection.Find(ctx, bson.M{"members": idFromHex}, findOptions)
+	findOptions := options.FindOne().SetProjection(projection)
+	err := userCollection.FindOne(context.TODO(), bson.M{"username": userName}, findOptions).Decode(&userID)
 	if err != nil {
-		logger.Errorf("Error retrieving projects from MongoDB: %s", err)
+		return primitive.ObjectID{}, err
 	}
 
-	var projects []bson.M
-	if err = cursor.All(ctx, &projects); err != nil {
-		logger.Errorf("Error with cursor to projects bson: %s", err)
+	return userID["_id"].(primitive.ObjectID), nil
+}
+
+func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
+	projects, err := checkNewRepos(userID, projectCollection, cfg)
+	if err != nil {
+		logger.Errorf("Error checking new repos: %s", err)
+		return
 	}
 
 	for _, dto := range projects {
-		repoName := dto[repoNameKey]
-		logger.Infof("repository: %s", repoName)
-		if repoName == nil {
+		repoName := fmt.Sprintf("%v", dto[cfg.MongoDB.RepoNameKey])
+		if repoName == "<nil>" {
 			logger.Errorf("Error extracting repository name (nil name)")
 		} else {
-			go cloneRepo(fmt.Sprintf("%v", repoName), logger)
+			go cloneRepo(repoName, logger, cfg)
 		}
-
 	}
 
 	logger.Info("Done!")
 }
 
-func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface) {
-	repoUrl := fmt.Sprintf(repoUrlGeneric, repoName)
-	path := fmt.Sprintf(pathGeneric, repoName)
+func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, cfg config.Config) ([]bson.M, error) {
+	ctx := context.Background()
+
+	projection := bson.D{
+		primitive.E{Key: cfg.MongoDB.RepoNameKey, Value: 1},
+	}
+	findOptions := options.Find().SetProjection(projection)
+	cursor, err := projectCollection.Find(ctx, bson.M{"members": userID}, findOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	var projects []bson.M
+	if err = cursor.All(ctx, &projects); err != nil {
+		return nil, err
+	}
+
+	return projects, nil
+}
+
+func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
+	repoUrl := fmt.Sprintf(cfg.RepoUrlGeneric, repoName)
+	path := fmt.Sprintf(cfg.PathGeneric, repoName)
+
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		logger.Debugf("Repository %s already exists", repoName)
+		return
+	}
 
 	_, err := git.PlainClone(path, false, &git.CloneOptions{
 		URL:      repoUrl,
@@ -107,6 +127,6 @@ func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface) {
 	if err != nil {
 		logger.Errorf("Error cloning repository: %s", err)
 	} else {
-		logger.Infof("Repository %s succesfully created", repoName)
+		logger.Infof("Repository %s successfully created", repoName)
 	}
 }
