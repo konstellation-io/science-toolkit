@@ -1,0 +1,11 @@
+usrName: "angel"
+logLevel: "debug"
+repoUrlGeneric: "git@github.com:konstellation-io/%s.git"
+pathGeneric: "/home/angel.tabar/Escritorio/tmp/%s"
+checkFrequencySeconds: 5
+mongodb:
+  uri: "mongodb://admin:123456@localhost:27017/admin"
+  dbName: "kdl"
+  projectCollName: "projects"
+  userCollName: "users"
+  repoNameKey: "internal_repo_name"
