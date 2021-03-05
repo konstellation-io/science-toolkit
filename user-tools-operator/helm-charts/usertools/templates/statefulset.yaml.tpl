@@ -54,6 +54,25 @@ spec:
             - configMapRef:
                 name: gitea-configmap
       containers:
+      {{- if .Values.kdl.enabled }}
+        - name: {{ .Chart.Name }}-repo-cloner
+          image: konstellation/user-repo-cloner:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: KDL_USER_NAME
+              value: "{{ .Values.username }}"
+          envFrom:
+          - secretRef:
+              name: tools-secret
+          - secretRef:
+              name: kdl-server-secrets
+          volumeMounts:
+            - name: user-pvc
+              mountPath: /home/kdl
+            - name: {{ .Values.username }}-ssh-keys
+              mountPath: /home/kdl/.ssh/
+              readOnly: true
+      {{- end }}
         - name: {{ .Chart.Name }}-vscode
           image: terminus7/sci-toolkit-vscode:${VSCODE_TAG}
           imagePullPolicy: IfNotPresent

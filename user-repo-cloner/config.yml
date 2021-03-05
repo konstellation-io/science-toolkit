@@ -1,8 +1,7 @@
-usrName: "angel"
 logLevel: "debug"
-repoURLGeneric: "git@github.com:konstellation-io/%s.git"
-pathGeneric: "~/tmp/%s"
-pemFile: "~/.ssh/id_rsa"
+repoURLGeneric: "git@gitea:kdl/%s.git"
+pathGeneric: "/home/kdl/repos/%s"
+pemFile: "/home/kdl/.ssh/id_rsa"
 pemFilePassword: ""
 checkFrequencySeconds: 5
 mongodb:

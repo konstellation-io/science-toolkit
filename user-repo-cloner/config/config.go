@@ -10,7 +10,7 @@ import (
 
 // Config holds the configuration values of the application.
 type Config struct {
-	UsrName               string `envconfig:"USER_NAME"`
+	UsrName               string `envconfig:"KDL_USER_NAME"`
 	LogLevel              string `yaml:"logLevel" envconfig:"LOG_LEVEL"`
 	RepoURLGeneric        string `yaml:"repoURLGeneric" envconfig:"REPO_URL_GENERIC"`
 	PathGeneric           string `yaml:"pathGeneric" envconfig:"PATH_GENERIC"`
@@ -18,7 +18,7 @@ type Config struct {
 	PemFilePassword       string `yaml:"pemFilePassword" envconfig:"PEM_FILE_PASSWORD"`
 	CheckFrequencySeconds int    `yaml:"checkFrequencySeconds" envconfig:"CHECK_FREQUENCY_SECONDS"`
 	MongoDB               struct {
-		URI              string `yaml:"uri" envconfig:"URI"`
+		URI              string `yaml:"uri" envconfig:"KDL_SERVER_MONGODB_URI"`
 		DBName           string `yaml:"dbName" envconfig:"DB_NAME"`
 		ProjectsCollName string `yaml:"projectCollName" envconfig:"PROJECT_COLL_NAME"`
 		UsersCollName    string `yaml:"userCollName" envconfig:"USER_COLL_NAME"`
