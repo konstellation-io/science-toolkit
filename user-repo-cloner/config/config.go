@@ -10,17 +10,17 @@ import (
 
 // Config holds the configuration values of the application.
 type Config struct {
-	UsrName               string `yaml:"usrName"`
-	LogLevel              string `yaml:"logLevel"`
-	RepoUrlGeneric        string `yaml:"repoUrlGeneric"`
-	PathGeneric           string `yaml:"pathGeneric"`
-	CheckFrequencySeconds int    `yaml:"checkFrequencySeconds"`
+	UsrName               string `envconfig:"USER_NAME"`
+	LogLevel              string `yaml:"logLevel" envconfig:"LOG_LEVEL"`
+	RepoUrlGeneric        string `yaml:"repoUrlGeneric" envconfig:"REPO_URL_GENERIC"`
+	PathGeneric           string `yaml:"pathGeneric" envconfig:"PATH_GENERIC"`
+	CheckFrequencySeconds int    `yaml:"checkFrequencySeconds" envconfig:"CHECK_FREQUENCY_SECONDS"`
 	MongoDB               struct {
-		URI              string `yaml:"uri"`
-		DBName           string `yaml:"dbName"`
-		ProjectsCollName string `yaml:"projectCollName"`
-		UsersCollName    string `yaml:"userCollName"`
-		RepoNameKey      string `yaml:"repoNameKey"`
+		URI              string `yaml:"uri" envconfig:"URI"`
+		DBName           string `yaml:"dbName" envconfig:"DB_NAME"`
+		ProjectsCollName string `yaml:"projectCollName" envconfig:"PROJECT_COLL_NAME"`
+		UsersCollName    string `yaml:"userCollName" envconfig:"USER_COLL_NAME"`
+		RepoNameKey      string `yaml:"repoNameKey" envconfig:"REPO_NAME_KEY"`
 	}
 }
 
