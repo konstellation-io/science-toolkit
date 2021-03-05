@@ -3,6 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"strings"
+	"time"
+	"user-repo-cloner/config"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/konstellation-io/kdl-server/app/api/pkg/mongodb"
@@ -12,10 +17,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	ssh2 "golang.org/x/crypto/ssh"
-	"os"
-	"strings"
-	"time"
-	"user-repo-cloner/config"
 )
 
 func main() {
@@ -42,30 +43,34 @@ func main() {
 		logger.Errorf("Error connecting to MongoDB: %s", err)
 		os.Exit(1)
 	}
-	defer mongoDriver.Disconnect()
 
-	userID, err := getUserId(cfg.UsrName, mongodbClient, cfg)
+	userID, err := getUserID(cfg.UsrName, mongodbClient, cfg)
 	if err != nil {
 		logger.Errorf("Error retrieving user %s: %s", cfg.UsrName, err)
 		os.Exit(1)
 	}
 
+	defer mongoDriver.Disconnect()
+
 	projectCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.ProjectsCollName)
 	ticker := time.NewTicker(time.Duration(cfg.CheckFrequencySeconds) * time.Second)
+
 	for range ticker.C {
 		checkAndCloneNewRepos(userID, projectCollection, logger, cfg)
 	}
 }
 
-func getUserId(userName string, mongodbClient *mongo.Client, cfg config.Config) (primitive.ObjectID, error) {
+func getUserID(userName string, mongodbClient *mongo.Client, cfg config.Config) (primitive.ObjectID, error) {
 	userCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.UsersCollName)
 
 	var userID bson.M
+
 	projection := bson.D{
 		primitive.E{Key: "_id", Value: 1},
 	}
 	findOptions := options.FindOne().SetProjection(projection)
 	err := userCollection.FindOne(context.Background(), bson.M{"username": userName}, findOptions).Decode(&userID)
+
 	if err != nil {
 		return primitive.ObjectID{}, err
 	}
@@ -73,7 +78,8 @@ func getUserId(userName string, mongodbClient *mongo.Client, cfg config.Config) 
 	return userID["_id"].(primitive.ObjectID), nil
 }
 
-func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
+func checkAndCloneNewRepos(
+	userID primitive.ObjectID, projectCollection *mongo.Collection, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
 	projects, err := checkNewRepos(userID, projectCollection, cfg)
 	if err != nil {
 		logger.Errorf("Error checking new repos: %s", err)
@@ -100,12 +106,13 @@ func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collectio
 	}
 	findOptions := options.Find().SetProjection(projection)
 	cursor, err := projectCollection.Find(ctx, bson.M{"members": userID}, findOptions)
+
 	if err != nil {
 		return nil, err
 	}
 
 	var projects []bson.M
-	if err = cursor.All(ctx, &projects); err != nil {
+	if err := cursor.All(ctx, &projects); err != nil {
 		return nil, err
 	}
 
@@ -113,7 +120,7 @@ func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collectio
 }
 
 func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
-	repoUrl := fmt.Sprintf(cfg.RepoUrlGeneric, repoName)
+	repoURL := fmt.Sprintf(cfg.RepoURLGeneric, repoName)
 	path := fmt.Sprintf(cfg.PathGeneric, repoName)
 
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
@@ -129,13 +136,14 @@ func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg c
 	auth.HostKeyCallback = ssh2.InsecureIgnoreHostKey()
 
 	_, err = git.PlainClone(path, false, &git.CloneOptions{
-		URL:      repoUrl,
+		URL:      repoURL,
 		Progress: os.Stdout,
 		Auth:     auth,
 	})
 
 	if err != nil {
 		logger.Errorf("Error cloning repository: %s", err)
+
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			err := os.Remove(path)
 			if err != nil {

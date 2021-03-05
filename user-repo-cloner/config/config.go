@@ -12,7 +12,7 @@ import (
 type Config struct {
 	UsrName               string `envconfig:"USER_NAME"`
 	LogLevel              string `yaml:"logLevel" envconfig:"LOG_LEVEL"`
-	RepoUrlGeneric        string `yaml:"repoUrlGeneric" envconfig:"REPO_URL_GENERIC"`
+	RepoURLGeneric        string `yaml:"repoURLGeneric" envconfig:"REPO_URL_GENERIC"`
 	PathGeneric           string `yaml:"pathGeneric" envconfig:"PATH_GENERIC"`
 	PemFile               string `yaml:"pemFile" envconfig:"PEM_FILE"`
 	PemFilePassword       string `yaml:"pemFilePassword" envconfig:"PEM_FILE_PASSWORD"`

@@ -1,6 +1,6 @@
 usrName: "angel"
 logLevel: "debug"
-repoUrlGeneric: "git@github.com:konstellation-io/%s.git"
+repoURLGeneric: "git@github.com:konstellation-io/%s.git"
 pathGeneric: "~/tmp/%s"
 pemFile: "~/.ssh/id_rsa"
 pemFilePassword: ""
