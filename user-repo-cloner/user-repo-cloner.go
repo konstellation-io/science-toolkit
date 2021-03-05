@@ -121,7 +121,7 @@ func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg c
 		return
 	}
 
-	auth, err := ssh.NewPublicKeysFromFile("git", "/home/angel.tabar/.ssh/id_rsa", "")
+	auth, err := ssh.NewPublicKeysFromFile("git", cfg.PemFile, cfg.PemFilePassword)
 	if err != nil {
 		logger.Error("error with rsa key")
 	}

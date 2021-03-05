@@ -1,7 +1,9 @@
 usrName: "angel"
 logLevel: "debug"
 repoUrlGeneric: "git@github.com:konstellation-io/%s.git"
-pathGeneric: "/home/angel.tabar/Escritorio/tmp/%s"
+pathGeneric: "~/tmp/%s"
+pemFile: "~/.ssh/id_rsa"
+pemFilePassword: ""
 checkFrequencySeconds: 5
 mongodb:
   uri: "mongodb://admin:123456@localhost:27017/admin"

@@ -14,6 +14,8 @@ type Config struct {
 	LogLevel              string `yaml:"logLevel" envconfig:"LOG_LEVEL"`
 	RepoUrlGeneric        string `yaml:"repoUrlGeneric" envconfig:"REPO_URL_GENERIC"`
 	PathGeneric           string `yaml:"pathGeneric" envconfig:"PATH_GENERIC"`
+	PemFile               string `yaml:"pemFile" envconfig:"PEM_FILE"`
+	PemFilePassword       string `yaml:"pemFilePassword" envconfig:"PEM_FILE_PASSWORD"`
 	CheckFrequencySeconds int    `yaml:"checkFrequencySeconds" envconfig:"CHECK_FREQUENCY_SECONDS"`
 	MongoDB               struct {
 		URI              string `yaml:"uri" envconfig:"URI"`
