@@ -120,8 +120,8 @@ func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collectio
 }
 
 func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
-	repoURL := fmt.Sprintf(cfg.RepoURLGeneric, repoName)
-	path := fmt.Sprintf(cfg.PathGeneric, repoName)
+	repoURL := cfg.RepoURLGeneric + repoName + ".git"
+	path := cfg.PathGeneric + repoName
 
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		logger.Debugf("Repository %s already exists", repoName)
