@@ -114,24 +114,6 @@ data:
           -H  "accept: application/json" \
           --data '{"username": "kdl"}'
         echo "Organization KDL created"
-        curl -v -X POST "http://localhost:3000/api/v1/orgs/kdl/teams" \
-          -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} \
-          -H "Content-Type: application/json" \
-          -H  "accept: application/json" \
-          --data '{"name": "admin-users", "description": "KDL admin users", "can_create_org_repo": true, "includes_all_repositories": true, "permission": "admin", "units": ["repo.code","repo.issues","repo.ext_issues","repo.wiki","repo.pulls","repo.releases","repo.ext_wiki"]}'
-        echo "KDL admin team created"
-        curl -v -X POST "http://localhost:3000/api/v1/orgs/kdl/teams" \
-          -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} \
-          -H "Content-Type: application/json" \
-          -H  "accept: application/json" \
-          --data '{"name": "manager-users", "description": "KDL manager users", "can_create_org_repo": true, "includes_all_repositories": true, "permission": "write", "units": ["repo.code","repo.issues","repo.ext_issues","repo.wiki","repo.pulls","repo.releases","repo.ext_wiki"]}'
-        echo "KDL manager team created"
-        curl -v -X POST "http://localhost:3000/api/v1/orgs/kdl/teams" \
-          -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} \
-          -H "Content-Type: application/json" \
-          -H  "accept: application/json" \
-          --data '{"name": "viewer-users", "description": "KDL viewer users", "can_create_org_repo": false, "includes_all_repositories": true, "permission": "read", "units": ["repo.code","repo.issues","repo.ext_issues","repo.wiki","repo.pulls","repo.releases","repo.ext_wiki"]}'
-        echo "KDL viewer team created"
         exit 0
       elif [ "$API_RESPONSE_CODE" == "200"  ]; then
        echo "User exist"
