@@ -25,6 +25,7 @@ RUN adduser \
 
 WORKDIR /app
 COPY --from=builder /app/user-repo-cloner .
+COPY --from=builder /app/config.yml .
 
 RUN chown -R kdl:0 /app \
     && chmod -R g+w /app
