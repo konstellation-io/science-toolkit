@@ -1,3 +1,33 @@
+{{- if .Values.argocd }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.mlflow.name }}-ingress
+  labels:
+    app:  {{ .Values.mlflow.name }}
+  annotations:
+    {{ if eq .Values.ingress.type "nginx" }}
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Frame-Options: ALLOW-FROM {{ include "protocol" . }}://kdlapp.{{ .Values.domain }}";
+      more_set_headers "Content-Security-Policy: frame-ancestors 'self' {{ include "protocol" . }}://kdlapp.{{ .Values.domain}}";
+    {{ end }}
+spec:
+  {{ if .Values.tls.enabled -}}
+  tls:
+    - hosts:
+        - {{ .Values.mlflow.host }}.{{ .Values.domain }}
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
+  rules:
+    - host: {{ .Values.mlflow.host }}.{{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Values.mlflow.name }}
+              servicePort: 8080
+{{ else }}
 {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
 apiVersion: networking.k8s.io/v1
 {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
@@ -39,4 +69,5 @@ spec:
             backend:
               serviceName: {{ .Values.mlflow.name }}
               servicePort: 8080
-          {{ end }} 
+          {{ end }}
+{{ end }}

@@ -1,3 +1,33 @@
+{{- if .Values.argocd }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: drone
+  annotations:
+    {{ if eq .Values.ingress.type "nginx" }}
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Frame-Options: ALLOW-FROM {{ include "protocol" . }}://kdlapp.{{ .Values.domain }}";
+      more_set_headers "Content-Security-Policy: frame-ancestors 'self' {{ include "protocol" . }}://kdlapp.{{ .Values.domain}}";
+    {{ end }}
+  labels:
+    app:  drone
+spec:
+  {{ if .Values.tls.enabled -}}
+  tls:
+    - hosts:
+        - drone.{{ .Values.domain }}
+      secretName: {{ .Values.domain }}-tls-secret
+  {{- end }}
+  rules:
+    - host: drone.{{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: drone
+              servicePort: http
+{{ else }} 
 {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
 apiVersion: networking.k8s.io/v1
 {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
@@ -39,4 +69,5 @@ spec:
             backend:
               serviceName: drone
               servicePort: http
-          {{ end }} 
+          {{ end }}
+{{ end }} 

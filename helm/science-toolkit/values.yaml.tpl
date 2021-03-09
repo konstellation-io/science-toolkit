@@ -1,5 +1,8 @@
 domain: toolkit.local
 
+argo:
+  enabled: false
+
 kdl:
   enabled: false
 
