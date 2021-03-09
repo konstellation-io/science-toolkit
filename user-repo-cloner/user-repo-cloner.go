@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"strings"
 	"time"
 	"user-repo-cloner/config"
+
+	"github.com/konstellation-io/kdl-server/app/api/entity"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
@@ -18,6 +19,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	ssh2 "golang.org/x/crypto/ssh"
 )
+
+type projectDTO struct {
+	ProjectName      string                `json:"projectName" bson:"name"`
+	RepositoryType   entity.RepositoryType `json:"repositoryType" bson:"repo_type"`
+	InternalRepoName string                `json:"internalRepoName" bson:"internal_repo_name"`
+	ExternalRepoURL  string                `json:"externalRepoURL" bson:"external_repo_url"`
+}
 
 func main() {
 	cfg := config.NewConfig()
@@ -78,61 +86,85 @@ func getUserID(userName string, mongodbClient *mongo.Client, cfg config.Config) 
 	return userID["_id"].(primitive.ObjectID), nil
 }
 
-func checkAndCloneNewRepos(
-	userID primitive.ObjectID, projectCollection *mongo.Collection, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
-	projects, err := checkNewRepos(userID, projectCollection, cfg)
+func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection,
+	logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
+	projects, err := checkNewRepos(userID, projectCollection)
 	if err != nil {
 		logger.Errorf("Error checking new repos: %s", err)
 		return
 	}
 
 	for _, dto := range projects {
-		repoName := fmt.Sprintf("%v", dto[cfg.MongoDB.RepoNameKey])
-		if repoName == "<nil>" {
-			logger.Errorf("Error extracting repository name (nil name)")
+		url := ""
+		repoName := ""
+
+		if dto.RepositoryType == entity.RepositoryTypeExternal {
+			url = dto.ExternalRepoURL
+			repoName = dto.ProjectName
+		} else if dto.RepositoryType == entity.RepositoryTypeInternal {
+			url = cfg.RepoURLGeneric + dto.InternalRepoName + ".git"
+			repoName = dto.InternalRepoName
+		}
+
+		if url != "" {
+			go cloneRepo(url, repoName, logger, cfg)
 		} else {
-			go cloneRepo(repoName, logger, cfg)
+			logger.Errorf("Error obtaining repo URL for project with name %s", dto.ProjectName)
 		}
 	}
-
-	logger.Info("Repos already updated!")
 }
 
-func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, cfg config.Config) ([]bson.M, error) {
+func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection) ([]projectDTO, error) {
 	ctx := context.Background()
 
 	projection := bson.D{
-		primitive.E{Key: cfg.MongoDB.RepoNameKey, Value: 1},
+		primitive.E{Key: "name", Value: 1},
+		primitive.E{Key: "repo_type", Value: 1},
+		primitive.E{Key: "internal_repo_name", Value: 1},
+		primitive.E{Key: "external_repo_url", Value: 1},
 	}
+
 	findOptions := options.Find().SetProjection(projection)
-	cursor, err := projectCollection.Find(ctx, bson.M{"members": userID}, findOptions)
+
+	filter := bson.M{"members.user_id": userID}
+	cursor, err := projectCollection.Find(ctx, filter, findOptions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var projects []bson.M
-	if err := cursor.All(ctx, &projects); err != nil {
-		return nil, err
+	var projects []projectDTO
+
+	for cursor.Next(context.Background()) {
+		project := projectDTO{}
+		err := cursor.Decode(&project)
+
+		if err != nil {
+			return nil, err
+		}
+
+		projects = append(projects, project)
 	}
 
 	return projects, nil
 }
 
-func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
-	repoURL := cfg.RepoURLGeneric + repoName + ".git"
+func cloneRepo(repoURL, repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
 	path := cfg.PathGeneric + repoName
 
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
-		logger.Debugf("Repository %s already exists", repoName)
 		return
 	}
 
+	logger.Debugf("Repository %s with URL %s found. Clone starting", repoName, repoURL)
+
 	auth, err := ssh.NewPublicKeysFromFile("git", cfg.PemFile, cfg.PemFilePassword)
 	if err != nil {
-		logger.Error("error with rsa key")
+		logger.Error("Error with rsa key. Aborting clone.")
+		return
 	}
 
+	// nolint:gosec // needed to accept handshake
 	auth.HostKeyCallback = ssh2.InsecureIgnoreHostKey()
 
 	_, err = git.PlainClone(path, false, &git.CloneOptions{
@@ -145,12 +177,14 @@ func cloneRepo(repoName string, logger simplelogger.SimpleLoggerInterface, cfg c
 		logger.Errorf("Error cloning repository: %s", err)
 
 		if _, err := os.Stat(path); os.IsNotExist(err) {
-			err := os.Remove(path)
+			err := os.RemoveAll(path)
 			if err != nil {
 				logger.Errorf("Error deleting repo folder: %s", err)
 			}
 		}
-	} else {
-		logger.Infof("Repository %s successfully created", repoName)
+
+		return
 	}
+
+	logger.Infof("Repository %s successfully created", repoName)
 }

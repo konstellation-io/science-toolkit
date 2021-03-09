@@ -1,6 +1,7 @@
+usrName: "angell"
 logLevel: "debug"
-repoURLGeneric: "git@gitea:kdl/"
-pathGeneric: "/home/kdl/repos/"
+repoURLGeneric: "git@gitea.kdl/"
+pathGeneric: "/home/kdl/reposs/"
 pemFile: "/home/kdl/.ssh/id_rsa"
 pemFilePassword: ""
 checkFrequencySeconds: 5
@@ -9,4 +10,3 @@ mongodb:
   dbName: "kdl"
   projectCollName: "projects"
   userCollName: "users"
-  repoNameKey: "internal_repo_name"

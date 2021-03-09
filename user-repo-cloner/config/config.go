@@ -22,7 +22,6 @@ type Config struct {
 		DBName           string `yaml:"dbName" envconfig:"DB_NAME"`
 		ProjectsCollName string `yaml:"projectCollName" envconfig:"PROJECT_COLL_NAME"`
 		UsersCollName    string `yaml:"userCollName" envconfig:"USER_COLL_NAME"`
-		RepoNameKey      string `yaml:"repoNameKey" envconfig:"REPO_NAME_KEY"`
 	}
 }
 
