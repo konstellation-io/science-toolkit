@@ -3,7 +3,7 @@ appVersion: "1.0"
 description: Science Toolkit
 name: science-toolkit
 version: 0.1.0
-dependencies:
-  - name: minio
-    version: "8.0.2"
-    repository: "https://helm.min.io/"
+# dependencies:
+#   - name: minio
+#     version: "8.0.2"
+#     repository: "https://helm.min.io/"
