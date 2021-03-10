@@ -3,6 +3,15 @@ entries:
   science-toolkit:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2021-03-10T16:32:58.477806932Z"
+    description: Science Toolkit
+    digest: 0ecea481957b7b45a62f3b734e51ef82a1b6c3d696947753981c28817fd76076
+    name: science-toolkit
+    urls:
+    - https://github.com/konstellation-io/science-toolkit/releases/download/science-toolkit-1.0.206/science-toolkit-1.0.206.tgz
+    version: 1.0.206
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2021-03-10T11:36:30.601786775Z"
     description: Science Toolkit
     digest: 3fc539efbe0870c1d1edb4a648c8fcf2685f4f96fddebbb4b617aa102ae8ba15
