@@ -1,6 +1,6 @@
 domain: toolkit.local
 
-argo:
+argocd:
   enabled: false
 
 kdl:
