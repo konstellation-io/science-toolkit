@@ -12,8 +12,8 @@ import (
 type Config struct {
 	UsrName               string `envconfig:"KDL_USER_NAME"`
 	LogLevel              string `yaml:"logLevel" envconfig:"LOG_LEVEL"`
-	RepoURLGeneric        string `yaml:"repoURLGeneric" envconfig:"REPO_URL_GENERIC"`
-	PathGeneric           string `yaml:"pathGeneric" envconfig:"PATH_GENERIC"`
+	ReposPath             string `yaml:"reposPath" envconfig:"REPOS_PATH"`
+	InternalRepoBaseURL   string `yaml:"internalRepoBaseURL" envconfig:"INTERNAL_REPO_BASE_URL"`
 	PemFile               string `yaml:"pemFile" envconfig:"PEM_FILE"`
 	PemFilePassword       string `yaml:"pemFilePassword" envconfig:"PEM_FILE_PASSWORD"`
 	CheckFrequencySeconds int    `yaml:"checkFrequencySeconds" envconfig:"CHECK_FREQUENCY_SECONDS"`

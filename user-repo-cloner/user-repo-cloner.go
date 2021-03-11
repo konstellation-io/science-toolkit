@@ -21,10 +21,14 @@ import (
 )
 
 type projectDTO struct {
-	ProjectName      string                `json:"projectName" bson:"name"`
-	RepositoryType   entity.RepositoryType `json:"repositoryType" bson:"repo_type"`
-	InternalRepoName string                `json:"internalRepoName" bson:"internal_repo_name"`
-	ExternalRepoURL  string                `json:"externalRepoURL" bson:"external_repo_url"`
+	Name             string                `bson:"name"`
+	RepositoryType   entity.RepositoryType `bson:"repo_type"`
+	InternalRepoName string                `bson:"internal_repo_name"`
+	ExternalRepoURL  string                `bson:"external_repo_url"`
+}
+
+type userDTO struct {
+	ID primitive.ObjectID `bson:"_id"`
 }
 
 func main() {
@@ -71,24 +75,24 @@ func main() {
 func getUserID(userName string, mongodbClient *mongo.Client, cfg config.Config) (primitive.ObjectID, error) {
 	userCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.UsersCollName)
 
-	var userID bson.M
+	user := userDTO{}
 
-	projection := bson.D{
-		primitive.E{Key: "_id", Value: 1},
+	projection := bson.M{
+		"_id": 1,
 	}
 	findOptions := options.FindOne().SetProjection(projection)
-	err := userCollection.FindOne(context.Background(), bson.M{"username": userName}, findOptions).Decode(&userID)
+	err := userCollection.FindOne(context.Background(), bson.M{"username": userName}, findOptions).Decode(&user)
 
 	if err != nil {
 		return primitive.ObjectID{}, err
 	}
 
-	return userID["_id"].(primitive.ObjectID), nil
+	return user.ID, nil
 }
 
 func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection,
 	logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
-	projects, err := checkNewRepos(userID, projectCollection)
+	projects, err := checkNewRepos(userID, projectCollection, cfg)
 	if err != nil {
 		logger.Errorf("Error checking new repos: %s", err)
 		return
@@ -98,30 +102,32 @@ func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.C
 		url := ""
 		repoName := ""
 
-		if dto.RepositoryType == entity.RepositoryTypeExternal {
-			url = dto.ExternalRepoURL
-			repoName = dto.ProjectName
-		} else if dto.RepositoryType == entity.RepositoryTypeInternal {
-			url = cfg.RepoURLGeneric + dto.InternalRepoName + ".git"
+		switch dto.RepositoryType {
+		case entity.RepositoryTypeExternal:
+			url = strings.Replace(dto.ExternalRepoURL, "https://", "ssh://git@", 1)
+			nameParts := strings.Split(dto.ExternalRepoURL, "/")
+			repoName = strings.Replace(nameParts[len(nameParts)-1], ".git", "", 1)
+		case entity.RepositoryTypeInternal:
+			url = cfg.InternalRepoBaseURL + dto.InternalRepoName + ".git"
 			repoName = dto.InternalRepoName
 		}
 
 		if url != "" {
 			go cloneRepo(url, repoName, logger, cfg)
 		} else {
-			logger.Errorf("Error obtaining repo URL for project with name %s", dto.ProjectName)
+			logger.Errorf("Error obtaining repo URL for project with name %s", dto.Name)
 		}
 	}
 }
 
-func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection) ([]projectDTO, error) {
-	ctx := context.Background()
-
-	projection := bson.D{
-		primitive.E{Key: "name", Value: 1},
-		primitive.E{Key: "repo_type", Value: 1},
-		primitive.E{Key: "internal_repo_name", Value: 1},
-		primitive.E{Key: "external_repo_url", Value: 1},
+func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, cfg config.Config) ([]projectDTO, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.CheckFrequencySeconds)*time.Second)
+	defer cancel()
+	projection := bson.M{
+		"name":               1,
+		"repo_type":          1,
+		"internal_repo_name": 1,
+		"external_repo_url":  1,
 	}
 
 	findOptions := options.Find().SetProjection(projection)
@@ -135,22 +141,16 @@ func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collectio
 
 	var projects []projectDTO
 
-	for cursor.Next(context.Background()) {
-		project := projectDTO{}
-		err := cursor.Decode(&project)
-
-		if err != nil {
-			return nil, err
-		}
-
-		projects = append(projects, project)
+	err = cursor.All(ctx, &projects)
+	if err != nil {
+		return nil, err
 	}
 
 	return projects, nil
 }
 
 func cloneRepo(repoURL, repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
-	path := cfg.PathGeneric + repoName
+	path := cfg.ReposPath + repoName
 
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		return
