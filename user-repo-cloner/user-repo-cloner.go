@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 	"user-repo-cloner/config"
@@ -28,7 +29,9 @@ type projectDTO struct {
 }
 
 type userDTO struct {
-	ID primitive.ObjectID `bson:"_id"`
+	ID       primitive.ObjectID `bson:"_id"`
+	Username string             `bson:"username"`
+	Email    string             `bson:"email"`
 }
 
 func main() {
@@ -56,10 +59,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	userID, err := getUserID(cfg.UsrName, mongodbClient, cfg)
+	userData, err := getUserData(cfg.UsrName, mongodbClient, cfg)
 	if err != nil {
 		logger.Errorf("Error retrieving user %s: %s", cfg.UsrName, err)
 		os.Exit(1)
+	}
+
+	err = addGitUserName(userData.Username)
+	if err != nil {
+		logger.Errorf("Error setting git username: %s. You'll need to do manually", err)
+	}
+
+	err = addGitEmail(userData.Email)
+	if err != nil {
+		logger.Errorf("Error setting git email: %s. You'll need to do manually", err)
 	}
 
 	defer mongoDriver.Disconnect()
@@ -68,26 +81,42 @@ func main() {
 	ticker := time.NewTicker(time.Duration(cfg.CheckFrequencySeconds) * time.Second)
 
 	for range ticker.C {
-		checkAndCloneNewRepos(userID, projectCollection, logger, cfg)
+		checkAndCloneNewRepos(userData.ID, projectCollection, logger, cfg)
 	}
 }
 
-func getUserID(userName string, mongodbClient *mongo.Client, cfg config.Config) (primitive.ObjectID, error) {
+func getUserData(userName string, mongodbClient *mongo.Client, cfg config.Config) (userDTO, error) {
 	userCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.UsersCollName)
 
 	user := userDTO{}
 
 	projection := bson.M{
-		"_id": 1,
+		"_id":      1,
+		"username": 1,
+		"email":    1,
 	}
 	findOptions := options.FindOne().SetProjection(projection)
 	err := userCollection.FindOne(context.Background(), bson.M{"username": userName}, findOptions).Decode(&user)
 
 	if err != nil {
-		return primitive.ObjectID{}, err
+		return userDTO{}, err
 	}
 
-	return user.ID, nil
+	return user, nil
+}
+
+func addGitUserName(userName string) error {
+	cmd := exec.Command("git", "config", "--global", "user.name", userName)
+	err := cmd.Run()
+
+	return err
+}
+
+func addGitEmail(email string) error {
+	cmd := exec.Command("git", "config", "--global", "user.email", email)
+	err := cmd.Run()
+
+	return err
 }
 
 func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection,
@@ -123,6 +152,7 @@ func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.C
 func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection, cfg config.Config) ([]projectDTO, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.CheckFrequencySeconds)*time.Second)
 	defer cancel()
+
 	projection := bson.M{
 		"name":               1,
 		"repo_type":          1,
