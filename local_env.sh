@@ -112,7 +112,7 @@ if [ "$SKIP_BUILD" != "1" ]; then
   docker build -t terminus7/gitea-oauth2-setup:latest gitea-oauth2-setup
 
   build_header "user-repo-cloner"
-  docker build -t konstellation/user-repo-cloner:latest user-repo-cloner
+  docker build --network host -t konstellation/user-repo-cloner:latest user-repo-cloner
 
 fi
 

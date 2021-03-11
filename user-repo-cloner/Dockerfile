@@ -10,7 +10,7 @@ COPY . .
 RUN go build -o user-repo-cloner .
 
 
-FROM alpine
+FROM alpine:3.10.2
 
 # Create kre user.
 ENV USER=kdl
@@ -22,6 +22,8 @@ RUN adduser \
     --shell "/sbin/nologin" \
     --uid "${UID}" \
     "${USER}"
+
+RUN apk add git --update
 
 WORKDIR /app
 COPY --from=builder /app/user-repo-cloner .

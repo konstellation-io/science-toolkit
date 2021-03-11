@@ -160,7 +160,7 @@ func cloneRepo(repoURL, repoName string, logger simplelogger.SimpleLoggerInterfa
 
 	auth, err := ssh.NewPublicKeysFromFile("git", cfg.PemFile, cfg.PemFilePassword)
 	if err != nil {
-		logger.Error("Error with rsa key. Aborting clone.")
+		logger.Errorf("Error with rsa key: %s Aborting clone.", err)
 		return
 	}
 

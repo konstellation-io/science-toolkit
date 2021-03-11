@@ -1,7 +1,7 @@
 usrName: "angell"
 logLevel: "debug"
-repoURLGeneric: "git@gitea.kdl/"
-pathGeneric: "/home/kdl/reposs/"
+repoURLGeneric: "git@gitea:kdl/"
+pathGeneric: "/home/kdl/repos/"
 pemFile: "/home/kdl/.ssh/id_rsa"
 pemFilePassword: ""
 checkFrequencySeconds: 5
