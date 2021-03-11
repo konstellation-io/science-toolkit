@@ -14,7 +14,7 @@ FROM alpine:3.10.2
 
 # Create kre user.
 ENV USER=kdl
-ENV UID=10001
+ENV UID=1000
 RUN adduser \
     --disabled-password \
     --gecos "" \
