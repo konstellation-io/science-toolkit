@@ -32,7 +32,7 @@ publish-user-repo-cloner-image:
   services:
     - docker:dind
   variables:
-    IMAGE_PROJECT_NAME: "kosntellation/user-repo-cloner"
+    IMAGE_PROJECT_NAME: "konstellation/user-repo-cloner"
     README_FILEPATH: "./user-repo-cloner/README.md"
   before_script:
     - apk add curl jq bash git coreutils --update
