@@ -26,12 +26,13 @@ export OAUTH2_PROXY_TAG=latest
 
 export SKIP_BUILD=1
 export ENABLE_TLS=false
+export CHART_EXPORT=false
 check_requirements
 
 clean () {
-  helm -n toolkit delete toolkit || true
-  (kubectl -n toolkit get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n toolkit delete pvc --force --grace-period=0) || true
-  kubectl -n toolkit delete crd usertools.sci-toolkit.konstellation.io --force --grace-period=0 || true
+  helm -n $NAMESPACE delete toolkit || true
+  (kubectl -n $NAMESPACE get pvc | cut -d' ' -f1 | sed -s 1d | xargs kubectl -n $NAMESPACE delete pvc --force --grace-period=0) || true
+  kubectl -n $NAMESPACE delete crd usertools.sci-toolkit.konstellation.io --force --grace-period=0 || true
 }
 
 
@@ -45,6 +46,7 @@ while test $# -gt 0; do
       echo "--hard, --dracarys        remove minikube profile entirely"
       echo "--clean, --semi-dracarys  remove resources from minikube, keep profile intact"
       echo "--docker-build            build images locally instead of downloading from registry"
+      echo "--export-chart            export chart with latest version of each component"
       exit 0
       ;;
     # WARNING: Doing a hard reset before deploying
@@ -58,6 +60,11 @@ while test $# -gt 0; do
         ;;
     *--tls*)
         export ENABLE_TLS=true
+        shift
+        ;;
+    *--export-chart*)
+        export CHART_EXPORT=true
+        export MINIKUBE_PROFILE=kdl-local
         shift
         ;;
     *--clean* | *--semi-dracarys*)
@@ -103,6 +110,10 @@ if [ "$SKIP_BUILD" != "1" ]; then
 
   build_header "gitea-oauth2-setup"
   docker build -t terminus7/gitea-oauth2-setup:latest gitea-oauth2-setup
+
+  build_header "user-repo-cloner"
+  docker build --network host -t konstellation/user-repo-cloner:latest user-repo-cloner
+
 fi
 
 # Helm v3 needs this the base repo to be added manually
@@ -117,6 +128,17 @@ if [ "$SKIP_BUILD" != "1" ] && [ "$OPERATOR_SDK_INSTALLED" -eq "1" ]; then
   cd user-tools-operator \
   && operator-sdk build terminus7/sci-toolkit-user-tools-operator:latest \
   && cd ..
+fi
+
+if [ "$CHART_EXPORT" = "true" ]; then
+  helm repo add stable https://charts.helm.sh/stable
+  helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+  helm dep update helm/science-toolkit
+  mkdir -p ./helm-chart-exported
+  rm -f ./helm-chart-exported/*
+  helm package helm/science-toolkit --version 1.0.0-local -d ./helm-chart-exported
+  echo "📦 Science Tookit Helm Chart exported "
+  exit 0
 fi
 
 echo "📚️ Create Namespace if not exist...\n"
@@ -135,6 +157,7 @@ helm upgrade \
   --set domain=$DOMAIN \
   --set tls.enabled=$ENABLE_TLS \
   --set minio.securityContext.runAsUser=0 \
+  --set kdl.enabled=$ENABLE_KDL \
   --timeout 60m \
   helm/science-toolkit
 

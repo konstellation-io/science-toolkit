@@ -23,6 +23,16 @@ spec:
         app: user-tools-{{ .Values.usernameSlug }}
     spec:
       initContainers:
+        - name: create-ssh-folder
+          image: alpine:3.10
+          imagePullPolicy: IfNotPresent
+          command:
+          - sh
+          - -c
+          - mkdir -p /home/kdl/.ssh && chown 1000:1000 /home/kdl/.ssh
+          volumeMounts:
+            - name: user-pvc
+              mountPath: /home/kdl
         - name: codeserver-gitea-oauth2-setup
           image: terminus7/gitea-oauth2-setup:latest
           imagePullPolicy: IfNotPresent
@@ -54,6 +64,26 @@ spec:
             - configMapRef:
                 name: gitea-configmap
       containers:
+      {{- if .Values.kdl.enabled }}
+        - name: {{ .Chart.Name }}-repo-cloner
+          image: konstellation/user-repo-cloner:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: KDL_USER_NAME
+              value: "{{ .Values.username }}"
+          envFrom:
+          - secretRef:
+              name: tools-secret
+          - secretRef:
+              name: kdl-server-secrets
+          volumeMounts:
+            - name: user-pvc
+              mountPath: /home/kdl
+            - name: {{ .Values.username }}-ssh-keys-vol
+              mountPath: /home/kdl/.ssh/id_rsa
+              subPath: id_rsa
+              readOnly: true
+      {{- end }}
         - name: {{ .Chart.Name }}-vscode
           image: terminus7/sci-toolkit-vscode:${VSCODE_TAG}
           imagePullPolicy: IfNotPresent
@@ -68,8 +98,9 @@ spec:
               mountPath: /home/coder/shared-storage
           {{- end }}
           {{- if .Values.kdl.enabled }}
-            - name: {{ .Values.username }}-ssh-keys
-              mountPath: /home/coder/.ssh/
+            - name: {{ .Values.username }}-ssh-keys-vol
+              mountPath: /home/coder/.ssh/id_rsa
+              subPath: id_rsa
               readOnly: true
           {{- end }}
         - name: {{ .Chart.Name }}-jupyter
@@ -92,8 +123,9 @@ spec:
               mountPath: /home/jovyan/shared-storage
           {{- end }}
           {{- if .Values.kdl.enabled }}
-            - name: {{ .Values.username }}-ssh-keys
-              mountPath: /home/jovyan/.ssh/
+            - name: {{ .Values.username }}-ssh-keys-vol
+              mountPath: /home/jovyan/.ssh/id_rsa
+              subPath: id_rsa
               readOnly: true
           {{- end }}
         - name: {{ .Chart.Name }}-vscode-proxy
@@ -175,7 +207,7 @@ spec:
             claimName: {{ .Values.sharedVolume.name }}-claim
         {{- end }}
         {{ if .Values.kdl.enabled -}}
-        - name: {{ .Values.username }}-ssh-keys
+        - name: {{ .Values.username }}-ssh-keys-vol
           secret:
             secretName: {{ .Values.username }}-ssh-keys
             items:

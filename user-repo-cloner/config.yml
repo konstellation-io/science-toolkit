@@ -1,0 +1,12 @@
+usrName: "user"
+logLevel: "debug"
+internalRepoBaseURL: "git@gitea:kdl/"
+reposPath: "/home/kdl/repos/"
+pemFile: "/home/kdl/.ssh/id_rsa"
+pemFilePassword: ""
+checkFrequencySeconds: 10
+mongodb:
+  uri: "mongodb://admin:123456@localhost:27017/admin"
+  dbName: "kdl"
+  projectCollName: "projects"
+  userCollName: "users"

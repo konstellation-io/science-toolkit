@@ -20,4 +20,5 @@ include:
   - local: docs-site/.gitlab-ci.yml
   - local: toolkit-backup/.gitlab-ci.yml
   - local: cleaner/.gitlab-ci.yml
-
+  - local: user-repo-cloner/.gitlab-ci.yml
+  
