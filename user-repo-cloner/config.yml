@@ -1,4 +1,4 @@
-usrName: "angell"
+usrName: "user"
 logLevel: "debug"
 internalRepoBaseURL: "git@gitea:kdl/"
 reposPath: "/home/kdl/repos/"
