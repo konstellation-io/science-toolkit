@@ -2,23 +2,27 @@ package main
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 	"time"
-	"user-repo-cloner/config"
 
-	"github.com/konstellation-io/kdl-server/app/api/entity"
+	"github.com/konstellation-io/kdl-server/app/api/pkg/logging"
+
+	"user-repo-cloner/config"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
+	"github.com/konstellation-io/kdl-server/app/api/entity"
 	"github.com/konstellation-io/kdl-server/app/api/pkg/mongodb"
 	"github.com/konstellation-io/kre/libs/simplelogger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	ssh2 "golang.org/x/crypto/ssh"
 )
 
 type projectDTO struct {
@@ -33,6 +37,18 @@ type userDTO struct {
 	Username string             `bson:"username"`
 	Email    string             `bson:"email"`
 }
+
+var (
+	// This regexp extracts the repository name from a https URL like:
+	//  https://github.com/konstellation-io/kre.git
+	repoNameRegexp = regexp.MustCompile(`([^/]+)\.git$`)
+
+	// This regexp extracts the host name from a https URL like:
+	//  https://github.com/konstellation-io/kre.git
+	repoHostnameRegexp = regexp.MustCompile(`^https://([^/]+)`)
+
+	errInvalidRepoURL = errors.New("the repository URL is invalid")
+)
 
 func main() {
 	cfg := config.NewConfig()
@@ -80,6 +96,13 @@ func main() {
 	projectCollection := mongodbClient.Database(cfg.MongoDB.DBName).Collection(cfg.MongoDB.ProjectsCollName)
 	ticker := time.NewTicker(time.Duration(cfg.CheckFrequencySeconds) * time.Second)
 
+	err = addToKnownHost("gitea", logger)
+	if err != nil {
+		logger.Errorf("Error adding gitea to known hosts: %s", err)
+	}
+
+	checkAndCloneNewRepos(userData.ID, projectCollection, logger, cfg)
+
 	for range ticker.C {
 		checkAndCloneNewRepos(userData.ID, projectCollection, logger, cfg)
 	}
@@ -107,16 +130,60 @@ func getUserData(userName string, mongodbClient *mongo.Client, cfg config.Config
 
 func addGitUserName(userName string) error {
 	cmd := exec.Command("git", "config", "--global", "user.name", userName)
-	err := cmd.Run()
-
-	return err
+	return cmd.Run()
 }
 
 func addGitEmail(email string) error {
 	cmd := exec.Command("git", "config", "--global", "user.email", email)
+	return cmd.Run()
+}
+
+func isKnownHost(host string) bool {
+	cmd := exec.Command("ssh-keygen", "-F", host)
 	err := cmd.Run()
 
-	return err
+	return err == nil
+}
+
+func addToKnownHost(host string, logger logging.Logger) error {
+	if isKnownHost(host) {
+		logger.Infof("%s is a known host", host)
+		return nil
+	}
+
+	sshKeyScanCmd := fmt.Sprintf("ssh-keyscan -H %s >> /home/kdl/.ssh/known_hosts", host)
+	cmd := exec.Command("sh", "-c", sshKeyScanCmd)
+
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("Added %s to known host", host)
+
+	return nil
+}
+
+func getRepoNameFromURL(url string) (string, error) {
+	const expectedMatches = 2
+
+	matches := repoNameRegexp.FindStringSubmatch(url)
+	if len(matches) != expectedMatches {
+		return "", errInvalidRepoURL
+	}
+
+	return matches[1], nil
+}
+
+func getRepoHostnameFromURL(url string) (string, error) {
+	const expectedMatches = 2
+
+	matches := repoHostnameRegexp.FindStringSubmatch(url)
+	if len(matches) != expectedMatches {
+		return "", errInvalidRepoURL
+	}
+
+	return matches[1], nil
 }
 
 func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collection,
@@ -134,15 +201,20 @@ func checkAndCloneNewRepos(userID primitive.ObjectID, projectCollection *mongo.C
 		switch dto.RepositoryType {
 		case entity.RepositoryTypeExternal:
 			url = strings.Replace(dto.ExternalRepoURL, "https://", "ssh://git@", 1)
-			nameParts := strings.Split(dto.ExternalRepoURL, "/")
-			repoName = strings.Replace(nameParts[len(nameParts)-1], ".git", "", 1)
+
+			repoName, err = getRepoNameFromURL(dto.ExternalRepoURL)
+			if err != nil {
+				logger.Errorf("Error getting the repository name from URL: %s", dto.ExternalRepoURL)
+				return
+			}
+
 		case entity.RepositoryTypeInternal:
 			url = cfg.InternalRepoBaseURL + dto.InternalRepoName + ".git"
 			repoName = dto.InternalRepoName
 		}
 
 		if url != "" {
-			go cloneRepo(url, repoName, logger, cfg)
+			go cloneRepo(url, repoName, logger, cfg, dto)
 		} else {
 			logger.Errorf("Error obtaining repo URL for project with name %s", dto.Name)
 		}
@@ -179,11 +251,25 @@ func checkNewRepos(userID primitive.ObjectID, projectCollection *mongo.Collectio
 	return projects, nil
 }
 
-func cloneRepo(repoURL, repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config) {
+func cloneRepo(repoURL, repoName string, logger simplelogger.SimpleLoggerInterface, cfg config.Config, dto projectDTO) {
 	path := cfg.ReposPath + repoName
 
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		return
+	}
+
+	if dto.RepositoryType == entity.RepositoryTypeExternal {
+		hostname, err := getRepoHostnameFromURL(dto.ExternalRepoURL)
+		if err != nil {
+			logger.Errorf("Error getting the repository hostname from URL: %s", dto.ExternalRepoURL)
+			return
+		}
+
+		err = addToKnownHost(hostname, logger)
+		if err != nil {
+			logger.Errorf("Error adding %s to known hosts", hostname)
+			return
+		}
 	}
 
 	logger.Debugf("Repository %s with URL %s found. Clone starting", repoName, repoURL)
@@ -193,9 +279,6 @@ func cloneRepo(repoURL, repoName string, logger simplelogger.SimpleLoggerInterfa
 		logger.Errorf("Error with rsa key: %s Aborting clone.", err)
 		return
 	}
-
-	// nolint:gosec // needed to accept handshake
-	auth.HostKeyCallback = ssh2.InsecureIgnoreHostKey()
 
 	_, err = git.PlainClone(path, false, &git.CloneOptions{
 		URL:      repoURL,

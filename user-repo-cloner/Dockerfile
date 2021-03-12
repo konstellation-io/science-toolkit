@@ -23,7 +23,7 @@ RUN adduser \
     --uid "${UID}" \
     "${USER}"
 
-RUN apk add git --update
+RUN apk add git openssh-client --update
 
 WORKDIR /app
 COPY --from=builder /app/user-repo-cloner .
