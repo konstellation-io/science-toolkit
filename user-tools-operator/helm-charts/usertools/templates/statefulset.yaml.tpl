@@ -79,7 +79,7 @@ spec:
           volumeMounts:
             - name: user-pvc
               mountPath: /home/kdl
-            - name: {{ .Values.username }}-ssh-keys-vol
+            - name: {{ .Values.usernameSlug }}-ssh-keys-vol
               mountPath: /home/kdl/.ssh/id_rsa
               subPath: id_rsa
               readOnly: true
@@ -98,7 +98,7 @@ spec:
               mountPath: /home/coder/shared-storage
           {{- end }}
           {{- if .Values.kdl.enabled }}
-            - name: {{ .Values.username }}-ssh-keys-vol
+            - name: {{ .Values.usernameSlug }}-ssh-keys-vol
               mountPath: /home/coder/.ssh/id_rsa
               subPath: id_rsa
               readOnly: true
@@ -123,7 +123,7 @@ spec:
               mountPath: /home/jovyan/shared-storage
           {{- end }}
           {{- if .Values.kdl.enabled }}
-            - name: {{ .Values.username }}-ssh-keys-vol
+            - name: {{ .Values.usernameSlug }}-ssh-keys-vol
               mountPath: /home/jovyan/.ssh/id_rsa
               subPath: id_rsa
               readOnly: true
@@ -207,9 +207,9 @@ spec:
             claimName: {{ .Values.sharedVolume.name }}-claim
         {{- end }}
         {{ if .Values.kdl.enabled -}}
-        - name: {{ .Values.username }}-ssh-keys-vol
+        - name: {{ .Values.usernameSlug }}-ssh-keys-vol
           secret:
-            secretName: {{ .Values.username }}-ssh-keys
+            secretName: {{ .Values.usernameSlug }}-ssh-keys
             items:
             - key: KDL_USER_PRIVATE_SSH_KEY
               path: id_rsa
