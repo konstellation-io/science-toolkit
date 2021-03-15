@@ -22,6 +22,8 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app: user-tools-{{ .Values.usernameSlug }}
     spec:
+      securityContext:
+        fsGroup: 1000
       initContainers:
         - name: create-ssh-folder
           image: alpine:3.10
