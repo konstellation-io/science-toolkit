@@ -29,7 +29,7 @@ spec:
         volumeMounts:
           - name: postgres-pvc
             mountPath: /var/lib/postgresql/data
-            subPath: data
+            subPath: data # to prevent warning: "initdb: directory "/var/lib/postgresql/data" exists but is not empty"
           - name: postgres-initdb
             mountPath: /docker-entrypoint-initdb.d/
       volumes:
