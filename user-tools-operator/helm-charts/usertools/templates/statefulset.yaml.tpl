@@ -68,7 +68,7 @@ spec:
       containers:
       {{- if .Values.kdl.enabled }}
         - name: {{ .Chart.Name }}-repo-cloner
-          image: konstellation/user-repo-cloner:latest
+          image: konstellation/user-repo-cloner:${USER_REPO_CLONER_TAG}
           imagePullPolicy: IfNotPresent
           env:
             - name: KDL_USER_NAME
