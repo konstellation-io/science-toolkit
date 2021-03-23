@@ -1,3 +1,4 @@
+{{- if .Values.kdl.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -15,3 +16,4 @@ data:
     cookie_samesite="none"
     ssl_insecure_skip_verify=true
     ssl_upstream_insecure_skip_verify=true
+{{- end }}

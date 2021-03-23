@@ -1,3 +1,4 @@
+{{- if .Values.kdl.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,3 +12,4 @@ data:
   TOOLKIT_INGRESS_TYPE: {{ .Values.ingress.type }}
   TOOLKIT_SHARED_VOLUME: {{ .Values.sharedVolume.name }}
   TOOLKIT_TLS: "{{ .Values.tls.enabled }}"
+{{- end }}
