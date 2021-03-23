@@ -1,4 +1,4 @@
-{{- if .Values.kdl.enabled }}
+{{- if eq .Values.kdl.enabled "false" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
