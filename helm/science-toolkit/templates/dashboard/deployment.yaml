@@ -1,4 +1,4 @@
-{{- if eq .Values.kdl.enabled "false" }}
+{{ if not .Values.kdl.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -83,4 +83,4 @@ spec:
         - name: oauth2-config
           configMap:
             name: dashboard-oauth2-proxy
-{{- end }}
+{{ end }}

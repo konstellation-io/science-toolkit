@@ -1,4 +1,4 @@
-{{- if eq .Values.kdl.enabled "false" }}
+{{ if not .Values.kdl.enabled }}
 {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
 apiVersion: networking.k8s.io/v1
 {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
@@ -36,4 +36,4 @@ spec:
               serviceName: dashboard
               servicePort: http
           {{ end }}
-{{- end }}
+{{ end }}
