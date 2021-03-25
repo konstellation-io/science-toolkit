@@ -90,6 +90,13 @@ data:
     [openid]
     ENABLE_OPENID_SIGNIN = true
     ENABLE_OPENID_SIGNUP = true
+
+    [cron.update_mirrors]
+    SCHEDULE: @every 2m
+
+    [mirror]
+    DEFAULT_INTERVAL: 2m
+    MIN_INTERVAL: 2m
   
   create-admin.sh: |+
     #!/bin/sh
