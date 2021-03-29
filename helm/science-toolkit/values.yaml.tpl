@@ -26,8 +26,8 @@ gitea:
     password: "${GITEA_ADMIN_PASSWORD}"
     email: test@test.com
   image:
-    repository: terminus7/gitea
-    tag: oauth
+    repository: gitea/gitea
+    tag: 1.13.6
     pullPolicy: IfNotPresent
   storage:
     size: 10Gi
