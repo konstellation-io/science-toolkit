@@ -97,6 +97,10 @@ data:
     [mirror]
     DEFAULT_INTERVAL: 2m
     MIN_INTERVAL: 2m
+
+    [cron.sync_external_users]
+    SCHEDULE: @every 10m
+    UPDATE_EXISTING: true
   
   create-admin.sh: |+
     #!/bin/sh
