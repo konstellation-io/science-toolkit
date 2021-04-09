@@ -70,14 +70,14 @@ data:
     INTERNAL_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE1ODIwMjM5OTN9.hhV2-a4NWxdtq7zRvN-LN166ap9TAKnrHy0h-qHt5Do
 
     [service]
-    DISABLE_REGISTRATION              = false
-    REQUIRE_SIGNIN_VIEW               = false
+    DISABLE_REGISTRATION              = true
+    REQUIRE_SIGNIN_VIEW               = true
     REGISTER_EMAIL_CONFIRM            = false
     ENABLE_NOTIFY_MAIL                = false
     ALLOW_ONLY_EXTERNAL_REGISTRATION  = false
     ENABLE_CAPTCHA                    = false
     DEFAULT_KEEP_EMAIL_PRIVATE        = false
-    DEFAULT_ALLOW_CREATE_ORGANIZATION = true
+    DEFAULT_ALLOW_CREATE_ORGANIZATION = false
     DEFAULT_ENABLE_TIMETRACKING       = true
     NO_REPLY_ADDRESS                  = noreply.example.org
 
@@ -88,8 +88,8 @@ data:
     ENABLED = false
 
     [openid]
-    ENABLE_OPENID_SIGNIN = true
-    ENABLE_OPENID_SIGNUP = true
+    ENABLE_OPENID_SIGNIN = false
+    ENABLE_OPENID_SIGNUP = false
 
     [cron.update_mirrors]
     SCHEDULE: @every 2m
