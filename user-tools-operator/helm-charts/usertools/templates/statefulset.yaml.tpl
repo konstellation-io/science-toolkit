@@ -98,6 +98,7 @@ spec:
           {{- if .Values.sharedVolume.name }}
             - name: {{ .Values.sharedVolume.name }}
               mountPath: /home/coder/shared-storage
+              readOnly: true
           {{- end }}
           {{- if .Values.kdl.enabled }}
             - name: {{ .Values.usernameSlug }}-ssh-keys-vol
@@ -123,6 +124,7 @@ spec:
           {{- if .Values.sharedVolume.name }}
             - name: {{ .Values.sharedVolume.name }}
               mountPath: /home/jovyan/shared-storage
+              readOnly: true
           {{- end }}
           {{- if .Values.kdl.enabled }}
             - name: {{ .Values.usernameSlug }}-ssh-keys-vol
@@ -207,6 +209,7 @@ spec:
         - name: {{ .Values.sharedVolume.name }}
           persistentVolumeClaim:
             claimName: {{ .Values.sharedVolume.name }}-claim
+            readOnly: true
         {{- end }}
         {{ if .Values.kdl.enabled -}}
         - name: {{ .Values.usernameSlug }}-ssh-keys-vol
