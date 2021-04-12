@@ -110,7 +110,7 @@ data:
     while [ $times -le 36 ]; do
       API_RESPONSE_CODE=$(curl -s -w %{http_code} -o /dev/null -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} http://localhost:3000/api/v1/user)
       echo "Response: " $API_RESPONSE_CODE
-      if [  "$API_RESPONSE_CODE" == "401" ]; then
+      if [  "$API_RESPONSE_CODE" == "403" ]; then
         /usr/local/bin/gitea admin create-user \
           --must-change-password=false \
           --email {{ .Values.gitea.admin.email }} \
