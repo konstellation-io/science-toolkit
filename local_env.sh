@@ -23,6 +23,7 @@ export JUPYTERLAB_GPU_IMAGE_TAG=latest
 export MLFLOW_TAG=latest
 export USER_TOOLS_OPERATOR_TAG=latest
 export OAUTH2_PROXY_TAG=latest
+export USER_REPO_CLONER_TAG=latest
 
 export SKIP_BUILD=1
 export ENABLE_TLS=false
