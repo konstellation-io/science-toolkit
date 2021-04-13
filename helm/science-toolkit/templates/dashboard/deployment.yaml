@@ -61,14 +61,14 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: dashboard-oauth2-secrets
-                  key: DASHBOARD_OAUTH2_CLIENT_ID
+                  name: dashboard-oauth2-credentials
+                  key: OAUTH2_CLIENT_ID
 
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: dashboard-oauth2-secrets
-                  key: DASHBOARD_OAUTH2_CLIENT_SECRET
+                  name: dashboard-oauth2-credentials
+                  key: OAUTH2_CLIENT_SECRET
 
           volumeMounts:
             - name: oauth2-config

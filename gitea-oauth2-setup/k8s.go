@@ -1,16 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"path/filepath"
-	"strings"
-
+	v1 "k8s.io/api/core/v1"
+	k8s_errors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	"log"
+	"os"
+	"path/filepath"
 )
 
 // K8s manager for Kuberentes interaction
@@ -64,37 +63,39 @@ func newKubernetesConfig(config *Config) *rest.Config {
 	return kubeConfig
 }
 
-// VerifySecretsCredentials verify that the given secrets containt already OAuth2 credentials
-func (k K8s) VerifySecretsCredentials() (bool, error) {
-	secret, err := k.client.CoreV1().Secrets(k.cfg.Kubernetes.Namespace).Get(k.cfg.Credentials.SecretName, metav1.GetOptions{})
-	if err != nil {
+// IsSecretPresent checks if there is a secret with the given name
+func (k *K8s) IsSecretPresent(name string) (bool, error) {
+	log.Printf("Checking if secret \"%s\" is present\n", name)
+
+	_, err := k.client.CoreV1().Secrets(k.cfg.Kubernetes.Namespace).Get(name, metav1.GetOptions{})
+	if err != nil && !k8s_errors.IsNotFound(err) {
 		return false, err
 	}
-	key := fmt.Sprintf("%s_OAUTH2_INITIALIZED", strings.ToUpper(k.cfg.Credentials.Prefix))
-	val, ok := secret.Data[key]
-	if !ok {
-		return false, fmt.Errorf("missing mandatory secret %s", key)
-	}
-	initialized := string(val) == "yes"
-	log.Printf("Secrets OAuth2 credentials initialized: %s\n", val)
-	return initialized, err
+
+	return !k8s_errors.IsNotFound(err), nil
 }
 
-// UpdateSecretCredentials set ClientID and ClientSecret in Kubernetes secret object
-func (k K8s) UpdateSecretCredentials(c *Credentials) error {
-	secret, err := k.client.CoreV1().Secrets(k.cfg.Kubernetes.Namespace).Get(k.cfg.Credentials.SecretName, metav1.GetOptions{})
-	if err != nil {
-		return fmt.Errorf("error getting Kuberentes secrets: %w", err)
-	}
-	prefix := strings.ToUpper(k.cfg.Credentials.Prefix)
-	clientIDKey := fmt.Sprintf("%s_OAUTH2_CLIENT_ID", prefix)
-	clientSecretKey := fmt.Sprintf("%s_OAUTH2_CLIENT_SECRET", prefix)
-	initializedKey := fmt.Sprintf("%s_OAUTH2_INITIALIZED", prefix)
+// CreateSecret creates a secret on kubernetes with the given data
+func (k *K8s) CreateSecret(name string, input map[string]string) error {
+	log.Printf("Creating secret \"%s\"...\n", name)
 
-	secret.Data[clientIDKey] = []byte(c.ClientID)
-	secret.Data[clientSecretKey] = []byte(c.ClientSecret)
-	secret.Data[initializedKey] = []byte("yes")
-	_, err = k.client.CoreV1().Secrets(k.cfg.Kubernetes.Namespace).Update(secret)
+	data := map[string][]byte{}
+	for key, v := range input {
+		data[key] = []byte(v)
+	}
+
+	_, err := k.client.CoreV1().Secrets(k.cfg.Kubernetes.Namespace).Create(&v1.Secret{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       "Secret",
+			APIVersion: "apps/v1beta1",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: k.cfg.Kubernetes.Namespace,
+		},
+		Data: data,
+		Type: "Opaque",
+	})
 
 	return err
 }
