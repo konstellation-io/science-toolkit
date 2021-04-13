@@ -151,13 +151,13 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: codeserver-oauth2-secrets-{{ .Values.usernameSlug }}
-                  key: CODESERVER_OAUTH2_CLIENT_ID
+                  name: codeserver-oauth2-credentials-{{ .Values.usernameSlug }}
+                  key: OAUTH2_CLIENT_ID
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: codeserver-oauth2-secrets-{{ .Values.usernameSlug }}
-                  key: CODESERVER_OAUTH2_CLIENT_SECRET
+                  name: codeserver-oauth2-credentials-{{ .Values.usernameSlug }}
+                  key: OAUTH2_CLIENT_SECRET
           volumeMounts:
             - name: oauth2-config
               mountPath: /etc/oauth2_proxy.cfg
@@ -186,13 +186,13 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: jupyter-oauth2-secrets-{{ .Values.usernameSlug }}
-                  key: JUPYTER_OAUTH2_CLIENT_ID
+                  name: jupyter-oauth2-credentials-{{ .Values.usernameSlug }}
+                  key: OAUTH2_CLIENT_ID
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: jupyter-oauth2-secrets-{{ .Values.usernameSlug }}
-                  key: JUPYTER_OAUTH2_CLIENT_SECRET
+                  name: jupyter-oauth2-credentials-{{ .Values.usernameSlug }}
+                  key: OAUTH2_CLIENT_SECRET
           volumeMounts:
             - name: oauth2-config
               mountPath: /etc/oauth2_proxy.cfg
