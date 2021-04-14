@@ -114,12 +114,9 @@ func (m *UserTools) checkOrCreateToolsSecrets(u *user.User) error {
 		}
 		callbackURL := fmt.Sprintf("%s://%s-code.%s/oauth2/callback", protocol, u.GetUsernameSlug(), m.config.BaseDomainName)
 		data := map[string]string{}
-		data["DEPLOYMENT_SECRET_NAME"] = u.GetSecretName(toolName)
-		data["OAUTH2_CREDENTIALS_PREFIX"] = "CODESERVER"
+		data["DEPLOYMENT_SECRET_NAME"] = u.GetOAuth2CredentialsSecretName(toolName)
 		data["GITEA_REDIRECT_URIS"] = callbackURL
 		data["GITEA_APPLICATION_NAME"] = u.GetOAuthName(toolName)
-		data["CODESERVER_OAUTH2_CALLBACK_URL"] = callbackURL
-		data["CODESERVER_OAUTH2_INITIALIZED"] = "no"
 
 		err := m.resources.CreateSecret(u.GetSecretName(toolName), data)
 		if err != nil {
@@ -139,12 +136,9 @@ func (m *UserTools) checkOrCreateToolsSecrets(u *user.User) error {
 		}
 		callbackURL := fmt.Sprintf("%s://%s-jupyter.%s/oauth2/callback", protocol, u.GetUsernameSlug(), m.config.BaseDomainName)
 		data := map[string]string{}
-		data["DEPLOYMENT_SECRET_NAME"] = u.GetSecretName(toolName)
-		data["OAUTH2_CREDENTIALS_PREFIX"] = "JUPYTER"
+		data["DEPLOYMENT_SECRET_NAME"] = u.GetOAuth2CredentialsSecretName(toolName)
 		data["GITEA_REDIRECT_URIS"] = callbackURL
 		data["GITEA_APPLICATION_NAME"] = u.GetOAuthName(toolName)
-		data["JUPYTER_OAUTH2_CALLBACK_URL"] = callbackURL
-		data["JUPYTER_OAUTH2_INITIALIZED"] = "no"
 
 		err = m.resources.CreateSecret(u.GetSecretName(toolName), data)
 		if err != nil {

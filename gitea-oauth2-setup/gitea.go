@@ -8,12 +8,40 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 // Credentials to be returned to create a configMap
 type Credentials struct {
 	ClientID     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
+	ClientName   string `json:"name"`
+}
+
+func waitForGitea(cfg *Config) error {
+	doneCh := make(chan struct{})
+
+	go func() {
+		log.Println("Waiting for Gitea available...")
+
+		for {
+			giteaAvailable := checkGitea(cfg.Gitea.URL, cfg.Gitea.Username, cfg.Gitea.Password)
+			if giteaAvailable {
+				doneCh <- struct{}{}
+				return
+			}
+
+			time.Sleep(10 * time.Second)
+		}
+	}()
+
+	select {
+	case <-doneCh:
+		log.Println("Gitea is ready")
+		return nil
+	case <-time.After(time.Duration(cfg.Timeout) * time.Second):
+		return fmt.Errorf("timeout after %d seconds", cfg.Timeout)
+	}
 }
 
 func checkGitea(url, username, password string) bool {
@@ -37,7 +65,6 @@ func checkGitea(url, username, password string) bool {
 }
 
 func createOauth2Application(name string, redirectUris []string, url, username, password string) (*Credentials, error) {
-
 	payload := map[string]interface{}{
 		"name":          name,
 		"redirect_uris": redirectUris,
@@ -49,7 +76,7 @@ func createOauth2Application(name string, redirectUris []string, url, username, 
 	}
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/user/applications/oauth2", url), bytes.NewBuffer(payloadData))
 	if err != nil {
-		log.Printf("error calling Gitea when creating Oauth2 Application: %w \n", err)
+		log.Printf("error calling Gitea when creating Oauth2 Application: %s \n", err)
 		log.Println("Connection with Gitea fail, retrying.")
 		return nil, err
 	}

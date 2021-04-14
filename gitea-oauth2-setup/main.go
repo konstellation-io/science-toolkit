@@ -3,57 +3,48 @@ package main
 import (
 	"log"
 	"os"
-	"time"
 )
 
-
 func main() {
-
 	cfg, err := NewConfig()
 	if err != nil {
-		log.Fatal("creating config: %s", err)
+		log.Fatalf("creating config: %s", err)
 	}
+
 	k8s := NewK8s(cfg)
 
-	initialized, err := k8s.VerifySecretsCredentials()
+	// Check if the application already exists
+	exists, err := k8s.IsSecretPresent(cfg.Credentials.SecretName)
 	if err != nil {
-		log.Fatalf("fail checking secret credentials: %s ", err)
-		return
+		log.Fatalf("Error checking secret credentials: %s", err)
 	}
-	if initialized {
-		log.Println("Done")
+
+	if exists {
+		log.Printf("The \"%s\" oAuth2 application already exists in Gitea, nothing to do.\n", cfg.Gitea.AppName)
 		os.Exit(0)
 	}
 
-	doneCh := make(chan struct{})
-	go func() {
-		for {
-			giteaAvailable := checkGitea(cfg.Gitea.URL, cfg.Gitea.Username, cfg.Gitea.Password)
-			if giteaAvailable {
-				credentials, err := createOauth2Application(cfg.Gitea.Name, cfg.Gitea.RedirectUris, cfg.Gitea.URL, cfg.Gitea.Username, cfg.Gitea.Password)
-				if err != nil {
-					log.Fatal("can not create the application in Gitea: %s", err)
-				}
-				err = k8s.UpdateSecretCredentials(credentials)
-				if err != nil {
-					log.Fatal("can not update Kubernetes secrets: %s", err)
-				}
-				doneCh <- struct{}{}
-				return
-			}
-			time.Sleep(10 * time.Second)
-		}
-	}()
-	for {
-		select {
-		case <-doneCh:
-			log.Println("Done")
-			os.Exit(0)
-		case <-time.After(time.Duration(cfg.Timeout) * time.Second):
-			log.Printf("error, timeout after %d seconds.\n", cfg.Timeout)
-			os.Exit(1)
-		}
-
+	// Wait for Gitea ready
+	err = waitForGitea(cfg)
+	if err != nil {
+		log.Fatalf("Error waiting for Gitea: %s\n", err)
 	}
 
+	// Create the oAuth2 application in Gitea
+	credentials, err := createOauth2Application(cfg.Gitea.AppName, cfg.Gitea.RedirectUris, cfg.Gitea.URL, cfg.Gitea.Username, cfg.Gitea.Password)
+	if err != nil {
+		log.Fatalf("Error creating the application in Gitea: %s\n", err)
+	}
+
+	// Create the k8s secret storing the client credentials
+	secretValues := map[string]string{
+		"OAUTH2_CLIENT_ID":     credentials.ClientID,
+		"OAUTH2_CLIENT_SECRET": credentials.ClientSecret,
+	}
+	err = k8s.CreateSecret(cfg.Credentials.SecretName, secretValues)
+	if err != nil {
+		log.Fatalf("Error creating \"%s\" k8s secret credentials: %s\n", cfg.Credentials.SecretName, err)
+	}
+
+	log.Printf("The oAuth2 application \"%s\" was created correctly.", cfg.Gitea.AppName)
 }

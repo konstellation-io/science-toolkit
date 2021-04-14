@@ -81,13 +81,13 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: mlflow-oauth2-secrets
-                  key: MLFLOW_OAUTH2_CLIENT_ID
+                  name: mlflow-oauth2-credentials
+                  key: OAUTH2_CLIENT_ID
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: mlflow-oauth2-secrets
-                  key: MLFLOW_OAUTH2_CLIENT_SECRET
+                  name: mlflow-oauth2-credentials
+                  key: OAUTH2_CLIENT_SECRET
           volumeMounts:
             - name: oauth2-config
               mountPath: /etc/oauth2_proxy.cfg

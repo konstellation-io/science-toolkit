@@ -45,13 +45,13 @@ spec:
             - name: DRONE_GITEA_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: drone-oauth2-secrets
-                  key: DRONE_OAUTH2_CLIENT_ID
+                  name: drone-oauth2-credentials
+                  key: OAUTH2_CLIENT_ID
             - name: DRONE_GITEA_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: drone-oauth2-secrets
-                  key: DRONE_OAUTH2_CLIENT_SECRET
+                  name: drone-oauth2-credentials
+                  key: OAUTH2_CLIENT_SECRET
           envFrom:
             - configMapRef:
                 name: drone-config

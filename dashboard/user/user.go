@@ -21,6 +21,11 @@ func (u User) GetSecretName(toolName string) string {
 	return fmt.Sprintf("%s-oauth2-secrets-%s", toolName, u.GetUsernameSlug())
 }
 
+// GetOAuth2CredentialsSecretName return the name of the secret associated with the oAuth2 application credentials
+func (u User) GetOAuth2CredentialsSecretName(toolName string) string {
+	return fmt.Sprintf("%s-oauth2-credentials-%s", toolName, u.GetUsernameSlug())
+}
+
 // GetResourceName return the name of the server associated with the user
 func (u User) GetResourceName() string {
 	return fmt.Sprintf("usertools-%s", u.GetUsernameSlug())
