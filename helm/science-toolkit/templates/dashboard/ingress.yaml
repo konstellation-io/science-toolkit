@@ -1,28 +1,4 @@
-{{- if .Values.argocd.enabled }}
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: dashboard
-  annotations:
-    {{ if eq .Values.ingress.type "nginx" }}
-    kubernetes.io/ingress.class: "nginx"
-    {{ end }}
-spec:
-  {{ if .Values.tls.enabled -}}
-  tls:
-    - hosts:
-        - app.{{ .Values.domain }}
-      secretName: {{ .Values.domain }}-tls-secret
-  {{- end }}
-  rules:
-    - host: app.{{ .Values.domain }}
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: dashboard
-              servicePort: http
-{{ else }}
+{{ if not .Values.kdl.enabled }}
 {{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
 apiVersion: networking.k8s.io/v1
 {{ else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1/Ingress" }}
@@ -60,4 +36,4 @@ spec:
               serviceName: dashboard
               servicePort: http
           {{ end }}
-{{ end }} 
+{{ end }}
