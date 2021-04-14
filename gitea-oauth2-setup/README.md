@@ -1,6 +1,8 @@
 # Gitea Oauth2 Setup
 
-This Docker image has been intended to run as an initContainer within a Kubernetes pod. In the start up this container conecto to Gitea server and create an Oauth2 Application api keys.
+This Docker image has been intended to run as an `initContainer` within a Kubernetes POD.
+In the start up this container connects to Gitea server and creates an oAuth2 application.
+The created oAuth2 application credentials are stored in a k8s secret in order to avoid recreating them each time the POD is restarted. 
 
 This component is part of a toolkit used to simplify the data scientists daily work. 
 For more details check out the [Science Toolkit documentation](https://konstellation-io.github.io/science-toolkit/)
@@ -57,7 +59,5 @@ spec:
 | GITEA_ADMIN_USER            | Admin account of Gitea with permissions to create Oauth2 Applications |
 | GITEA_ADMIN_PASSWORD        | Password for the admin user |
 | GITEA_APPLICATION_NAME      | Name of the Oauth2 Application, used to call the keys in Gitea |
-| DEPLOYMENT_SECRET_NAME      | Name where the Kubernetes secrets are defined |
-| OAUTH2_CREDENTIALS_PREFIX   | In order to allow define all the components secrets within the same Kuberentes object is required a prefix to define which component is each config |
+| DEPLOYMENT_SECRET_NAME      | Secret name where the oAuth2 client credentials will be stored |
 | POD_NAMESPACE               | This value is taken from Kubernetes metadata |
-
