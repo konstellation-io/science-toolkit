@@ -26,3 +26,6 @@ data:
   DRONE_SECRET_PLUGIN_TOKEN: {{ .Values.drone.pluginSecret }}
   DRONE_TOKEN: {{ .Values.drone.adminToken }}
   DRONE_INTERNAL_URL: "http://drone"
+  {{- if .Values.kdl.local }}
+  DRONE_RUNNER_ENVIRON: GIT_SSL_NO_VERIFY:true
+  {{- end }}
