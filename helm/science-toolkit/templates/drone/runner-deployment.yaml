@@ -30,3 +30,13 @@ spec:
         envFrom:
           - configMapRef:
               name: drone-config
+      {{- if .Values.kdl.local }}
+        volumeMounts:
+        - mountPath: /etc/ssl/certs/mkcert-ca.pem
+          name: mkcert-ca
+          subPath: mkcert-ca.crt
+      volumes:
+      - name: mkcert-ca
+        secret:
+          secretName: mkcert-ca
+      {{- end }}

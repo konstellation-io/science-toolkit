@@ -45,6 +45,11 @@ spec:
             - name: gitea-init
               mountPath: /usr/local/bin/create-admin.sh
               subPath: create-admin.sh
+            {{- if .Values.kdl.local }}
+            - mountPath: /etc/ssl/certs/mkcert-ca.pem
+              name: mkcert-ca
+              subPath: mkcert-ca.crt
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /
@@ -56,6 +61,11 @@ spec:
           configMap:
             name: gitea-init
             defaultMode: 0777
+        {{- if .Values.kdl.local }}
+        - name: mkcert-ca
+          secret:
+            secretName: mkcert-ca
+        {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: gitea-pvc

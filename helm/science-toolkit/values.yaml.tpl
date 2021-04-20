@@ -5,6 +5,7 @@ argocd:
 
 kdl:
   enabled: false
+  local: false
 
 ingress:
   type: nginx
