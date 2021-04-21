@@ -28,7 +28,7 @@ gitea:
     email: test@test.com
   image:
     repository: gitea/gitea
-    tag: 1.13.6
+    tag: 1.14.2
     pullPolicy: IfNotPresent
   storage:
     size: 10Gi
