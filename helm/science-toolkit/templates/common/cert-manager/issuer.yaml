@@ -10,9 +10,9 @@ spec:
     privateKeySecretRef:
       name: {{ .Values.domain }}-acme-tls-secret
     solvers:
-      {{ if hasKey .Values.tls.certManager "dns01" -}}
+      {{- if hasKey .Values.tls.certManager "dns01" }}
       - dns01:
-          {{ if .Values.tls.certManager.dns01.route53 -}}
+          {{- if .Values.tls.certManager.dns01.route53 }}
           route53:
             region: {{ .Values.tls.certManager.dns01.route53.region }}
             accessKeyID: {{ .Values.tls.certManager.dns01.route53.accessKeyID }}
@@ -20,14 +20,14 @@ spec:
             secretAccessKeySecretRef:
               name: aws-secret
               key: AWS_SECRET_ACCESS_KEY
-          {{ else -}}
+          {{- else }}
           clouddns:
             project: {{ .Values.tls.certManager.dns01.clouddns.project }}
             serviceAccountSecretRef:
               name: {{ .Values.tls.certManager.dns01.clouddns.serviceAccountSecretRef.name }}
               key: {{ .Values.tls.certManager.dns01.clouddns.serviceAccountSecretRef.key }}  
-          {{ end -}}
-    {{ else -}}
+          {{- end }}
+      {{- else }}
       - http01: {}
-    {{ end -}}
+      {{- end }}
 {{ end }}
