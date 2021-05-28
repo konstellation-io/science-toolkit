@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.10.0
+FROM codercom/code-server:3.10.2
 
 USER root
 
@@ -107,9 +107,34 @@ RUN curl -O https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz \
 ADD ./config/go_packages.txt /config/go_packages.txt
 
 COPY default_user_settings.json /config/default_user_settings.json
+RUN chown coder:coder /go /home/coder -R && rm /tmp/* -rf
 
+#
+# Install extensions
+#
+# Be careful updating the extensions versions:
+#   * The version of the **Python** extension cannot be the latest:
+#     https://github.com/microsoft/vscode-python/issues/12465
+#       > The only solution is to use ms-python 2020.10.332292344 version...
+#   * Issues with the latest **Jupyter** extension so we are using an older version too.
 COPY extensions /extensions
-RUN chown coder:coder /go /extensions /home/coder -R && rm /tmp/* -rf
+RUN code-server \
+      --install-extension /extensions/git-graph-1.30.0.vsix \
+      --install-extension /extensions/gitlens-11.4.1.vsix \
+      --install-extension /extensions/golang.Go-0.25.1.vsix \
+      --install-extension /extensions/jithurjacob.nbpreviewer-1.2.2.vsix \
+      --install-extension /extensions/mechatroner.rainbow-csv-1.8.1.vsix \
+      --install-extension /extensions/ms-python-release.vsix \
+      --install-extension /extensions/ms-toolsai.jupyter-2021.5.702919634.vsix \
+      --install-extension /extensions/njpwerner.autodocstring-0.5.4.vsix \
+      --install-extension /extensions/path-intellisense-2.3.0.vsix \
+      --install-extension /extensions/redhat.vscode-yaml-0.19.2.vsix \
+      --install-extension /extensions/vscode-icons-team.vscode-icons-11.4.0.vsix \
+      --install-extension /extensions/wayou.vscode-todo-highlight-1.0.4.vsix \
+      --install-extension /extensions/yzhang.markdown-all-in-one-3.4.0.vsix \
+      --install-extension /extensions/zxh404.vscode-proto3-0.5.4.vsix \
+      /home/coder
+RUN rm -rf /extensions
 
 USER coder
 

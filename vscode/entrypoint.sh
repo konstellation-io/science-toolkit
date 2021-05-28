@@ -13,12 +13,13 @@ if [ ! -f ${SETTINGS_FILE} ]; then
   echo "{}" > ${SETTINGS_FILE}
 fi
 
-# Update gopls users settings to true
+# Update users settings
 jq -s '.[1] * .[0]' ${DEFAULT_SETTINGS_FILE} ${SETTINGS_FILE} > ${TMP_FILE} \
       && mv ${TMP_FILE} ${SETTINGS_FILE}
 
 dumb-init code-server \
-  --auth none --host 0.0.0.0 \
-  --disable-ssh --disable-updates --disable-telemetry \
-  --extensions-dir /extensions \
+  --auth none \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --disable-telemetry \
   /home/coder
