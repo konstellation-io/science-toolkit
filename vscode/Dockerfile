@@ -1,4 +1,4 @@
-FROM codercom/code-server:3.1.0
+FROM codercom/code-server:3.10.2
 
 USER root
 
@@ -42,6 +42,7 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         python3-dev \
+        protobuf-compiler \
         `cat /config/apt_get_libraries.txt | xargs` && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && \
     update-alternatives --set python /usr/bin/python3 && \
@@ -108,8 +109,36 @@ ADD ./config/go_packages.txt /config/go_packages.txt
 
 COPY default_user_settings.json /config/default_user_settings.json
 
-COPY extensions /extensions
-RUN chown coder:coder /go /extensions /home/coder -R && rm /tmp/* -rf
+#
+# Install extensions
+#
+# Be careful updating the extensions versions:
+#   * The version of the **Python** extension cannot be the latest:
+#     https://github.com/microsoft/vscode-python/issues/12465
+#       > The only solution is to use ms-python 2020.10.332292344 version...
+#   * Issues with the latest **Jupyter** extension so we are using an older version too.
+RUN mkdir /extensions
+RUN code-server \
+      --install-extension christian-kohler.path-intellisense \
+      --install-extension eamodio.gitlens \
+      --install-extension gruntfuggly.todo-tree \
+      --install-extension jithurjacob.nbpreviewer \
+      --install-extension mechatroner.rainbow-csv \
+      --install-extension mhutchie.git-graph \
+      --install-extension ms-python.python@2020.10.332292344 \
+      --install-extension ms-toolsai.jupyter@2021.5.0 \
+      --install-extension golang.go \
+      --install-extension njpwerner.autodocstring \
+      --install-extension redhat.vscode-yaml \
+      --install-extension tushortz.python-extended-snippets \
+      --install-extension vscode-icons-team.vscode-icons \
+      --install-extension wayou.vscode-todo-highlight \
+      --install-extension yzhang.markdown-all-in-one \
+      --install-extension zxh404.vscode-proto3 \
+      --extensions-dir /extensions \
+      /home/coder
+
+RUN chown coder:coder /go /home/coder /extensions -R && rm /tmp/* -rf
 
 USER coder
 

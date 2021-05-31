@@ -1,22 +1,37 @@
 {
+  "extensions.autoUpdate": false,
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "vscode-icons",
+  "vsicons.dontShowNewVersionMessage": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "files.autoSave": "onFocusChange",
   "workbench.startupEditor": "none",
+  "editor.rulers": [
+    120
+  ],
+  "editor.wordWrapColumn": 120,
+  "python.linting.pylintArgs": [
+    "--max-line-length=120"
+  ],
+  "python.linting.pylintUseMinimalCheckers": false,
+  "python.testing.pytestEnabled": true,
+  "go.autocompleteUnimportedPackages": true,
   "go.useLanguageServer": true,
-  "[go]": {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+  "go.languageServerExperimentalFeatures": {
+    "diagnostics": true,
+    "documentLink": true
+  },
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
     }
-  },
-  "[go.mod]": {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
-  },
-  "gopls": {
-    "usePlaceholders": true,
-    "staticcheck": false
-  },
+  ],
+  "go.formatTool": "gofmt",
   "go.toolsGopath": "/go",
   "files.exclude": {
     "**/{.zsh*,.ssh,.bash*,.cache,.profile,.local,.config}": true,
