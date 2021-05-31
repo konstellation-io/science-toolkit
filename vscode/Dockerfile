@@ -42,6 +42,7 @@ RUN apt-get update && \
         python3 \
         python3-pip \
         python3-dev \
+        protobuf-compiler \
         `cat /config/apt_get_libraries.txt | xargs` && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && \
     update-alternatives --set python /usr/bin/python3 && \
