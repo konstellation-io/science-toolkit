@@ -22,11 +22,9 @@ For more details check out the [Science Toolkit documentation](https://konstella
 
 ## How to update the extensions
 
-- Run the following commands:
-```bash
-docker build -t vscode-demo . 
-docker run -u root -it --network=host \
- -v $PWD/extensions:/extensions vscode-demo /home/coder 
+- Edit the Dockerfile using the `--install-extesion` option of the `code-server` CLI:
+
 ```
-- Update the extensions on VSCode.
-- Commit new extensions and remove old on your extensions folders.
+--install-extension    Install or update a VS Code extension by id or vsix. The identifier of an extension is `${publisher}.${name}`.
+                             To install a specific version provide `@${version}`. For example: 'vscode.csharp@1.2.3'.
+```

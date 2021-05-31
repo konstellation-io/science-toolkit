@@ -22,4 +22,5 @@ dumb-init code-server \
   --host 0.0.0.0 \
   --port 8080 \
   --disable-telemetry \
+  --extensions-dir /extensions \
   /home/coder
