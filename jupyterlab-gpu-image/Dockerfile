@@ -153,7 +153,8 @@ USER root
 
 # Install basic modules
 RUN pip install setuptools wheel && \
-    pip install cython thriftpy
+    pip install cython thriftpy && \
+    pip install pip --upgrade
 
 # Install frameworks
 ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
@@ -168,8 +169,7 @@ ADD ./config/requirements.txt custom_requirements.txt
 RUN cat custom_requirements.txt >> requirements.txt
 
 RUN ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --ignore-installed PyYAML
 
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
