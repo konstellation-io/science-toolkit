@@ -18,7 +18,6 @@
     "editor.insertSpaces": true
   },
   "python.formatting.provider": "black",
-  "python.formatting.blackPath": "/home/coder/.local/bin/black",
   "python.linting.pylintEnabled": true,
   "python.linting.flake8Enabled": true,
   "python.linting.mypyEnabled": true,
@@ -40,7 +39,6 @@
     "documentLink": true
   },
   "go.formatTool": "gofmt",
-  "go.toolsGopath": "/go",
   "workbench.editorAssociations": [
     {
       "viewType": "jupyter.notebook.ipynb",
