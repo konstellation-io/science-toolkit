@@ -1,40 +1,53 @@
 {
   "extensions.autoUpdate": false,
+  "workbench.startupEditor": "none",
   "workbench.colorTheme": "Default Dark+",
   "workbench.iconTheme": "vscode-icons",
   "vsicons.dontShowNewVersionMessage": true,
-  "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
   "files.autoSave": "onFocusChange",
-  "workbench.startupEditor": "none",
   "editor.rulers": [
     120
   ],
   "editor.wordWrapColumn": 120,
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "/home/coder/.local/bin/black",
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
   "python.linting.pylintArgs": [
+    "--max-line-length=120"
+  ],
+  "python.linting.flake8Args": [
     "--max-line-length=120"
   ],
   "python.linting.pylintUseMinimalCheckers": false,
   "python.testing.pytestEnabled": true,
+  "python.sortImports.args": [
+    "--src=${workspaceFolder}/lab"
+  ],
   "go.autocompleteUnimportedPackages": true,
   "go.useLanguageServer": true,
   "go.languageServerExperimentalFeatures": {
     "diagnostics": true,
     "documentLink": true
   },
+  "go.formatTool": "gofmt",
+  "go.toolsGopath": "/go",
   "workbench.editorAssociations": [
     {
       "viewType": "jupyter.notebook.ipynb",
       "filenamePattern": "*.ipynb"
     }
   ],
-  "go.formatTool": "gofmt",
-  "go.toolsGopath": "/go",
-  "files.exclude": {
-    "**/{.zsh*,.ssh,.bash*,.cache,.profile,.local,.config}": true,
-    "**/{.minio.sys,.jupyter,.pylint*}": true
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}/lab:${env:PYTHONPATH}"
   }
 }
