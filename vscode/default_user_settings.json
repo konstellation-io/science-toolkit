@@ -20,9 +20,10 @@
   "python.formatting.provider": "black",
   "python.linting.pylintEnabled": true,
   "python.linting.flake8Enabled": true,
-  "python.linting.mypyEnabled": true,
+  "python.linting.mypyEnabled": false,
   "python.linting.pylintArgs": [
-    "--max-line-length=120"
+    "--max-line-length=120",
+    "--good-names=_,i,j,ax,cm,x,X,y,X_train,X_val,X_test,X_trainval"
   ],
   "python.linting.flake8Args": [
     "--max-line-length=120"
@@ -33,11 +34,6 @@
     "--src=${workspaceFolder}/lab"
   ],
   "go.autocompleteUnimportedPackages": true,
-  "go.useLanguageServer": true,
-  "go.languageServerExperimentalFeatures": {
-    "diagnostics": true,
-    "documentLink": true
-  },
   "go.formatTool": "gofmt",
   "workbench.editorAssociations": [
     {
