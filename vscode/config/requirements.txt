@@ -1,1 +1,2 @@
 jupyter==1.0.0
+black==21.5b2

@@ -112,11 +112,6 @@ COPY default_user_settings.json /config/default_user_settings.json
 #
 # Install extensions
 #
-# Be careful updating the extensions versions:
-#   * The version of the **Python** extension cannot be the latest:
-#     https://github.com/microsoft/vscode-python/issues/12465
-#       > The only solution is to use ms-python 2020.10.332292344 version...
-#   * Issues with the latest **Jupyter** extension so we are using an older version too.
 RUN mkdir /extensions
 RUN code-server \
       --install-extension christian-kohler.path-intellisense \
@@ -125,8 +120,7 @@ RUN code-server \
       --install-extension jithurjacob.nbpreviewer \
       --install-extension mechatroner.rainbow-csv \
       --install-extension mhutchie.git-graph \
-      --install-extension ms-python.python@2020.10.332292344 \
-      --install-extension ms-toolsai.jupyter@2021.5.0 \
+      --install-extension ms-python.python \
       --install-extension golang.go \
       --install-extension njpwerner.autodocstring \
       --install-extension redhat.vscode-yaml \
