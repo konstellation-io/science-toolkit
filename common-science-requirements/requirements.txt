@@ -1,3 +1,9 @@
+pylint==2.8.3
+flake8==3.9.2
+mypy==0.901
+mypy-extensions==0.4.3
+pytest==6.2.4
+pytest-asyncio==0.15.1
 addict==2.4.0
 boto3==1.17.91
 csvkit==1.0.5
