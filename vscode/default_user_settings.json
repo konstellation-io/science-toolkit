@@ -1,5 +1,4 @@
 {
-  "extensions.autoUpdate": false,
   "workbench.startupEditor": "none",
   "workbench.colorTheme": "Default Dark+",
   "workbench.iconTheme": "vscode-icons",
