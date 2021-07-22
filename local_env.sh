@@ -65,7 +65,6 @@ while test $# -gt 0; do
         ;;
     *--export-chart*)
         export CHART_EXPORT=true
-        export MINIKUBE_PROFILE=kdl-local
         shift
         ;;
     *--clean* | *--semi-dracarys*)
@@ -75,18 +74,15 @@ while test $# -gt 0; do
   esac
 done
 
-
-. ./scripts/minikube_start.sh
-
-IP=$(minikube -p $MINIKUBE_PROFILE ip)
-export DOMAIN=toolkit.$IP.nip.io
-
 ./scripts/replace_env_path.sh
 
-# Setup environment to build images inside minikube
-eval "$(minikube docker-env -p "$MINIKUBE_PROFILE")"
+if [ "$CHART_EXPORT" != "true" ]; then
+  . ./scripts/minikube_start.sh
+fi
 
 if [ "$SKIP_BUILD" != "1" ]; then
+  # Setup environment to build images inside minikube
+  eval "$(minikube docker-env -p "$MINIKUBE_PROFILE")"
 
   build_header "dashboard"
   docker build -t terminus7/sci-toolkit-dashboard:latest dashboard
@@ -144,6 +140,9 @@ fi
 
 echo "📚️ Create Namespace if not exist...\n"
 kubectl create ns ${NAMESPACE} --dry-run -o yaml | kubectl apply -f -
+
+IP=$(minikube -p $MINIKUBE_PROFILE ip)
+export DOMAIN=toolkit.$IP.nip.io
 
 if [ "$ENABLE_TLS" != "false" ]; then
   ./scripts/create_self_signed_cert.sh $NAMESPACE $DOMAIN

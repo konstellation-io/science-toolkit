@@ -111,13 +111,11 @@ data:
       API_RESPONSE_CODE=$(curl -s -w %{http_code} -o /dev/null -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} http://localhost:3000/api/v1/user)
       echo "Response: " $API_RESPONSE_CODE
       if [  "$API_RESPONSE_CODE" == "403" ]; then
-        /usr/local/bin/gitea admin create-user \
-          --must-change-password=false \
+        /usr/local/bin/gitea admin user create \
           --email {{ .Values.gitea.admin.email }} \
           --username {{ .Values.gitea.admin.username }} \
           --password {{ .Values.gitea.admin.password }} \
-          --config /data/gitea/conf/app.ini \
-          --admin >> /data/gitea/create_user.log
+          --admin --must-change-password=false --config /data/gitea/conf/app.ini
         echo "User created"
         curl -v -X POST "http://localhost:3000/api/v1/admin/users/{{ .Values.gitea.admin.username }}/orgs" \
           -u {{ .Values.gitea.admin.username }}:{{ .Values.gitea.admin.password }} \
