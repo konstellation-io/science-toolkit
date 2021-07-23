@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{ if .Capabilities.APIVersions.Has "apps/v1" }}
 apiVersion: apps/v1
 {{ else if .Capabilities.APIVersions.Has "extensions/v1beta1" }}
@@ -109,3 +110,4 @@ spec:
         - name: oauth2-config
           configMap:
             name: mlflow-oauth2-proxy
+{{ end }}

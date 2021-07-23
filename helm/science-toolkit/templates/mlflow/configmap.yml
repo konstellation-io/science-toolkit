@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,3 +8,4 @@ metadata:
 data:
   MLFLOW_S3_ENDPOINT_URL: http://{{.Release.Name }}-minio:9000
   ARTIFACTS_BUCKET: {{ .Values.mlflow.s3.bucket }}
+{{ end }}

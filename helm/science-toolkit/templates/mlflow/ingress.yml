@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{- if .Values.argocd.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -70,4 +71,5 @@ spec:
               serviceName: {{ .Values.mlflow.name }}
               servicePort: 8080
           {{ end }}
+{{ end }}
 {{ end }}
