@@ -89,8 +89,8 @@ RUN cd /tmp && \
 
 # PYTHON TASKS
 RUN pip install --upgrade pip && \
-    pip install setuptools distlib wheel && \
+    pip install --no-cache-dir setuptools distlib wheel && \
     pip install --no-cache-dir cython thriftpy2 && \
-    pip install -r frameworks_requirements.txt && \
-    pip install -r requirements.txt --ignore-installed PyYAML
+    pip install --no-cache-dir -r frameworks_requirements.txt && \
+    pip install --no-cache-dir -r requirements.txt --ignore-installed PyYAML
 
