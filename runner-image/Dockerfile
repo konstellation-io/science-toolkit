@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04 
+FROM nvidia/cuda:10.2-cudnn7-runtime-ubuntu18.04
 
 USER root
 
@@ -24,11 +24,10 @@ COPY ./config/requirements.txt custom_requirements.txt
 RUN cat custom_requirements.txt >> requirements.txt
 
 # Install OS packages && Python 3.9.6 && Set Python 3.9.6 as default
-RUN apt-get update && apt-get -yq dist-upgrade \
-    && apt-get install -yq --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -yq --no-install-recommends \
     software-properties-common \
     wget \
-    curl \
     xz-utils \
     less \
     openssh-client \
@@ -51,8 +50,8 @@ RUN apt-get update && apt-get -yq dist-upgrade \
     update-alternatives --set python /usr/bin/python3.9 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
     update-alternatives --set pip /usr/bin/pip3 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
@@ -68,7 +67,8 @@ ENV LD_RUN_PATH=$ORACLE_HOME
 COPY instantclient-* /tmp/
 RUN mkdir -p /opt/oracle && \
 	unzip "/tmp/instantclient*.zip" -d /opt/oracle && \
-	sh -c "echo /opt/oracle/instantclient_18_5 > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
+    rm /tmp/instant*.zip && \
+    sh -c "echo /opt/oracle/instantclient_18_5 > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
 	ldconfig && \
 	export LD_LIBRARY_PATH=/opt/oracle/instantclient_18_5:$LD_LIBRARY_PATH
 
@@ -89,8 +89,8 @@ RUN cd /tmp && \
 
 # PYTHON TASKS
 RUN pip install --upgrade pip && \
-    pip install setuptools distlib wheel && \
+    pip install --no-cache-dir setuptools distlib wheel && \
     pip install --no-cache-dir cython thriftpy2 && \
-    pip install -r frameworks_requirements.txt && \
-    pip install -r requirements.txt --ignore-installed PyYAML
+    pip install --no-cache-dir -r frameworks_requirements.txt && \
+    pip install --no-cache-dir -r requirements.txt --ignore-installed PyYAML
 
