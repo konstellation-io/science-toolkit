@@ -67,7 +67,8 @@ ENV LD_RUN_PATH=$ORACLE_HOME
 COPY instantclient-* /tmp/
 RUN mkdir -p /opt/oracle && \
 	unzip "/tmp/instantclient*.zip" -d /opt/oracle && \
-	sh -c "echo /opt/oracle/instantclient_18_5 > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
+    rm /tmp/instant*.zip && \
+    sh -c "echo /opt/oracle/instantclient_18_5 > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
 	ldconfig && \
 	export LD_LIBRARY_PATH=/opt/oracle/instantclient_18_5:$LD_LIBRARY_PATH
 
