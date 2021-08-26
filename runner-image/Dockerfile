@@ -28,7 +28,6 @@ RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
     software-properties-common \
     wget \
-    curl \
     xz-utils \
     less \
     openssh-client \
