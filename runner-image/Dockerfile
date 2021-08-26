@@ -24,8 +24,8 @@ COPY ./config/requirements.txt custom_requirements.txt
 RUN cat custom_requirements.txt >> requirements.txt
 
 # Install OS packages && Python 3.9.6 && Set Python 3.9.6 as default
-RUN apt-get update && apt-get -yq dist-upgrade \
-    && apt-get install -yq --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -yq --no-install-recommends \
     software-properties-common \
     wget \
     curl \
