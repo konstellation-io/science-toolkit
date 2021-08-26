@@ -93,3 +93,4 @@ RUN pip install --upgrade pip && \
     pip install --no-cache-dir cython thriftpy2 && \
     pip install -r frameworks_requirements.txt && \
     pip install -r requirements.txt --ignore-installed PyYAML
+
