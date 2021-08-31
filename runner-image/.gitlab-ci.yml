@@ -1,11 +1,34 @@
 trivy-runner-image:
-  extends: .trivy-template
+  stage: test
+  image: docker:stable
+  services:
+    - name: docker:dind
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
   variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
     IMAGE_PROJECT_NAME: "terminus7/runner-image"
     PROJECT_PATH: "runner-image"
     CONTAINER_SCANNING_REPORT: gl-container-scanning-report-runner-image.json
   before_script:
-    - ./scripts/clean_and_copy.sh common-science-requirements runner-image
+    - apk add curl rpm --no-cache --update
+    - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+    - echo $VERSION
+    - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
+    - tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
+    - cp ./trivy /usr/local/bin/
+  allow_failure: true
+  script:
+    # Build image
+    - docker build -t $IMAGE_PROJECT_NAME:test ./$PROJECT_PATH
+    # Build report
+    - trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o $CONTAINER_SCANNING_REPORT $IMAGE_PROJECT_NAME:test
+    # Print report
+    - trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE_PROJECT_NAME:test
+    # Fail on high and critical vulnerabilities
+    - trivy --exit-code 0 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE_PROJECT_NAME:test
   artifacts:
     reports:
       container_scanning: gl-container-scanning-report-runner-image.json
@@ -14,6 +37,10 @@ trivy-runner-image:
       - master
     changes:
       - runner-image/**/*
+  cache:
+    paths:
+      - .trivycache/
+  when: manual
 
 release-runner-image:
   stage: semantic-release
@@ -41,13 +68,12 @@ publish_docker_image_runner:
     - TAG=${CI_COMMIT_TAG#"runner-image-v"}
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
   script:
-    - ./scripts/clean_and_copy.sh common-science-requirements runner-image
     - docker build -t $IMAGE_PROJECT_NAME:$TAG ./runner-image
     - docker tag $IMAGE_PROJECT_NAME:$TAG $IMAGE_PROJECT_NAME:latest
     - docker push $IMAGE_PROJECT_NAME:$TAG
     - docker push $IMAGE_PROJECT_NAME:latest
-    - ./scripts/update-dockerhub-readme.sh
   after_script:
-    - docker rmi $IMAGE_PROJECT_NAME:$TAG
+    - "export TOKEN=$(curl -H \"Content-Type: application/json\" -X POST -d \"{\"username\": ${DOCKER_USER}, \"password\": ${DOCKER_PASS}}\" https://hub.docker.com/v2/users/login/ | jq -r .token)"
+    - "curl -H \"Authorization: JWT ${TOKEN}\" -X PATCH --data-urlencode full_description@${README_FILEPATH} https://hub.docker.com/v2/repositories/${REPOSITORY_PATH}/"
   only:
     - /^runner-image-v\d*.\d*.\d*$/
