@@ -11,7 +11,13 @@ ENV TZ=Europe/Madrid
 ENV ORACLE_HOME /opt/oracle/instantclient_18_5
 ENV LD_RUN_PATH=$ORACLE_HOME
 
-ARG NON_ROOT_USER=nroot
+# Install all OS dependencies for notebook server that starts but lacks all
+# features (e.g., download as all possible file formats)
+COPY ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
+COPY ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
+RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
+
+# ARG NON_ROOT_USER=nroot
 
 # Switch to ROOT user to do maintenance tasks
 USER root
@@ -93,18 +99,13 @@ RUN pip install --upgrade pip && \
         pip install --no-cache-dir cython thriftpy2 && \
         pip install --no-cache-dir -r requirements.txt --ignore-installed PyYAML
 
-# Clean up
-RUN rm --recursive --force -- * && \
-        apt-get clean && apt-get autoremove -y && \
-        rm -rf /var/lib/{apt,dpkg,cache,log}/
-
 # Create a non-root user
-RUN groupadd ${NON_ROOT_USER} --gid 1001                                  && \
-    useradd ${NON_ROOT_USER} --system --create-home --uid 1001 --gid 1001 && \
-    chown ${NON_ROOT_USER}:${NON_ROOT_USER} /home/${NON_ROOT_USER}
+# RUN groupadd ${NON_ROOT_USER} --gid 1001                                  && \
+#     useradd ${NON_ROOT_USER} --system --create-home --uid 1001 --gid 1001 && \
+#     chown ${NON_ROOT_USER}:${NON_ROOT_USER} /home/${NON_ROOT_USER}
 
 # Use non-root user
-USER ${NON_ROOT_USER}
+# USER ${NON_ROOT_USER}
 
 # Set workdir to user home
-WORKDIR /home/${NON_ROOT_USER}
+# WORKDIR /home/${NON_ROOT_USER}
