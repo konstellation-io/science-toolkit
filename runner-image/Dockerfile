@@ -7,11 +7,15 @@ ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=Europe/Madrid
 
+<<<<<<< Updated upstream
 # Install all OS dependencies for notebook server that starts but lacks all
 # features (e.g., download as all possible file formats)
 COPY ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
 COPY ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
 RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
+=======
+# ARG NON_ROOT_USER=nroot
+>>>>>>> Stashed changes
 
 ## Install Frameworks
 COPY ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
@@ -72,25 +76,13 @@ RUN mkdir -p /opt/oracle && \
 	ldconfig && \
 	export LD_LIBRARY_PATH=/opt/oracle/instantclient_18_5:$LD_LIBRARY_PATH
 
-# Install Cloudera Impala driver
-RUN wget -q https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.1004/Debian/clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
-    dpkg -i clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
-    apt-get update && \
-    apt-get install -y odbcinst
+# Create a non-root user
+# RUN groupadd ${NON_ROOT_USER} --gid 1001                                  && \
+#     useradd ${NON_ROOT_USER} --system --create-home --uid 1001 --gid 1001 && \
+#     chown ${NON_ROOT_USER}:${NON_ROOT_USER} /home/${NON_ROOT_USER}
 
-# Build unixodbx 2.3.7
-RUN cd /tmp && \
-    wget -q http://www.unixodbc.org/unixODBC-2.3.7.tar.gz && \
-    tar xvf unixODBC-2.3.7.tar.gz && \
-    cd unixODBC-2.3.7/ && \
-    ./configure && \
-    make && \
-    make install
+# Use non-root user
+# USER ${NON_ROOT_USER}
 
-# PYTHON TASKS
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir setuptools distlib wheel && \
-    pip install --no-cache-dir cython thriftpy2 && \
-    pip install --no-cache-dir -r frameworks_requirements.txt && \
-    pip install --no-cache-dir -r requirements.txt --ignore-installed PyYAML
-
+# Set workdir to user home
+# WORKDIR /home/${NON_ROOT_USER}
