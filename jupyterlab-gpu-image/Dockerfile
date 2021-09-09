@@ -66,6 +66,7 @@ RUN apt-get update && \
     python3.7 \
     python3.7-dev \
     python3-pip \
+    sudo \
     unzip \
     xz-utils \
     zip && \
@@ -79,8 +80,8 @@ RUN apt-get update && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
     update-alternatives --set pip /usr/bin/pip3 && \
   # Add Tini
-    curl -s -o /tini https://github.com/krallin/tini/releases/download/v0.18.0/tini && \
-    chmod +x /tini && \
+    curl -s -L -o /usr/local/bin/tini https://github.com/krallin/tini/releases/download/v0.18.0/tini && \
+    chmod +x /usr/local/bin/tini && \
   echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
@@ -193,5 +194,5 @@ USER $NB_UID
 ENV PATH $PATH:/home/jovyan/.local/bin
 
 # Configure container startup
-ENTRYPOINT ["/tini", "-g", "--"]
+ENTRYPOINT ["tini", "-g", "--"]
 CMD ["start-notebook.sh"]
