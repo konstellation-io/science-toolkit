@@ -3,12 +3,15 @@ FROM nvidia/cuda:10.2-cudnn7-runtime-ubuntu18.04
 ARG GO_VERSION=1.14.2
 ARG NODE_VERSION=14.4.0
 ARG YARN_VERSION=1.19.1
+ARG TINI_VERSION v0.18.0
 
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 
 USER root
+
+WORKDIR /tmp
 
 # Configure environment
 ENV SHELL=/bin/bash \
@@ -36,58 +39,65 @@ ENV LD_RUN_PATH=$ORACLE_HOME
 
 # Install all OS dependencies for notebook server that starts but lacks all
 # features (e.g., download as all possible file formats)
-COPY ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
-COPY ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
-RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-    apt-get install -yq --no-install-recommends \
-    gcc \
-    wget \
-    curl \
-    xz-utils \
-    less \
-    openssh-client \
-    git \
+  apt-get install -yq --no-install-recommends \
     bzip2 \
-    zip \
-    unzip \
     ca-certificates \
-    sudo \
-    locales \
+    curl \
     fonts-liberation \
-    libaio1 \
     g++ \
-    `cat apt_get_libraries.txt | xargs` && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1 && \
+    gcc \
+    git \
+    language-pack-es \
+    less \
+    libaio1 \
+    libffi-dev  \
+    libgtk2.0-dev \
+    libllvm-10-ocaml-dev \
+    llvm-10 \
+    llvm-10-dev \
+    llvm-10-runtime \
+    llvm-10-tools \
+    locales \
+    odbcinst \
+    openssh-client \
+    python3.7 \
+    python3.7-dev \
+    python3-pip \
+    unzip \
+    xz-utils \
+    zip && \
+  # Install Cloudera Impala driver
+  curl -s -O https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.1004/Debian/clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
+    dpkg -i clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
+  update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1 && \
     update-alternatives --set python3 /usr/bin/python3.7 && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2 && \
     update-alternatives --set python /usr/bin/python3.7 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
     update-alternatives --set pip /usr/bin/pip3 && \
-    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+  # Add Tini
+    curl -s -o /tini https://github.com/krallin/tini/releases/download/v0.18.0/tini && \
+    chmod +x /tini && \
+  echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
 # Install Node, Npm, Yarn & Go
-RUN cd /opt && \
-    curl -s -O https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz && \
-    tar -xf node-v${NODE_VERSION}-linux-x64.tar.xz && \ 
-    ln -s /opt/node-v${NODE_VERSION}-linux-x64 ${NODEJS_HOME} && \
-    rm node-v${NODE_VERSION}-linux-x64.tar.xz && \
-    cd /opt && \
+RUN curl -s -O https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz && \
+    tar -xf node-v${NODE_VERSION}-linux-x64.tar.xz && \
+    mv node-v${NODE_VERSION}-linux-x64 ${NODEJS_HOME} && \
     curl -L -O https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v${YARN_VERSION}.tar.gz  && \
-    tar zvxf yarn-v${YARN_VERSION}.tar.gz && \
-    ln -s yarn-v${YARN_VERSION} ${YARN_HOME} && \
-    rm yarn-v${YARN_VERSION}.tar.gz && \
+    tar zxf yarn-v${YARN_VERSION}.tar.gz && \
+    mv yarn-v${YARN_VERSION} ${YARN_HOME} && \
     mkdir -p ${GOROOT} && \
     mkdir -p /home/$NB_USER/go && \
     curl -s https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | tar xzf - -C ${GOROOT} --strip-components=1
+    
 
 # Install Minio client
-RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc && \
+RUN curl -s -O https://dl.min.io/client/mc/release/linux-amd64/mc && \
     chmod +x mc && \
     mv mc /usr/local/bin/mc
 
@@ -99,20 +109,15 @@ RUN mkdir -p /opt/oracle && \
 	ldconfig && \
 	export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
 
-# Install Cloudera Impala driver
-RUN wget https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.1004/Debian/clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
-    dpkg -i clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
-    apt-get update && \
-    apt-get install -y odbcinst 
-
 # Build unixodbx 2.3.7
-RUN cd /tmp && \
-    wget http://www.unixodbc.org/unixODBC-2.3.7.tar.gz && \
+RUN curl -s -O http://www.unixodbc.org/unixODBC-2.3.7.tar.gz && \
     tar xvf unixODBC-2.3.7.tar.gz && \
     cd unixODBC-2.3.7/ && \
     ./configure && \
     make && \
-    make install
+    make install && \
+    make clean && \
+    cd ..
 
 COPY fix-permissions /usr/local/bin/fix-permissions
 # Create jovyan user with UID=1000 and in the 'users' group
@@ -126,6 +131,11 @@ RUN groupadd wheel -g 11 && \
     fix-permissions /usr/bin && \
     fix-permissions /usr/sbin && \
     fix-permissions /var/
+
+# Apt cleanup
+RUN apt-get clean && apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
+    rm -rf -- *
 
 USER $NB_UID
 
@@ -147,39 +157,24 @@ ENV PATH /home/$NB_USER/.local/bin:$PATH
 
 USER root
 
-# Install basic modules
-RUN pip install setuptools wheel && \
-    pip install cython thriftpy && \
-    pip install pip --upgrade
+# Install Python modules
+COPY ./requirements.txt requirements.txt
 
-# Install frameworks
-COPY ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
-COPY ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
-RUN cat custom_frameworks_requirements.txt >> frameworks_requirements.txt
-
-RUN pip install -r frameworks_requirements.txt
-
-# Install requirements
-COPY ./common-science-requirements/requirements.txt requirements.txt
-COPY ./config/requirements.txt custom_requirements.txt
-RUN cat custom_requirements.txt >> requirements.txt && \
-    ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config && \
-    pip install -r requirements.txt --ignore-installed PyYAML && \
-    jupyter serverextension enable --py jupyterlab --sys-prefix && \
-    jupyter notebook --generate-config
+RUN pip install --no-cache-dir setuptools wheel && \
+    pip install --no-cache-dir cython thriftpy && \
+    pip install pip --upgrade && \
+    pip install --no-cache-dir -r requirements.txt --ignore-installed PyYAML && \
+    ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config  
 
 # Install Jupyterlab Extensions
-COPY ./config/jupyterlab_extensions.txt jupyterlab_extensions.txt
+COPY ./jupyterlab_extensions.txt jupyterlab_extensions.txt
 
-RUN jupyter labextension install `cat jupyterlab_extensions.txt | xargs` && \
+RUN jupyter serverextension enable --py jupyterlab --sys-prefix && \
+    jupyter notebook --generate-config && \
+    jupyter labextension install `cat jupyterlab_extensions.txt | xargs` && \
     jupyter serverextension enable --py jupyterlab_git && \
     jupyter lab build && \
     fix-permissions /home/$NB_USER
-
-# Add Tini
-ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
 
 EXPOSE 8888
 WORKDIR $HOME
