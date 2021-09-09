@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
+FROM nvidia/cuda:10.2-cudnn7-runtime-ubuntu18.04
 
 ARG GO_VERSION=1.14.2
 ARG NODE_VERSION=14.4.0
@@ -10,18 +10,41 @@ ARG NB_GID="100"
 
 USER root
 
+# Configure environment
+ENV SHELL=/bin/bash \
+    NB_USER=$NB_USER \
+    NB_UID=$NB_UID \
+    NB_GID=$NB_GID \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
+ENV HOME=/home/$NB_USER
+
+# Set NodeJS environment variables
+ENV NODEJS_HOME /opt/node
+ENV YARN_HOME /opt/yarn
+ENV PATH=$NODEJS_HOME/bin:$YARN_HOME/bin:$PATH
+
+# Set GO environment variables.
+ENV GOROOT /usr/local/go
+ENV GOPATH $HOME/go
+ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
+
+# Oracle environment variables
+ENV ORACLE_HOME /opt/oracle/instantclient_18_5
+ENV LD_RUN_PATH=$ORACLE_HOME
+
 # Install all OS dependencies for notebook server that starts but lacks all
 # features (e.g., download as all possible file formats)
-ADD ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
-ADD ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
+COPY ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
+COPY ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
 RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update \
-    && apt-get install -yq --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -yq --no-install-recommends \
     gcc \
     wget \
-    vim \
     curl \
     xz-utils \
     less \
@@ -35,57 +58,33 @@ RUN apt-get update \
     locales \
     fonts-liberation \
     libaio1 \
-    `cat apt_get_libraries.txt | xargs` \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apt update && \
+    g++ \
+    `cat apt_get_libraries.txt | xargs` && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1 && \
     update-alternatives --set python3 /usr/bin/python3.7 && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2 && \
     update-alternatives --set python /usr/bin/python3.7 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 3 && \
-    update-alternatives --set pip /usr/bin/pip3
-
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    update-alternatives --set pip /usr/bin/pip3 && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
-# Configure environment
-ENV SHELL=/bin/bash \
-    NB_USER=$NB_USER \
-    NB_UID=$NB_UID \
-    NB_GID=$NB_GID \
-    LC_ALL=en_US.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8
-ENV HOME=/home/$NB_USER
-
-# Install Node, Npm & Yarn
+# Install Node, Npm, Yarn & Go
 RUN cd /opt && \
     curl -s -O https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz && \
     tar -xf node-v${NODE_VERSION}-linux-x64.tar.xz && \ 
-    ln -s /opt/node-v${NODE_VERSION}-linux-x64 /opt/node && \
-    rm node-v${NODE_VERSION}-linux-x64.tar.xz
-
-RUN cd /opt && \
+    ln -s /opt/node-v${NODE_VERSION}-linux-x64 ${NODEJS_HOME} && \
+    rm node-v${NODE_VERSION}-linux-x64.tar.xz && \
+    cd /opt && \
     curl -L -O https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v${YARN_VERSION}.tar.gz  && \
     tar zvxf yarn-v${YARN_VERSION}.tar.gz && \
-    ln -s yarn-v${YARN_VERSION} /opt/yarn && \
-    rm yarn-v${YARN_VERSION}.tar.gz
-
-ENV NODEJS_HOME /opt/node
-ENV YARN_HOME /opt/yarn
-ENV PATH=$NODEJS_HOME/bin:$YARN_HOME/bin:$PATH
-
-# Download & Install Go
-RUN mkdir -p /usr/local/go && \
+    ln -s yarn-v${YARN_VERSION} ${YARN_HOME} && \
+    rm yarn-v${YARN_VERSION}.tar.gz && \
+    mkdir -p ${GOROOT} && \
     mkdir -p /home/$NB_USER/go && \
-    curl -s https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | tar xzf - -C /usr/local/go --strip-components=1
-
-# Set GO environment variables.
-ENV GOROOT /usr/local/go
-ENV GOPATH $HOME/go
-ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
+    curl -s https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | tar xzf - -C ${GOROOT} --strip-components=1
 
 # Install Minio client
 RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc && \
@@ -93,14 +92,12 @@ RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc && \
     mv mc /usr/local/bin/mc
 
 # Install Oracle client
-ENV ORACLE_HOME /opt/oracle/instantclient_18_5
-ENV LD_RUN_PATH=$ORACLE_HOME
 COPY instantclient-* /tmp/
 RUN mkdir -p /opt/oracle && \
 	unzip "/tmp/instantclient*.zip" -d /opt/oracle && \
-	sh -c "echo /opt/oracle/instantclient_18_5 > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
+	sh -c "echo $ORACLE_HOME > /etc/ld.so.conf.d/oracle-instantclient.conf" && \
 	ldconfig && \
-	export LD_LIBRARY_PATH=/opt/oracle/instantclient_18_5:$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=$ORACLE_HOME:$LD_LIBRARY_PATH
 
 # Install Cloudera Impala driver
 RUN wget https://downloads.cloudera.com/connectors/ClouderaImpala_ODBC_2.6.4.1004/Debian/clouderaimpalaodbc_2.6.4.1004-2_amd64.deb && \
@@ -117,19 +114,18 @@ RUN cd /tmp && \
     make && \
     make install
 
-ADD fix-permissions /usr/local/bin/fix-permissions
+COPY fix-permissions /usr/local/bin/fix-permissions
 # Create jovyan user with UID=1000 and in the 'users' group
 # and make sure these dirs are writable by the `users` group.
 RUN groupadd wheel -g 11 && \
     echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
     chmod g+w /etc/passwd && \
-    fix-permissions $HOME
-
-# Fix apt user permissions
-RUN fix-permissions /usr/bin
-RUN fix-permissions /usr/sbin
-RUN fix-permissions /var/
+    fix-permissions $HOME && \
+    # Fix apt user permissions
+    fix-permissions /usr/bin && \
+    fix-permissions /usr/sbin && \
+    fix-permissions /var/
 
 USER $NB_UID
 
@@ -157,33 +153,27 @@ RUN pip install setuptools wheel && \
     pip install pip --upgrade
 
 # Install frameworks
-ADD ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
-ADD ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
+COPY ./common-science-requirements/frameworks_requirements.txt frameworks_requirements.txt
+COPY ./config/frameworks_requirements.txt custom_frameworks_requirements.txt
 RUN cat custom_frameworks_requirements.txt >> frameworks_requirements.txt
 
 RUN pip install -r frameworks_requirements.txt
 
 # Install requirements
-ADD ./common-science-requirements/requirements.txt requirements.txt
-ADD ./config/requirements.txt custom_requirements.txt
-RUN cat custom_requirements.txt >> requirements.txt
-
-RUN ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config
-RUN pip install -r requirements.txt --ignore-installed PyYAML
-
-RUN jupyter serverextension enable --py jupyterlab --sys-prefix
-
-RUN jupyter notebook --generate-config
+COPY ./common-science-requirements/requirements.txt requirements.txt
+COPY ./config/requirements.txt custom_requirements.txt
+RUN cat custom_requirements.txt >> requirements.txt && \
+    ln -s /usr/bin/llvm-config-10 /usr/bin/llvm-config && \
+    pip install -r requirements.txt --ignore-installed PyYAML && \
+    jupyter serverextension enable --py jupyterlab --sys-prefix && \
+    jupyter notebook --generate-config
 
 # Install Jupyterlab Extensions
-ADD ./config/jupyterlab_extensions.txt jupyterlab_extensions.txt
+COPY ./config/jupyterlab_extensions.txt jupyterlab_extensions.txt
 
-RUN jupyter labextension install `cat jupyterlab_extensions.txt | xargs`
-
-RUN jupyter serverextension enable --py jupyterlab_git
-    
-
-RUN jupyter lab build && \
+RUN jupyter labextension install `cat jupyterlab_extensions.txt | xargs` && \
+    jupyter serverextension enable --py jupyterlab_git && \
+    jupyter lab build && \
     fix-permissions /home/$NB_USER
 
 # Add Tini
