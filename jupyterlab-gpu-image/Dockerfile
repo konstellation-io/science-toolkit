@@ -137,6 +137,7 @@ RUN apt-get clean && apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
     rm -rf -- *
 
+
 USER $NB_UID
 
 # Setup work directory for backward-compatibility
