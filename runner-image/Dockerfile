@@ -1,4 +1,5 @@
-FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04
+# FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04
+FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 
 # Maintainer of the Dockerfile
 LABEL maintainer "Intelygenz - Konstellation Team"
@@ -11,13 +12,7 @@ ENV TZ=Europe/Madrid
 ENV ORACLE_HOME /opt/oracle/instantclient_18_5
 ENV LD_RUN_PATH=$ORACLE_HOME
 
-# Install all OS dependencies for notebook server that starts but lacks all
-# features (e.g., download as all possible file formats)
-COPY ./common-science-requirements/apt_get_libraries.txt apt_get_libraries.txt
-COPY ./config/apt_get_libraries.txt custom_apt_get_libraries.txt
-RUN cat custom_apt_get_libraries.txt >> apt_get_libraries.txt
-
-# ARG NON_ROOT_USER=nroot
+ARG NON_ROOT_USER=nroot
 
 # Switch to ROOT user to do maintenance tasks
 USER root
@@ -31,36 +26,38 @@ COPY instantclient-* /tmp/
 
 # Install required packages
 RUN apt-get update && apt-get install -yq --no-install-recommends \
-        build-essential \
-        bzip2 \
-        ca-certificates \
-        less \
-        openssh-client \
-        fonts-liberation \
-        git \
-        libaio1 \
-        libffi-dev \
-        libgtk2.0-dev \
-        libssl-dev \
-        libllvm-10-ocaml-dev \
-        libxml2-dev \
-        libxslt1-dev \
-        llvm-10 \
-        llvm-10-dev \
-        llvm-10-runtime \
-        llvm-10-tools \
-        locales \
-        odbcinst \
-        python3.9 \
-        python3.9-dev \
-        python3.9-distutils \
-        python3-pip \
-        software-properties-common \
-        unzip \
-        wget \
-        xz-utils \
-        zip \
-        zlib1g-dev && \
+        software-properties-common && \
+        add-apt-repository ppa:deadsnakes/ppa -y && \
+        apt-get install -yq --no-install-recommends \
+            build-essential \
+            bzip2 \
+            ca-certificates \
+            less \
+            openssh-client \
+            fonts-liberation \
+            git \
+            libaio1 \
+            libffi-dev \
+            libgtk2.0-dev \
+            libssl-dev \
+            libllvm-10-ocaml-dev \
+            libxml2-dev \
+            libxslt1-dev \
+            llvm-10 \
+            llvm-10-dev \
+            llvm-10-runtime \
+            llvm-10-tools \
+            locales \
+            odbcinst \
+            python3.9 \
+            python3.9-dev \
+            python3.9-distutils \
+            python3-pip \
+            unzip \
+            wget \
+            xz-utils \
+            zip \
+            zlib1g-dev && \
     # Set Python 3.9 as default
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 && \
         update-alternatives --set python3 /usr/bin/python3.9 && \
@@ -100,9 +97,17 @@ RUN pip install --upgrade pip && \
         pip install --no-cache-dir -r requirements.txt --ignore-installed PyYAML
 
 # Create a non-root user
-# RUN groupadd ${NON_ROOT_USER} --gid 1001                                  && \
-#     useradd ${NON_ROOT_USER} --system --create-home --uid 1001 --gid 1001 && \
-#     chown ${NON_ROOT_USER}:${NON_ROOT_USER} /home/${NON_ROOT_USER}
+RUN groupadd ${NON_ROOT_USER} --gid 1001                                  && \
+    useradd ${NON_ROOT_USER} --system --create-home --uid 1001 --gid 1001 && \
+    chown ${NON_ROOT_USER}:${NON_ROOT_USER} /home/${NON_ROOT_USER}
+
+# Clean up
+RUN rm --recursive --force -- * && \
+        apt-get clean && apt-get autoremove -y && \
+        rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+# Change workdir to / TEMPORARILY
+WORKDIR /
 
 # Use non-root user
 # USER ${NON_ROOT_USER}
