@@ -1,5 +1,6 @@
+{{ if not .Values.kdl.enabled }}
 {{ if .Values.cleaner.enabled }}
-apiVersion: extensions/v1beta1
+#apiVersion: extensions/v1beta1 # Deprecated apiVersion
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -42,3 +43,4 @@ spec:
                 claimName: {{ .Values.sharedVolume.name }}-claim
           restartPolicy: OnFailure
 {{- end }}
+{{ end }}
