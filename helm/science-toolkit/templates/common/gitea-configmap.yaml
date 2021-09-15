@@ -9,4 +9,3 @@ data:
   GITEA_OAUTH2_AUTHORIZE_URL: {{ printf "%s://gitea.%s/login/oauth/authorize" ( include "protocol" . ) .Values.domain }}
   GITEA_OAUTH2_TOKEN_URL: {{ printf "%s://gitea.%s/login/oauth/access_token" ( include "protocol" . ) .Values.domain }}
   GITEA_OAUTH2_USERDATA_URL: {{ printf "%s://gitea.%s/api/v1/user" ( include "protocol" . ) .Values.domain }}
-
