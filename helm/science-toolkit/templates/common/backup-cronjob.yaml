@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{ if .Values.backup.gitea.enabled }}
 apiVersion: extensions/v1beta1
 apiVersion: batch/v1beta1
@@ -56,3 +57,4 @@ spec:
                 claimName: gitea-pvc-gitea-0
           restartPolicy: OnFailure
 {{- end }}
+{{ end }}
