@@ -36,8 +36,8 @@ spec:
             - name: user-pvc
               mountPath: /home/kdl
         - name: codeserver-gitea-oauth2-setup
-          image: terminus7/gitea-oauth2-setup:latest
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.giteaOauth2Ssetup.image.repository }}:{{ .Values.giteaOauth2Ssetup.image.tag }}
+          imagePullPolicy: {{ .Values.giteaOauth2Ssetup.image.pullPolicy }}
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -68,8 +68,8 @@ spec:
       containers:
       {{- if .Values.kdl.enabled }}
         - name: {{ .Chart.Name }}-repo-cloner
-          image: konstellation/user-repo-cloner:${USER_REPO_CLONER_TAG}
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.repoCloner.image.repository }}:{{ .Values.repoCloner.image.tag }}
+          imagePullPolicy: {{ .Values.repoCloner.image.pullPolicy }}
           env:
             - name: KDL_USER_NAME
               value: "{{ .Values.username }}"
@@ -87,8 +87,8 @@ spec:
               readOnly: true
       {{- end }}
         - name: {{ .Chart.Name }}-vscode
-          image: terminus7/sci-toolkit-vscode:${VSCODE_TAG}
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.vscode.image.repository }}:{{ .Values.vscode.image.tag }}
+          imagePullPolicy: {{ .Values.vscode.image.pullPolicy }}
           envFrom:
           - secretRef:
               name: tools-secret
@@ -107,8 +107,8 @@ spec:
               readOnly: true
           {{- end }}
         - name: {{ .Chart.Name }}-jupyter
-          image: terminus7/jupyterlab-gpu:${JUPYTERLAB_GPU_IMAGE_TAG}
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.jupyter.image.repository }}:{{ .Values.jupyter.image.tag }}
+          imagePullPolicy: {{ .Values.jupyter.image.pullPolicy }}
           envFrom:
           - secretRef:
               name: tools-secret

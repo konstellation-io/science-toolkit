@@ -24,3 +24,23 @@ spec:
     name: ""
 
   tls: false
+  giteaOauth2Ssetup:
+    image:
+      repository: terminus7/gitea-oauth2-setup
+      tag: latest
+      pullPolicy: IfNotPresent
+  jupyter:
+    image:
+      repository: terminus7/jupyterlab-gpu
+      tag: latest
+      pullPolicy: IfNotPresent
+  repoCloner:
+    image:
+      repository: konstellation/user-repo-cloner
+      tag: latest
+      pullPolicy: IfNotPresent
+  vscode:
+    image:
+      repository: terminus7/sci-toolkit-vscode
+      tag: latest
+      pullPolicy: IfNotPresent

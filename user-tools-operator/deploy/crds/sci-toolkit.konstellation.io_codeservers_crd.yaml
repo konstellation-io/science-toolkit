@@ -65,4 +65,62 @@ spec:
               usernameSlug:
                 description: username slug to create tools
                 type: string
+              giteaOauth2Ssetup:
+                type: object
+                properties:
+                  image:
+                    type: object
+                      repository:
+                        description: image repository
+                        type: string
+                      tag:
+                        description: image tag
+                        type: string
+                      pullPolicy:
+                        description: image pull policy
+                        type: string
+              jupyter:
+                type: object
+                properties:
+                  image:
+                    type: object
+                      repository:
+                        description: image repository
+                        type: string
+                      tag:
+                        description: image tag
+                        type: string
+                      pullPolicy:
+                        description: image pull policy
+                        type: string
+              vscode:
+                type: object
+                properties:
+                  image:
+                    type: object
+                      repository:
+                        description: image repository
+                        type: string
+                      tag:
+                        description: image tag
+                        type: string
+                      pullPolicy:
+                        description: image pull policy
+                        type: string
+              repoCloner:
+                type: object
+                properties:
+                  image:
+                    type: object
+                      repository:
+                        description: image repository
+                        type: string
+                      tag:
+                        description: image tag
+                        type: string
+                      pullPolicy:
+                        description: image pull policy
+                        type: string
+
+
 {{ end }}

@@ -75,11 +75,13 @@ publish-user-tools-operator-image:
     COMPONENT_TAGS_PROJECT_ID: "intelygenz/science-toolkit"
   before_script:
     - apk add curl jq bash gettext git coreutils --update
-    - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
-    - chmod +x /usr/local/bin/monorepo-components-tags
-    - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
-    - source /tmp/components_tags.sh
-    - ./scripts/replace_env_path.sh
+
+    # - wget -q https://github.com/guumaster/monorepo-components-tags/releases/download/v${TAGS_VERSION}/monorepo-components-tags_${TAGS_VERSION}_linux_64-bit.tar.gz -O - | tar -xzO  monorepo-components-tags >  /usr/local/bin/monorepo-components-tags
+    # - chmod +x /usr/local/bin/monorepo-components-tags
+    # - /usr/local/bin/monorepo-components-tags --project $COMPONENT_TAGS_PROJECT_ID --commit $CI_COMMIT_SHA --export-shell --suffix TAG --provider GITHUB | tee -a /tmp/components_tags.sh
+    # - source /tmp/components_tags.sh
+    # - ./scripts/replace_env_path.sh
+
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - cd user-tools-operator
     - ./scripts/install_operator_sdk.sh

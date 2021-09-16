@@ -24,3 +24,24 @@ oauth2Proxy:
     repository: quay.io/oauth2-proxy/oauth2-proxy
     tag: v7.0.1-amd64
     pullPolicy: IfNotPresent
+
+giteaOauth2Setup:
+  image:
+    repository: terminus7/gitea-oauth2-setup
+    tag: latest
+    pullPolicy: IfNotPresent
+jupyter:
+  image:
+    repository: terminus7/jupyterlab-gpu
+    tag: latest
+    pullPolicy: IfNotPresent
+repoCloner:
+  image:
+    repository: konstellation/user-repo-cloner
+    tag: latest
+    pullPolicy: IfNotPresent
+vscode:
+  image:
+    repository: terminus7/sci-toolkit-vscode
+    tag: latest
+    pullPolicy: IfNotPresent
