@@ -5,7 +5,6 @@ helm/science-toolkit*/values.yaml
 helm/values-*.yaml
 helm-chart-exported
 gh-pages
-user-tools-operator/helm-charts/usertools/templates/statefulset.yaml
 !vscode/extensions/**
 .certs
 scripts/toolkit_images/**
