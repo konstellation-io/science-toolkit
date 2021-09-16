@@ -27,7 +27,7 @@ oauth2Proxy:
 
 giteaOauth2Setup:
   image:
-    repository: terminus7/jupyterlab-gpu
+    repository: terminus7/gitea-oauth2-setup
     tag: latest
     pullPolicy: IfNotPresent
 jupyter:
