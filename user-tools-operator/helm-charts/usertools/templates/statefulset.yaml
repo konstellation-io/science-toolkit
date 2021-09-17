@@ -36,8 +36,8 @@ spec:
             - name: user-pvc
               mountPath: /home/kdl
         - name: codeserver-gitea-oauth2-setup
-          image: {{ .Values.giteaOauth2Ssetup.image.repository }}:{{ .Values.giteaOauth2Ssetup.image.tag }}
-          imagePullPolicy: {{ .Values.giteaOauth2Ssetup.image.pullPolicy }}
+          image: {{ .Values.giteaOauth2Setup.image.repository }}:{{ .Values.giteaOauth2Setup.image.tag }}
+          imagePullPolicy: {{ .Values.giteaOauth2Setup.image.pullPolicy }}
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -51,8 +51,8 @@ spec:
             - configMapRef:
                 name: gitea-configmap
         - name: jupyter-gitea-oauth2-setup
-          image: terminus7/gitea-oauth2-setup:latest
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.giteaOauth2Setup.image.repository }}:{{ .Values.giteaOauth2Setup.image.tag }}
+          imagePullPolicy: {{ .Values.giteaOauth2Setup.image.pullPolicy }}
           env:
             - name: POD_NAMESPACE
               valueFrom:
