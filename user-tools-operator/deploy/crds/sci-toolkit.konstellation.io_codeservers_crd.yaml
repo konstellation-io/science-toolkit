@@ -1,8 +1,4 @@
-{{ if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1/CustomResourceDefinition" }}
 apiVersion: apiextensions.k8s.io/v1
-{{ else if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1beta1/CustomResourceDefinition" }}
-apiVersion: apiextensions.k8s.io/v1beta1
-{{ end }}
 kind: CustomResourceDefinition
 metadata:
   name: usertools.sci-toolkit.konstellation.io
@@ -18,7 +14,6 @@ spec:
   - name: v1alpha1
     served: true
     storage: true
-{{ if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1/CustomResourceDefinition" }}
     schema:
       openAPIV3Schema:
         type: object
@@ -65,11 +60,12 @@ spec:
               usernameSlug:
                 description: username slug to create tools
                 type: string
-              giteaOauth2Ssetup:
+              giteaOauth2Setup:
                 type: object
                 properties:
                   image:
                     type: object
+                    properties:
                       repository:
                         description: image repository
                         type: string
@@ -84,6 +80,7 @@ spec:
                 properties:
                   image:
                     type: object
+                    properties:
                       repository:
                         description: image repository
                         type: string
@@ -98,6 +95,7 @@ spec:
                 properties:
                   image:
                     type: object
+                    properties:
                       repository:
                         description: image repository
                         type: string
@@ -112,6 +110,7 @@ spec:
                 properties:
                   image:
                     type: object
+                    properties:
                       repository:
                         description: image repository
                         type: string
@@ -121,6 +120,18 @@ spec:
                       pullPolicy:
                         description: image pull policy
                         type: string
-
-
-{{ end }}
+              oauth2Proxy:
+                type: object
+                properties:
+                  image:
+                    type: object
+                    properties:
+                      repository:
+                        description: image repository
+                        type: string
+                      tag:
+                        description: image tag
+                        type: string
+                      pullPolicy:
+                        description: image pull policy
+                        type: string
