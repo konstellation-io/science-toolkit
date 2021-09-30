@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,3 +41,4 @@ spec:
         secret:
           secretName: mkcert-ca
       {{- end }}
+{{ end }}
