@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{ if .Capabilities.APIVersions.Has "apps/v1" }}
 apiVersion: apps/v1
 {{ else if .Capabilities.APIVersions.Has "apps/v1beta1" }}
@@ -48,4 +49,4 @@ spec:
         resources:
           requests:
             storage:  {{ .Values.postgres.storage.size }}
-          
+{{ end }}
