@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{- if .Values.argocd.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -67,3 +68,5 @@ spec:
               servicePort: http
           {{ end }}
 {{ end }} 
+{{ end }}
+
