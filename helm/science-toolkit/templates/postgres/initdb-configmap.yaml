@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,3 +9,4 @@ data:
   init.sql: |
     CREATE DATABASE hub ;
     CREATE DATABASE drone ;
+{{ end }}
