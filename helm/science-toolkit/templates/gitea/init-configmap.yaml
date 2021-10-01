@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -134,3 +135,5 @@ data:
     done
     echo "Create admin for gitea failed!"
     exit 1
+{{ end }}
+

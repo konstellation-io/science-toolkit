@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,3 +11,5 @@ data:
   DB_USER: postgres
   DB_NAME: {{ .Values.postgres.dbName }}
   DB_PASSWD: {{ .Values.postgres.dbPassword }}
+{{ end }}
+
