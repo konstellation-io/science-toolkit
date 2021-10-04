@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{- if .Values.argocd.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -62,4 +63,5 @@ spec:
               serviceName: {{ .Release.Name }}-minio
               servicePort: 9000
           {{ end }}
+{{ end }} 
 {{ end }} 
