@@ -1,3 +1,4 @@
+{{ if not .Values.kdl.enabled }}
 {{ if  .Values.tls.certManager.enabled }}
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
@@ -9,4 +10,5 @@ spec:
   issuerRef:
     name: {{ .Values.domain }}-issuer
   secretName: {{ .Values.domain }}-tls-secret
+{{ end }}
 {{ end }}
